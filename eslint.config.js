@@ -5,6 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default defineConfig([
@@ -16,6 +17,7 @@ export default defineConfig([
       tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
+      prettierRecommended,
     ],
     languageOptions: {
       ecmaVersion: 2020,
