@@ -1,57 +1,71 @@
 import { Component } from 'react';
 import { Search } from '../features/search';
 import './App.css';
-import type { Info, Character } from './API_interfaces';
-
-const API_URL = 'https://rickandmortyapi.com/api';
-
-interface Props {
-  onSubmit?: (searchTerm: string) => void;
-}
+import type { Character } from '../services/api-interfaces';
+import { APIService } from '../services/api-service';
 
 interface State {
-  searchTerm: string;
+  characterName: string;
   characters: Character[];
+  loading: boolean;
+  error: string | null;
 }
 
-class App extends Component<Props, State> {
-  state: State = { searchTerm: '', characters: [] };
+class App extends Component<object, State> {
+  state: State = {
+    characterName: '',
+    characters: [],
+    loading: false,
+    error: null,
+  };
 
-  constructor(props: Props) {
+  constructor(props: object) {
     super(props);
-    this.setSearchTerm = this.setSearchTerm.bind(this);
+    this.setCharacterName = this.setCharacterName.bind(this);
   }
 
-  public setSearchTerm(searchTerm: string) {
-    if (searchTerm === this.state.searchTerm) return;
-    this.setState({ ...this.state, searchTerm }, () => {
+  public setCharacterName(searchTerm: string) {
+    if (searchTerm === this.state.characterName) return;
+    this.setState({ ...this.state, characterName: searchTerm.trim() }, () => {
       console.log('update');
-      this.searchCharacters();
+      this.loadCharacters();
     });
   }
 
   public componentDidMount(): void {
-    this.fetchCharacters();
+    this.loadCharacters();
   }
 
-  public async fetchCharacters() {
-    const res = await fetch(`${API_URL}/character`);
-    const data = (await res.json()) as Info<Character[]>;
-    this.setState({ characters: data.results || [] });
-  }
-
-  public async searchCharacters() {
-    const res = await fetch(
-      `${API_URL}/character/?name=${this.state.searchTerm}`
-    );
-    const data = (await res.json()) as Info<Character[]>;
-    this.setState({ characters: data.results || [] });
+  public async loadCharacters() {
+    this.setState({ loading: true, error: null });
+    try {
+      let data;
+      if (this.state.characterName) {
+        data = await APIService.fetchCharacters({
+          name: this.state.characterName,
+        });
+      } else {
+        data = await APIService.fetchCharacters();
+      }
+      this.setState({ characters: data.results || [], loading: false });
+    } catch (error) {
+      this.setState({
+        error: error instanceof Error ? error.message : 'Unknown error',
+        loading: false,
+        characters: [],
+      });
+    }
   }
 
   public render() {
+    const { loading, error } = this.state;
     return (
       <>
-        <Search onSubmit={this.setSearchTerm} />
+        <Search onSubmit={this.setCharacterName} />
+        {loading && <div>Loading...</div>}
+
+        {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+
         {this.state.characters.map((c) => {
           return (
             <li>
