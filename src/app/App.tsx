@@ -23,9 +23,11 @@ class App extends Component<Props, State> {
   }
 
   public setSearchTerm(searchTerm: string) {
-    console.log(searchTerm);
-    this.setState({ searchTerm });
-    this.searchCharacters();
+    if (searchTerm === this.state.searchTerm) return;
+    this.setState({ ...this.state, searchTerm }, () => {
+      console.log('update');
+      this.searchCharacters();
+    });
   }
 
   public componentDidMount(): void {
@@ -33,15 +35,9 @@ class App extends Component<Props, State> {
   }
 
   public async fetchCharacters() {
-    try {
-      const res = await fetch(`${API_URL}/character`);
-      if (!res.ok) throw new Error('Failed to fetch');
-      const data = (await res.json()) as Info<Character[]>;
-      this.setState({ characters: data.results || [] });
-    } catch (error) {
-      console.error('Error fetching characters:', error);
-      this.setState({ characters: [] });
-    }
+    const res = await fetch(`${API_URL}/character`);
+    const data = (await res.json()) as Info<Character[]>;
+    this.setState({ characters: data.results || [] });
   }
 
   public async searchCharacters() {
