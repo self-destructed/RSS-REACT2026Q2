@@ -1,52 +1,42 @@
 import { Component } from 'react';
 
-const localStorageKey = 'searchHistory';
-
 interface Props {
+  query?: string;
   onSubmit?: (searchTerm: string) => void;
 }
 
 interface State {
-  searchTerm: string;
+  query: string;
 }
 
 class Search extends Component<Props, State> {
-  state: State = { searchTerm: '' };
+  state: State = { query: '' };
 
   constructor(props: Props) {
     super(props);
+    this.state.query = props.query || '';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  public handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: event.target.value.trim() });
+  public handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    this.setState({ query: event.target.value });
   };
 
-  public handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  public handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    try {
-      window.localStorage.setItem(
-        localStorageKey,
-        JSON.stringify(this.state.searchTerm)
-      );
-    } catch {
-      window.localStorage.setItem(localStorageKey, '');
-    }
-
-    this.props.onSubmit?.(this.state.searchTerm);
+    this.props.onSubmit?.(this.state.query);
   };
 
-  public componentDidMount(): void {
-    this.restoreSearchTerm();
-  }
-
-  public render() {
+  public render(): React.ReactNode {
     return (
       <form
         onSubmit={this.handleSubmit}
         className="mx-auto mt-4 max-w-xs"
         role="search"
+        noValidate
       >
         <div className="relative flex items-center gap-2.5 rounded-md bg-white px-3 py-2.5 outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-600 dark:bg-neutral-800 dark:outline-neutral-700">
           <label htmlFor="search" className="sr-only">
@@ -59,9 +49,8 @@ class Search extends Component<Props, State> {
             placeholder="Search..."
             required
             className="w-full pr-10 text-sm text-slate-900 outline-none dark:text-slate-50"
-            value={this.state.searchTerm}
+            value={this.state.query}
           />
-
           <button
             type="submit"
             aria-label="Search"
@@ -79,19 +68,6 @@ class Search extends Component<Props, State> {
         </div>
       </form>
     );
-  }
-
-  private restoreSearchTerm() {
-    let query = '';
-    try {
-      const restoredQuery = window.localStorage.getItem(localStorageKey);
-      if (restoredQuery) {
-        query = JSON.parse(restoredQuery);
-      }
-    } catch {
-      query = '';
-    }
-    this.setState({ searchTerm: query });
   }
 }
 
