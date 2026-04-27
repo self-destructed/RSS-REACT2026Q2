@@ -1,7 +1,71 @@
+import { Component } from 'react';
+import { Search } from '../features/search';
 import './App.css';
+import type { Info, Character } from './API_interfaces';
 
-function App() {
-  return <></>;
+const API_URL = 'https://rickandmortyapi.com/api';
+
+interface Props {
+  onSubmit?: (searchTerm: string) => void;
+}
+
+interface State {
+  searchTerm: string;
+  characters: Character[];
+}
+
+class App extends Component<Props, State> {
+  state: State = { searchTerm: '', characters: [] };
+
+  constructor(props: Props) {
+    super(props);
+    this.setSearchTerm = this.setSearchTerm.bind(this);
+  }
+
+  public setSearchTerm(searchTerm: string) {
+    console.log(searchTerm);
+    this.setState({ searchTerm });
+    this.searchCharacters();
+  }
+
+  public componentDidMount(): void {
+    this.fetchCharacters();
+  }
+
+  public async fetchCharacters() {
+    try {
+      const res = await fetch(`${API_URL}/character`);
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = (await res.json()) as Info<Character[]>;
+      this.setState({ characters: data.results || [] });
+    } catch (error) {
+      console.error('Error fetching characters:', error);
+      this.setState({ characters: [] });
+    }
+  }
+
+  public async searchCharacters() {
+    const res = await fetch(
+      `${API_URL}/character/?name=${this.state.searchTerm}`
+    );
+    const data = (await res.json()) as Info<Character[]>;
+    this.setState({ characters: data.results || [] });
+  }
+
+  public render() {
+    return (
+      <>
+        <Search onSubmit={this.setSearchTerm} />
+        {this.state.characters.map((c) => {
+          return (
+            <li>
+              {c.id} {c.name}
+            </li>
+          );
+        })}
+      </>
+    );
+  }
 }
 
 export default App;
