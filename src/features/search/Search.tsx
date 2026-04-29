@@ -30,6 +30,12 @@ class Search extends Component<Props, State> {
     this.props.onSubmit?.(this.state.query);
   };
 
+  public componentDidUpdate(prevProps: Props): void {
+    if (prevProps.query !== this.props.query) {
+      this.setState({ query: this.props.query || '' });
+    }
+  }
+
   public render(): React.ReactNode {
     return (
       <form
