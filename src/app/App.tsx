@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Search } from '../features/search';
+import Search from '../shared/ui/search';
 import './App.css';
 import type { Character } from '../services/api-interfaces';
 import { APIService } from '../services/api-service';
