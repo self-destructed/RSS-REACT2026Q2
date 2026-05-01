@@ -1,4 +1,4 @@
-import type { Character, CharacterFilter, Info } from './api-interfaces';
+import type { Character, CharacterFilter, Info } from './types';
 
 export const API_CONFIG = {
   baseUrl: 'https://rickandmortyapi.com/api',

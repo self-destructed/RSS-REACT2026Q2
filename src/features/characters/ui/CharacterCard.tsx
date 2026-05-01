@@ -1,5 +1,5 @@
 import { Component, type ReactNode } from 'react';
-import type { Character } from '../../../services/api-interfaces';
+import type { Character } from '../../../shared/api/types';
 
 interface Props {
   data: Character;

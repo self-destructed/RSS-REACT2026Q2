@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import Search from '../../../shared/ui/search';
-import type { Character } from '../../../services/api-interfaces';
-import { APIService } from '../../../services/api-service';
-import { LocaltorageService } from '../../../services/local-storage-service';
+import type { Character } from '../../../shared/api/types';
+import { APIService } from '../../../shared/api/api';
+import { LocaltorageService } from '../../../shared/api/local-storage';
 import { Spinner } from '../../../shared/ui/spinner';
 import ErrorDisplay from '../../../shared/ui/error';
 import { CharactersList } from '../../../features/characters/ui';
