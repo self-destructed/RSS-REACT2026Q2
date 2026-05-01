@@ -5,6 +5,7 @@ import { APIService } from '../services/api-service';
 import { LocaltorageService } from '../services/local-storage-service';
 import { Spinner } from '../shared/ui/spinner';
 import { CharactersList } from '../features/characters/ui';
+import Layout from '../shared/ui/layout';
 import Main from '../shared/ui/main';
 
 interface State {
@@ -74,31 +75,33 @@ class App extends Component<object, State> {
   public render(): React.ReactNode {
     const { loading, error } = this.state;
     return (
-      <Main>
-        <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
-          <div className="p-4 sm:p-5 lg:p-6">
-            <Search
-              onSubmit={this.setCharacterNameQuery}
-              query={this.state.characterNameQuery}
-            />
-          </div>
-        </section>
-        <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
-          <div className="p-4 sm:p-5 lg:p-6">
-            {loading && (
-              <div className="flex justify-center py-6">
-                <Spinner />
-              </div>
-            )}
-            {error && (
-              <div className="rounded-lg bg-red-50 p-4 text-center text-red-700 dark:bg-red-950/40 dark:text-red-300">
-                Error: {error}
-              </div>
-            )}
-            <CharactersList data={this.state.characters} />
-          </div>
-        </section>
-      </Main>
+      <Layout>
+        <Main>
+          <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
+            <div className="p-4 sm:p-5 lg:p-6">
+              <Search
+                onSubmit={this.setCharacterNameQuery}
+                query={this.state.characterNameQuery}
+              />
+            </div>
+          </section>
+          <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
+            <div className="p-4 sm:p-5 lg:p-6">
+              {loading && (
+                <div className="flex justify-center py-6">
+                  <Spinner />
+                </div>
+              )}
+              {error && (
+                <div className="rounded-lg bg-red-50 p-4 text-center text-red-700 dark:bg-red-950/40 dark:text-red-300">
+                  Error: {error}
+                </div>
+              )}
+              <CharactersList data={this.state.characters} />
+            </div>
+          </section>
+        </Main>
+      </Layout>
     );
   }
 }
