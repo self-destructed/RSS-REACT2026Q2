@@ -46,6 +46,7 @@ class CharactersPage extends Component<object, State> {
       this.setState({ characterNameQuery: lastQuery }, () => {
         this.loadCharacters();
       });
+      return;
     }
 
     this.loadCharacters();
