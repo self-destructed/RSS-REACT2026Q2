@@ -1,6 +1,6 @@
 import { Component, type ReactNode } from 'react';
-import CharacterCard from './character-card/character-card';
-import type { Character } from '../../services/api-interfaces';
+import CharacterCard from './CharacterCard';
+import type { Character } from '../../../services/api-interfaces';
 
 interface Props {
   data: Character[];

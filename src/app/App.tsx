@@ -5,7 +5,7 @@ import type { Character } from '../services/api-interfaces';
 import { APIService } from '../services/api-service';
 import { LocaltorageService } from '../services/local-storage-service';
 import { Spinner } from '../shared/ui/spinner';
-import { CharactersList } from '../features/characters-list';
+import { CharactersList } from '../features/characters/ui';
 
 interface State {
   characterNameQuery: string;
