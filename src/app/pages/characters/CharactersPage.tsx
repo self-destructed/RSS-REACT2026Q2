@@ -32,11 +32,12 @@ class CharactersPage extends Component<object, State> {
   }
 
   public setCharacterNameQuery(searchQuery: string): void {
-    if (searchQuery.trim() === this.state.characterNameQuery) return;
+    const trimmed = searchQuery.trim();
+    if (trimmed === this.state.characterNameQuery) return;
 
-    LocaltorageService.set(this.state.storageKey, searchQuery.trim());
-    this.setState({ characterNameQuery: searchQuery.trim() }, () => {
-      this.loadCharacters();
+    LocaltorageService.set(this.state.storageKey, trimmed);
+    this.setState({ characterNameQuery: trimmed }, () => {
+      this.loadCharacters(trimmed);
     });
   }
 
@@ -44,7 +45,7 @@ class CharactersPage extends Component<object, State> {
     const lastQuery = LocaltorageService.get<string>(this.state.storageKey, '');
     if (lastQuery) {
       this.setState({ characterNameQuery: lastQuery }, () => {
-        this.loadCharacters();
+        this.loadCharacters(lastQuery);
       });
       return;
     }
@@ -52,14 +53,15 @@ class CharactersPage extends Component<object, State> {
     this.loadCharacters();
   }
 
-  public async loadCharacters(): Promise<void> {
+  public async loadCharacters(query?: string): Promise<void> {
+    const searchQuery = query ?? this.state.characterNameQuery;
     this.setState({ loading: true, error: null });
     try {
       let data;
 
-      if (this.state.characterNameQuery) {
+      if (searchQuery) {
         data = await APIService.fetchCharacters({
-          name: this.state.characterNameQuery,
+          name: searchQuery,
         });
       } else {
         data = await APIService.fetchCharacters();
