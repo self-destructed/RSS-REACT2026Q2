@@ -53,7 +53,7 @@ class CharactersPage extends Component<object, State> {
     this.loadCharacters();
   }
 
-  public async loadCharacters(query?: string): Promise<void> {
+  private async loadCharacters(query?: string): Promise<void> {
     const searchQuery = query ?? this.state.characterNameQuery;
     this.setState({ loading: true, error: null });
     try {
