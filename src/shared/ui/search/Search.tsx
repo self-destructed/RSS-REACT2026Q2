@@ -15,8 +15,6 @@ class Search extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state.query = props.query || '';
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   public handleInputChange = (
