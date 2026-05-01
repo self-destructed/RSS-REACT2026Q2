@@ -20,15 +20,22 @@ export class APIService {
         `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.character}?${queryParams}`
       );
 
+      const data = (await response.json()) as Info<Character[]> & {
+        error?: string;
+      };
+
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}. No characters found!`);
+        throw new Error(data.error || `API error: ${response.status}.`);
       }
 
-      const data = (await response.json()) as Info<Character[]>;
+      if (data.error) {
+        throw new Error(data.error);
+      }
 
       return data;
-    } catch {
-      throw new Error('Failed to fetch characters!');
+    } catch (error) {
+      if (error instanceof Error) throw error;
+      throw new Error('unknown error occurred!');
     }
   }
 
