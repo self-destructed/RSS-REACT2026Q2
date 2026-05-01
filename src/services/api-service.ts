@@ -7,17 +7,13 @@ export const API_CONFIG = {
     location: '/location',
     episode: '/episode',
   },
-  defaults: {
-    page: 1,
-  },
 } as const;
 
 export class APIService {
   public static async fetchCharacters(
-    filters?: CharacterFilter,
-    page: number = API_CONFIG.defaults.page
+    filters?: CharacterFilter
   ): Promise<Info<Character[]>> {
-    const queryParams = this.buildQueryString(filters, page);
+    const queryParams = this.buildQueryString(filters);
 
     try {
       const response = await fetch(
@@ -36,13 +32,8 @@ export class APIService {
     }
   }
 
-  private static buildQueryString(
-    filters?: CharacterFilter,
-    page?: number
-  ): string {
+  private static buildQueryString(filters?: CharacterFilter): string {
     const params = new URLSearchParams();
-
-    if (page) params.append('page', page.toString());
 
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
