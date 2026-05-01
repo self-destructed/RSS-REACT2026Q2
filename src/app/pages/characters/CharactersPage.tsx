@@ -4,6 +4,7 @@ import type { Character } from '../../../services/api-interfaces';
 import { APIService } from '../../../services/api-service';
 import { LocaltorageService } from '../../../services/local-storage-service';
 import { Spinner } from '../../../shared/ui/spinner';
+import ErrorDisplay from '../../../shared/ui/error';
 import { CharactersList } from '../../../features/characters/ui';
 import Main from '../../../shared/ui/main';
 import Layout from '../../../shared/ui/layout';
@@ -92,11 +93,7 @@ class CharactersPage extends Component<object, State> {
                   <Spinner />
                 </div>
               )}
-              {error && (
-                <div className="rounded-lg bg-red-50 p-4 text-center text-red-700 dark:bg-red-950/40 dark:text-red-300">
-                  Error: {error}
-                </div>
-              )}
+              {error && <ErrorDisplay message={error} />}
               <CharactersList data={this.state.characters} />
             </div>
           </section>
