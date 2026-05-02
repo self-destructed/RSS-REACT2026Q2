@@ -15,7 +15,7 @@ class ErrorTrigger extends Component<object, { shouldError: boolean }> {
     return (
       <button
         onClick={this.handleClick}
-        className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:cursor-pointer hover:bg-red-700"
       >
         💣 Trigger Error
       </button>
