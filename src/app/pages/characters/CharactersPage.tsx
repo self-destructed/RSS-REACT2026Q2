@@ -14,16 +14,16 @@ interface State {
   characters: Character[];
   loading: boolean;
   error: string | null;
-  storageKey: string;
 }
 
 class CharactersPage extends Component<object, State> {
+  private static readonly STORAGE_KEY = 'lastSearchQuery';
+
   state: State = {
     characterNameQuery: '',
     characters: [],
     loading: false,
     error: null,
-    storageKey: 'lastSearchQuery',
   };
 
   constructor(props: object) {
@@ -35,14 +35,17 @@ class CharactersPage extends Component<object, State> {
     const trimmed = searchQuery.trim();
     if (trimmed === this.state.characterNameQuery && !this.state.error) return;
 
-    LocaltorageService.set(this.state.storageKey, trimmed);
+    LocaltorageService.set(CharactersPage.STORAGE_KEY, trimmed);
     this.setState({ characterNameQuery: trimmed }, () => {
       this.loadCharacters(trimmed);
     });
   }
 
   public componentDidMount(): void {
-    const lastQuery = LocaltorageService.get<string>(this.state.storageKey, '');
+    const lastQuery = LocaltorageService.get<string>(
+      CharactersPage.STORAGE_KEY,
+      ''
+    );
     if (lastQuery) {
       this.setState({ characterNameQuery: lastQuery }, () => {
         this.loadCharacters(lastQuery);
