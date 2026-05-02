@@ -46,9 +46,9 @@ class CharacterCard extends Component<Props> {
     return (
       <article
         id={id.toString()}
-        className="group overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-neutral-700 dark:bg-neutral-900"
+        className="group h-full overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-neutral-700 dark:bg-neutral-900"
       >
-        <div className="p-4">
+        <div className="flex h-full flex-col justify-between p-4">
           <div className="mb-2 flex items-start justify-between">
             <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
               {name}
@@ -65,7 +65,7 @@ class CharacterCard extends Component<Props> {
             </div>
           </div>
 
-          <div className="mt-3 space-y-1.5">
+          <div className="mt-3 mt-auto space-y-1.5">
             <div className="flex items-center gap-2 text-sm">
               <span className="text-slate-700 dark:text-slate-300">
                 {this.getGenderIcon(gender)} {gender}
