@@ -17,7 +17,7 @@ class ErrorFallback extends Component<Props> {
           </p>
           <button
             onClick={this.props.reset}
-            className="rounded-md bg-blue-600 px-6 py-2.5 text-white transition-colors hover:bg-blue-700"
+            className="rounded-md bg-blue-600 px-6 py-2.5 text-white transition-colors hover:cursor-pointer hover:bg-blue-700"
           >
             Try Again
           </button>
