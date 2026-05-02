@@ -33,7 +33,7 @@ class CharactersPage extends Component<object, State> {
 
   public setCharacterNameQuery(searchQuery: string): void {
     const trimmed = searchQuery.trim();
-    if (trimmed === this.state.characterNameQuery) return;
+    if (trimmed === this.state.characterNameQuery && !this.state.error) return;
 
     LocaltorageService.set(this.state.storageKey, trimmed);
     this.setState({ characterNameQuery: trimmed }, () => {
