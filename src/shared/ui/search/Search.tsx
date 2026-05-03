@@ -25,7 +25,9 @@ class Search extends Component<Props, State> {
 
   public handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    this.props.onSubmit?.(this.state.query);
+    const trimmed = this.state.query.trim();
+    this.setState({ query: trimmed });
+    this.props.onSubmit?.(trimmed);
   };
 
   public componentDidUpdate(prevProps: Props): void {
