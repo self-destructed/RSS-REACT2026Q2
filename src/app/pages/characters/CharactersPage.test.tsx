@@ -158,6 +158,7 @@ describe('render', () => {
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
@@ -178,8 +179,6 @@ describe('render', () => {
     expect(screen.getByRole('status')).toBeInTheDocument();
     expect(screen.queryByText(/error/i)).not.toBeInTheDocument();
     expect(screen.queryByText('Rick Sanchez')).not.toBeInTheDocument();
-
-    vi.restoreAllMocks();
   });
 
   it('should render list after successful load', async () => {
@@ -196,8 +195,6 @@ describe('render', () => {
 
     expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     expect(screen.getByText('Morty Smith')).toBeInTheDocument();
-
-    vi.restoreAllMocks();
   });
 
   it('should render error after failed load', async () => {
@@ -211,12 +208,15 @@ describe('render', () => {
     await waitFor(() => {
       expect(screen.getByText(/error/i)).toBeInTheDocument();
     });
-
-    vi.restoreAllMocks();
   });
 });
 
 describe('behavior', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
   it('should load characters from localStorage on mount', async () => {
     const mockLocalStorage = createLocalStorageMock();
     mockLocalStorage.getItem.mockReturnValue(JSON.stringify('rick'));
@@ -236,9 +236,6 @@ describe('behavior', () => {
     });
 
     expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
-
-    vi.restoreAllMocks();
-    vi.unstubAllGlobals();
   });
 
   it('should call fetch and render filtered results on search', async () => {
@@ -261,9 +258,6 @@ describe('behavior', () => {
     });
 
     expect(screen.getByText('Morty Smith')).toBeInTheDocument();
-
-    vi.restoreAllMocks();
-    vi.unstubAllGlobals();
   });
 
   it('should render correct number of filtered results', async () => {
@@ -288,8 +282,5 @@ describe('behavior', () => {
         filteredCharacters.length
       );
     });
-
-    vi.restoreAllMocks();
-    vi.unstubAllGlobals();
   });
 });
