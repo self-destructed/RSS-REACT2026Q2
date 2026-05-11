@@ -25,11 +25,14 @@ describe('LocaltorageService', () => {
     });
 
     it('should handle errors silently', () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
       mockLocalStorage.setItem.mockImplementation(() => {
         throw new Error('Storage full');
       });
 
       LocaltorageService.set('testKey', 'value');
+
+      vi.restoreAllMocks();
     });
   });
 
@@ -59,11 +62,14 @@ describe('LocaltorageService', () => {
     });
 
     it('should handle JSON parse errors and return defaultValue', () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
       mockLocalStorage.getItem.mockReturnValue('invalid json');
 
       const result = LocaltorageService.get('testKey', 'default');
 
       expect(result).toBe('default');
+
+      vi.restoreAllMocks();
     });
   });
 
