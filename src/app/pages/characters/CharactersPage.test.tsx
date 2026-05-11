@@ -163,6 +163,10 @@ describe('render', () => {
   });
 
   it('should render search and main elements', () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(
+      () => new Promise(() => {})
+    );
+
     renderComponent();
 
     expect(screen.getByRole('search')).toBeInTheDocument();
