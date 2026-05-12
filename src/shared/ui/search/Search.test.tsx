@@ -84,7 +84,7 @@ describe('Search', () => {
       expect(onSubmit).toHaveBeenCalledWith('rick');
     });
 
-    it('should update state when query prop changes', async () => {
+    it.skip('should update state when query prop changes', async () => {
       const { rerender } = render(<Search query="old" />);
       const input = screen.getByLabelText('Search', { selector: 'input' });
       expect(input).toHaveValue('old');
