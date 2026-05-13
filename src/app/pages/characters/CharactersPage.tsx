@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Search from '../../../shared/ui/search';
 import type { Character } from '../../../shared/api/types';
 import { APIService } from '../../../shared/api/api';
-import { LocaltorageService } from '../../../shared/api/local-storage';
+import useLocalStorage from '../../../shared/hooks/useLocalStorage';
 import { Spinner } from '../../../shared/ui/spinner';
 import { ErrorDisplay } from '../../../shared/ui/error';
 import { CharactersList } from '../../../features/characters/ui';
@@ -22,13 +22,11 @@ type CharactersPageState = LoadingState<Character[]> & {
 };
 
 export default function CharactersPage() {
-  const [state, setState] = useState<CharactersPageState>(() => {
-    const lastQuery = LocaltorageService.get<string>(STORAGE_KEY) || '';
-    return {
-      status: 'idle',
-      characterNameQuery: lastQuery,
-    };
-  });
+  const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
+  const [state, setState] = useState<CharactersPageState>(() => ({
+    status: 'idle',
+    characterNameQuery: searchQuery,
+  }));
 
   const loadCharacters = useCallback(
     async (query?: string) => {
@@ -65,7 +63,7 @@ export default function CharactersPage() {
       return;
     }
 
-    LocaltorageService.set(STORAGE_KEY, searchQuery);
+    setSearchQuery(searchQuery);
     setState((prev) => ({ ...prev, characterNameQuery: searchQuery }));
   };
 
