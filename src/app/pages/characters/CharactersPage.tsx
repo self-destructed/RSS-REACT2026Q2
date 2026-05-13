@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Search from '../../../shared/ui/search';
 import type { Character } from '../../../shared/api/types';
 import { APIService } from '../../../shared/api/api';
@@ -9,104 +9,91 @@ import { CharactersList } from '../../../features/characters/ui';
 import Main from '../../../shared/ui/main';
 import Layout from '../../../shared/ui/layout';
 
-interface State {
+const STORAGE_KEY = 'lastSearchQuery';
+
+type LoadingState<T> =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: Error };
+
+type CharactersPageState = LoadingState<Character[]> & {
   characterNameQuery: string;
-  characters: Character[];
-  loading: boolean;
-  error: string | null;
-}
+};
 
-class CharactersPage extends Component<object, State> {
-  private static readonly STORAGE_KEY = 'lastSearchQuery';
+export default function CharactersPage() {
+  const [state, setState] = useState<CharactersPageState>(() => {
+    const lastQuery = LocaltorageService.get<string>(STORAGE_KEY) || '';
+    return {
+      status: 'idle',
+      characterNameQuery: lastQuery,
+    };
+  });
 
-  state: State = {
-    characterNameQuery: '',
-    characters: [],
-    loading: false,
-    error: null,
+  const loadCharacters = useCallback(
+    async (query?: string) => {
+      const searchQuery = query ?? state.characterNameQuery;
+      setState((prev) => ({ ...prev, status: 'loading' }));
+
+      try {
+        const data = searchQuery
+          ? await APIService.fetchCharacters({ name: searchQuery })
+          : await APIService.fetchCharacters();
+
+        setState((prev) => ({
+          ...prev,
+          status: 'success',
+          data: data.results || [],
+        }));
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          status: 'error',
+          error: error instanceof Error ? error : new Error('Unknown error'),
+        }));
+      }
+    },
+    [state.characterNameQuery]
+  );
+
+  useEffect(() => {
+    loadCharacters();
+  }, [loadCharacters]);
+
+  const handleSearchSubmit = (searchQuery: string) => {
+    if (searchQuery === state.characterNameQuery && state.status !== 'error') {
+      return;
+    }
+
+    LocaltorageService.set(STORAGE_KEY, searchQuery);
+    setState((prev) => ({ ...prev, characterNameQuery: searchQuery }));
   };
 
-  constructor(props: object) {
-    super(props);
-    this.setCharacterNameQuery = this.setCharacterNameQuery.bind(this);
-  }
-
-  public setCharacterNameQuery(searchQuery: string): void {
-    if (searchQuery === this.state.characterNameQuery && !this.state.error)
-      return;
-
-    LocaltorageService.set(CharactersPage.STORAGE_KEY, searchQuery);
-    this.setState({ characterNameQuery: searchQuery }, () => {
-      this.loadCharacters(searchQuery);
-    });
-  }
-
-  public componentDidMount(): void {
-    const lastQuery = LocaltorageService.get<string>(
-      CharactersPage.STORAGE_KEY,
-      ''
-    );
-    if (lastQuery) {
-      this.setState({ characterNameQuery: lastQuery }, () => {
-        this.loadCharacters(lastQuery);
-      });
-      return;
-    }
-
-    this.loadCharacters();
-  }
-
-  private async loadCharacters(query?: string): Promise<void> {
-    const searchQuery = query ?? this.state.characterNameQuery;
-    this.setState({ loading: true, error: null, characters: [] });
-    try {
-      let data;
-
-      if (searchQuery) {
-        data = await APIService.fetchCharacters({
-          name: searchQuery,
-        });
-      } else {
-        data = await APIService.fetchCharacters();
-      }
-      this.setState({ characters: data.results || [], loading: false });
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error.message : 'Unknown error',
-        loading: false,
-        characters: [],
-      });
-    }
-  }
-
-  public render(): React.ReactNode {
-    const { loading, error } = this.state;
-    return (
-      <Layout>
-        <Main>
-          <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
-            <div className="p-4 sm:p-5 lg:p-6">
-              <Search
-                onSubmit={this.setCharacterNameQuery}
-                query={this.state.characterNameQuery}
-              />
-            </div>
-          </section>
-          <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
-            <div className="p-4 sm:p-5 lg:p-6">
-              {loading && (
-                <div className="flex justify-center py-6">
-                  <Spinner />
-                </div>
-              )}
-              {error && <ErrorDisplay message={error} />}
-              <CharactersList data={this.state.characters} />
-            </div>
-          </section>
-        </Main>
-      </Layout>
-    );
-  }
+  return (
+    <Layout>
+      <Main>
+        <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
+          <div className="p-4 sm:p-5 lg:p-6">
+            <Search
+              onSubmit={handleSearchSubmit}
+              query={state.characterNameQuery}
+            />
+          </div>
+        </section>
+        <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
+          <div className="p-4 sm:p-5 lg:p-6">
+            {state.status === 'loading' && (
+              <div className="flex justify-center py-6">
+                <Spinner />
+              </div>
+            )}
+            {state.status === 'error' && (
+              <ErrorDisplay message={state.error.message} />
+            )}
+            {state.status === 'success' && <CharactersList data={state.data} />}
+          </div>
+        </section>
+      </Main>
+    </Layout>
+  );
 }
-
-export default CharactersPage;
