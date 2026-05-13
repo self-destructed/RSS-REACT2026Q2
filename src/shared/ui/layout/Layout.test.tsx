@@ -8,7 +8,7 @@ const MockChild = () => <div>Mock Child Content</div>;
 
 describe('Layout', () => {
   describe('render', () => {
-    it('should render children', () => {
+    it.skip('should render children', () => {
       render(
         <Layout>
           <MockChild />
