@@ -5,7 +5,7 @@ import { AppRoutes } from './AppRoutes';
 export default function App() {
   return (
     <ErrorBoundary fallback={(reset) => <ErrorFallback reset={reset} />}>
-      <BrowserRouter>
+      <BrowserRouter basename="/RSS-REACT2026Q2/">
         <AppRoutes />
       </BrowserRouter>
       <div className="fixed right-4 bottom-4 z-50">
