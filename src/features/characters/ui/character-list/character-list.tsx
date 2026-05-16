@@ -1,4 +1,4 @@
-import CharacterCard from './character-card';
+import CharacterCard from '../character-card';
 import type { Character } from '../../../shared/api/types';
 
 interface Props {

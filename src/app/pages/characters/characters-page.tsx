@@ -6,7 +6,7 @@ import { APIService } from '../../../shared/api/api';
 import useLocalStorage from '../../../shared/hooks/use-local-storage';
 import { Spinner } from '../../../shared/ui/spinner';
 import { ErrorDisplay } from '../../../shared/ui/error';
-import { CharactersList } from '../../../features/characters/ui';
+import { CharacterList } from '../../../features/characters/ui';
 import { Pagination } from '../../../shared/ui/pagination';
 import { updateSearchParams } from '../../../shared/utils';
 import Main from '../../../shared/ui/main';
@@ -159,7 +159,7 @@ export default function CharactersPage() {
             {state.status === 'error' && (
               <ErrorDisplay message={state.error.message} />
             )}
-            {state.status === 'success' && <CharactersList data={state.data} />}
+            {state.status === 'success' && <CharacterList data={state.data} />}
           </div>
           {state.status === 'success' && (
             <div className="mt-4 flex justify-center">

@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import CharactersList from './character-list';
+import CharacterList from './character-list';
 import type { Character } from '../../../shared/api/types';
 
 afterEach(cleanup);
@@ -36,10 +36,10 @@ const mockCharacters: Character[] = [
   },
 ];
 
-describe('CharactersList', () => {
+describe('CharacterList', () => {
   describe('render', () => {
     it('should render correct number of items', () => {
-      render(<CharactersList data={mockCharacters} />);
+      render(<CharacterList data={mockCharacters} />);
 
       const items = screen.getAllByRole('listitem');
 
@@ -47,14 +47,14 @@ describe('CharactersList', () => {
     });
 
     it('should pass correct data to CharacterCard', () => {
-      render(<CharactersList data={mockCharacters} />);
+      render(<CharacterList data={mockCharacters} />);
 
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
       expect(screen.getByText('Morty Smith')).toBeInTheDocument();
     });
 
     it('should render nothing when data is empty', () => {
-      render(<CharactersList data={[]} />);
+      render(<CharacterList data={[]} />);
 
       expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
     });

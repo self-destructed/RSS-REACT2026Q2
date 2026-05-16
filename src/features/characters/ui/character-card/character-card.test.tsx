@@ -1,7 +1,7 @@
 import { expect, afterEach, describe, test, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { cleanup } from '@testing-library/react';
-import CharacterCard from './character-card';
+import CharacterCard from './';
 import type { Character } from '../../../shared/api/types';
 
 beforeEach(() => {
