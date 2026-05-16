@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Pagination } from './Pagination';
+import { Pagination } from './pagination';
 
 afterEach(cleanup);
 

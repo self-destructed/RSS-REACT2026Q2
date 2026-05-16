@@ -1,2 +1,2 @@
-export { default as CharactersList } from './CharacterList';
-export { default as CharacterCard } from './CharacterCard';
+export { default as CharactersList } from './character-list';
+export { default as CharacterCard } from './character-card';

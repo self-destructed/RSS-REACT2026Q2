@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { updateSearchParams } from './searchParams';
+import { updateSearchParams } from './search-params';
 
 describe('updateSearchParams', () => {
   it('sets a new param', () => {

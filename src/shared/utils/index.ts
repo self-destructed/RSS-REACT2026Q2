@@ -1,1 +1,1 @@
-export { updateSearchParams } from './searchParams';
+export { updateSearchParams } from './search-params';

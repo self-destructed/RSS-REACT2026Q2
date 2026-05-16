@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import Search from '../../../shared/ui/search';
 import type { Character } from '../../../shared/api/types';
 import { APIService } from '../../../shared/api/api';
-import useLocalStorage from '../../../shared/hooks/useLocalStorage';
+import useLocalStorage from '../../../shared/hooks/use-local-storage';
 import { Spinner } from '../../../shared/ui/spinner';
 import { ErrorDisplay } from '../../../shared/ui/error';
 import { CharactersList } from '../../../features/characters/ui';

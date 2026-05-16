@@ -1,4 +1,4 @@
-export { default as ErrorDisplay } from './ErrorDisplay';
-export { default as ErrorBoundary } from './ErrorBoundary';
-export { default as ErrorTrigger } from './ErrorTrigger';
-export { default as ErrorFallback } from './ErrorFallback';
+export { default as ErrorDisplay } from './error-display';
+export { default as ErrorBoundary } from './error-boundary';
+export { default as ErrorTrigger } from './error-trigger';
+export { default as ErrorFallback } from './error-fallback';

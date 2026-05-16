@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from './error-display';
 
 afterEach(cleanup);
 

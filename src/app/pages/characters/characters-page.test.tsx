@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CharactersPage from './CharactersPage';
+import CharactersPage from './characters-page';
 import type { Character } from '../../../shared/api/types';
 import { createLocalStorageMock } from '../../../shared/api/__mocks__/local-storage';
 
