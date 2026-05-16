@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import Search from '../../../shared/ui/search';
 import type { Character } from '../../../shared/api/types';
 import { APIService } from '../../../shared/api/api';
@@ -7,6 +8,7 @@ import { Spinner } from '../../../shared/ui/spinner';
 import { ErrorDisplay } from '../../../shared/ui/error';
 import { CharactersList } from '../../../features/characters/ui';
 import { Pagination } from '../../../shared/ui/pagination';
+import { updateSearchParams } from '../../../shared/utils';
 import Main from '../../../shared/ui/main';
 import Layout from '../../../shared/ui/layout';
 
@@ -29,11 +31,16 @@ type CharactersPageState = LoadingState<Character[]> & {
 };
 
 export default function CharactersPage() {
+  const [params, setParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
+
   const [state, setState] = useState<CharactersPageState>(() => ({
     status: 'idle',
-    characterNameQuery: searchQuery,
-    pagination: { currentPage: 1, totalPages: 1 },
+    characterNameQuery: params.get('name') || searchQuery,
+    pagination: {
+      currentPage: Number(params.get('page')) || 1,
+      totalPages: 1,
+    },
   }));
 
   const loadCharacters = useCallback(async () => {
@@ -67,10 +74,34 @@ export default function CharactersPage() {
     loadCharacters();
   }, [loadCharacters]);
 
+  const handlePrevClick = () => {
+    const newPage = state.pagination.currentPage - 1;
+    setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
+    setState((prev) => ({
+      ...prev,
+      pagination: { ...prev.pagination, currentPage: newPage },
+    }));
+  };
+
+  const handleNextClick = () => {
+    const newPage = state.pagination.currentPage + 1;
+    setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
+    setState((prev) => ({
+      ...prev,
+      pagination: { ...prev.pagination, currentPage: newPage },
+    }));
+  };
+
   const handleSearchSubmit = (query: string) => {
     if (query === state.characterNameQuery && state.status !== 'error') {
       return;
     }
+    setParams((prev) =>
+      updateSearchParams(prev, {
+        name: query || null,
+        page: '1',
+      })
+    );
 
     setSearchQuery(query);
     setState((prev) => ({
@@ -108,24 +139,8 @@ export default function CharactersPage() {
               <Pagination
                 currentPage={state.pagination.currentPage}
                 totalPages={state.pagination.totalPages}
-                onPrev={() =>
-                  setState((prev) => ({
-                    ...prev,
-                    pagination: {
-                      ...prev.pagination,
-                      currentPage: prev.pagination.currentPage - 1,
-                    },
-                  }))
-                }
-                onNext={() =>
-                  setState((prev) => ({
-                    ...prev,
-                    pagination: {
-                      ...prev.pagination,
-                      currentPage: prev.pagination.currentPage + 1,
-                    },
-                  }))
-                }
+                onPrev={handlePrevClick}
+                onNext={handleNextClick}
               />
             </div>
           )}
