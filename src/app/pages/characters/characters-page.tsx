@@ -12,7 +12,7 @@ import { updateSearchParams } from '../../../shared/utils';
 import Main from '../../../shared/ui/main';
 import Layout from '../../../shared/ui/layout';
 
-const STORAGE_KEY = 'lastSearchQuery';
+const CHARACTER_QUERY_STORAGE_KEY = 'characterQuery';
 
 type LoadingState<T> =
   | { status: 'idle' }
@@ -32,7 +32,10 @@ type CharactersPageState = LoadingState<Character[]> & {
 
 export default function CharactersPage() {
   const [params, setParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
+  const [searchQuery, setSearchQuery] = useLocalStorage(
+    CHARACTER_QUERY_STORAGE_KEY,
+    ''
+  );
 
   const [state, setState] = useState<CharactersPageState>(() => ({
     status: 'idle',
@@ -43,7 +46,7 @@ export default function CharactersPage() {
     },
   }));
 
-  const loadCharacters = useCallback(async () => {
+  const fetchCharacters = useCallback(async () => {
     setState((prev) => ({ ...prev, status: 'loading' }));
 
     try {
@@ -71,10 +74,10 @@ export default function CharactersPage() {
   }, [state.characterNameQuery, state.pagination.currentPage]);
 
   useEffect(() => {
-    loadCharacters();
-  }, [loadCharacters]);
+    fetchCharacters();
+  }, [fetchCharacters]);
 
-  const handlePrevClick = () => {
+  const handlePrev = () => {
     const newPage = state.pagination.currentPage - 1;
     setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
     setState((prev) => ({
@@ -83,7 +86,7 @@ export default function CharactersPage() {
     }));
   };
 
-  const handleNextClick = () => {
+  const handleNext = () => {
     const newPage = state.pagination.currentPage + 1;
     setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
     setState((prev) => ({
@@ -92,7 +95,7 @@ export default function CharactersPage() {
     }));
   };
 
-  const handleSearchSubmit = (query: string) => {
+  const handleSearch = (query: string) => {
     if (query === state.characterNameQuery && state.status !== 'error') {
       return;
     }
@@ -116,10 +119,7 @@ export default function CharactersPage() {
       <Main>
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
-            <Search
-              onSubmit={handleSearchSubmit}
-              query={state.characterNameQuery}
-            />
+            <Search onSubmit={handleSearch} query={state.characterNameQuery} />
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
@@ -139,8 +139,8 @@ export default function CharactersPage() {
               <Pagination
                 currentPage={state.pagination.currentPage}
                 totalPages={state.pagination.totalPages}
-                onPrev={handlePrevClick}
-                onNext={handleNextClick}
+                onPrev={handlePrev}
+                onNext={handleNext}
               />
             </div>
           )}

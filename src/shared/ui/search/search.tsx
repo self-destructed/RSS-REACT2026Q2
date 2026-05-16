@@ -8,7 +8,7 @@ interface Props {
 export default function Search({ query = '', onSubmit }: Props) {
   const [searchTerm, setSearchTerm] = React.useState(query);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
@@ -33,7 +33,7 @@ export default function Search({ query = '', onSubmit }: Props) {
         <input
           type="search"
           id="search"
-          onChange={handleInputChange}
+          onChange={handleInput}
           placeholder="Search..."
           required
           className="w-full pr-10 text-sm text-slate-900 outline-none dark:text-slate-50"

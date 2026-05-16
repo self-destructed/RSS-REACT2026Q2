@@ -5,7 +5,7 @@ type PaginationProps = {
   onNext: () => void;
 };
 
-const btnStyles = {
+const BTN_STYLES = {
   btn: 'relative block rounded px-3 py-1.5 text-sm transition duration-300 cursor-pointer select-none',
   base: 'text-surface bg-transparent hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none active:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:active:bg-neutral-700',
   disabled:
@@ -30,13 +30,13 @@ export function Pagination({
             type="button"
             onClick={onPrev}
             disabled={isFirstPage}
-            className={`${btnStyles.btn} ${btnStyles.base} ${isFirstPage ? btnStyles.disabled : ''}`}
+            className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${isFirstPage ? BTN_STYLES.disabled : ''}`}
           >
             Prev
           </button>
         </li>
         <li>
-          <span className={btnStyles.counter}>
+          <span className={BTN_STYLES.counter}>
             {currentPage}/{totalPages}
           </span>
         </li>
@@ -45,7 +45,7 @@ export function Pagination({
             type="button"
             onClick={onNext}
             disabled={isLastPage}
-            className={`${btnStyles.btn} ${btnStyles.base} ${isLastPage ? btnStyles.disabled : ''}`}
+            className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${isLastPage ? BTN_STYLES.disabled : ''}`}
           >
             Next
           </button>
