@@ -10,7 +10,8 @@ export function AppRoutes() {
       <Route index element={<Navigate to={PATHS.CHARACTERS} replace />} />
       <Route path={PATHS.CHARACTERS} element={<CharactersPage />} />
       <Route path={PATHS.ABOUT} element={<AboutPage />} />
-      <Route path="*" element={<ErrorPage />} />
+      <Route path={PATHS.ERROR} element={<ErrorPage />} />
+      <Route path="*" element={<Navigate to={PATHS.ERROR} replace />} />
     </Routes>
   );
 }
