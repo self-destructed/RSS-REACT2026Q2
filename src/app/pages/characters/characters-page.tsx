@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import Search from '../../../shared/ui/search';
 import type { Character } from '../../../shared/api/types';
@@ -76,6 +76,33 @@ export default function CharactersPage() {
   useEffect(() => {
     fetchCharacters();
   }, [fetchCharacters]);
+
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const urlPage = Number(params.get('page')) || 1;
+      const urlName = params.get('name') || searchQuery;
+
+      if (
+        urlPage !== state.pagination.currentPage ||
+        urlName !== state.characterNameQuery
+      ) {
+        setState((prev) => ({
+          ...prev,
+          characterNameQuery: urlName,
+          pagination: { ...prev.pagination, currentPage: urlPage },
+        }));
+      }
+    } else {
+      isMounted.current = true;
+    }
+  }, [
+    params,
+    searchQuery,
+    state.characterNameQuery,
+    state.pagination.currentPage,
+  ]);
 
   const handlePrev = () => {
     const newPage = state.pagination.currentPage - 1;
