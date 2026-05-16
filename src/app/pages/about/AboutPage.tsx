@@ -1,9 +1,9 @@
 import Layout from '../../../shared/ui/layout';
 import Main from '../../../shared/ui/main';
 
-export default function AboutPage() {
-  const ATTEMPT_NUMBER = (() => Math.floor(Math.random() * 100) + 1)();
+const ATTEMPT_NUMBER = Math.floor(Math.random() * 100) + 1;
 
+export default function AboutPage() {
   return (
     <Layout>
       <Main>
