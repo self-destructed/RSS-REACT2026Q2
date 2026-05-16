@@ -1,0 +1,1 @@
+export { updateSearchParams } from './searchParams';
