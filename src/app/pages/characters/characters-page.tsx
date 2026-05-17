@@ -1,11 +1,16 @@
-import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 import Search from '../../../shared/ui/search';
 import useLocalStorage from '../../../shared/hooks/use-local-storage';
 import { Spinner } from '../../../shared/ui/spinner';
 import { ErrorDisplay } from '../../../shared/ui/error';
 import { CharacterList } from '../../../features/characters/ui';
 import { Pagination } from '../../../shared/ui/pagination';
-import { updateSearchParams, buildQueryString } from '../../../shared/utils';
+import { updateSearchParams } from '../../../shared/utils';
 import { useCharacters } from '../../../features/characters/hooks';
 import Main from '../../../shared/ui/main';
 import Layout from '../../../shared/ui/layout';
@@ -13,17 +18,15 @@ import Layout from '../../../shared/ui/layout';
 const CHARACTER_QUERY_STORAGE_KEY = 'characterQuery';
 
 export default function CharactersPage(): React.JSX.Element {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage(
     CHARACTER_QUERY_STORAGE_KEY,
     ''
   );
-  const navigate = useNavigate();
-  const { id } = useParams();
-
   const name = params.get('name') ?? searchQuery;
   const page = Number(params.get('page')) || 1;
-
   const state = useCharacters({ name, page });
 
   const handlePrev = () => {
@@ -46,26 +49,16 @@ export default function CharactersPage(): React.JSX.Element {
         page: '1',
       })
     );
-
     setSearchQuery(query);
   };
 
   const handleCharacterSelect = (characterId: number) => {
-    const query = buildQueryString({
-      name: params.get('name') ?? undefined,
-      page: Number(params.get('page')) || undefined,
-    });
-    void navigate(
-      `/characters/${String(characterId)}${query ? `?${query}` : ''}`
-    );
+    console.log(location);
+    void navigate(`/characters/${String(characterId)}${location.search}`);
   };
 
   const handleSidebarClose = () => {
-    const query = buildQueryString({
-      name: params.get('name') ?? undefined,
-      page: Number(params.get('page')) || undefined,
-    });
-    void navigate(`/characters${query ? `?${query}` : ''}`);
+    void navigate(`/characters${location.search}`);
   };
 
   return (
@@ -105,7 +98,7 @@ export default function CharactersPage(): React.JSX.Element {
           )}
         </section>
       </Main>
-      <Outlet context={{ characterId: id, onClose: handleSidebarClose }} />
+      <Outlet context={{ onClose: handleSidebarClose }} />
     </Layout>
   );
 }
