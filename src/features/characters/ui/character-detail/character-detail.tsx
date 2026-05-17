@@ -1,10 +1,12 @@
 import type { Character } from '../../../../shared/api/types';
 
-type CharacterDetailProps = {
+interface CharacterDetailProps {
   character: Character;
-};
+}
 
-export default function CharacterDetail({ character }: CharacterDetailProps) {
+export default function CharacterDetail({
+  character,
+}: CharacterDetailProps): React.JSX.Element {
   return (
     <div className="text-surface shadow-secondary-1 block max-w-md rounded-lg bg-white dark:bg-neutral-800 dark:text-white">
       <div className="relative overflow-hidden bg-cover bg-no-repeat">
