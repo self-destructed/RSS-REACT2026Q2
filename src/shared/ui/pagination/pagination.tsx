@@ -1,9 +1,9 @@
-type PaginationProps = {
+interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPrev: () => void;
   onNext: () => void;
-};
+}
 
 const BTN_STYLES = {
   btn: 'relative block rounded px-3 py-1.5 text-sm transition duration-300 cursor-pointer select-none',
@@ -18,7 +18,7 @@ export function Pagination({
   totalPages,
   onPrev,
   onNext,
-}: PaginationProps) {
+}: PaginationProps): React.JSX.Element {
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
 
