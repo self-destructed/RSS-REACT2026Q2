@@ -1,10 +1,10 @@
 import type {
-  Character,
   CharacterFilter,
   Info,
-} from '../../../shared/api/types';
-import useFetch from '../../../shared/hooks/useFetch';
-import { buildQueryString } from '../../../shared/utils';
+  Character,
+} from '../../../../shared/api/types';
+import useFetch from '../../../../shared/hooks/useFetch';
+import { buildQueryString } from '../../../../shared/utils';
 
 const BASE_URL = 'https://rickandmortyapi.com/api';
 const CHARACTER_ENDPOINT = '/character';
