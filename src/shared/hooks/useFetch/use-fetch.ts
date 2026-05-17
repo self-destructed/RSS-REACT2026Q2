@@ -6,7 +6,7 @@ type LoadingState<T> =
   | { status: 'success'; data: T }
   | { status: 'error'; error: Error };
 
-export default function useFetch<T>(url: string | null) {
+export default function useFetch<T>(url: string | null): LoadingState<T> {
   const [state, setState] = useState<LoadingState<T>>({ status: 'idle' });
 
   useEffect(() => {
@@ -25,8 +25,8 @@ export default function useFetch<T>(url: string | null) {
       let response: Response;
       try {
         response = await fetch(url, { signal: abortController.signal });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data: T = await response.json();
+        if (!response.ok) throw new Error(`HTTP ${String(response.status)}`);
+        const data = (await response.json()) as T;
         if (isMounted) setState({ status: 'success', data });
       } catch (error) {
         if (
@@ -41,7 +41,7 @@ export default function useFetch<T>(url: string | null) {
       }
     };
 
-    fetchData();
+    void fetchData();
     return () => {
       isMounted = false;
       abortController.abort();
