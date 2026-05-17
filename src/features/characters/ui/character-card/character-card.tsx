@@ -4,7 +4,7 @@ interface Props {
   data: Character;
 }
 
-export default function CharacterCard({ data }: Props) {
+export default function CharacterCard({ data }: Props): React.JSX.Element {
   const getStatusColor = (status: string): string => {
     switch (status) {
       case 'Alive':
