@@ -2,7 +2,7 @@ interface Props {
   reset: () => void;
 }
 
-export default function ErrorFallback({ reset }: Props) {
+export default function ErrorFallback({ reset }: Props): React.JSX.Element {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-slate-200 p-4 dark:bg-neutral-950">
       <div className="rounded-lg bg-white p-8 text-center shadow-lg dark:bg-neutral-900">
