@@ -26,6 +26,6 @@ export function useCharacters(
 }
 
 export function useCharacter(id: number | null): LoadingState<Character> {
-  const url = id ? `${BASE_URL}${CHARACTER_ENDPOINT}/${id}` : null;
+  const url = id ? `${BASE_URL}${CHARACTER_ENDPOINT}/${String(id)}` : null;
   return useFetch<Character>(url);
 }
