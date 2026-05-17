@@ -5,12 +5,8 @@ function useLocalStorage<T>(
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    if (!localStorage) {
-      return initialValue;
-    }
-
     try {
-      const item = localStorage.getItem(key);
+      const item = window.localStorage.getItem(key);
       return item ? (JSON.parse(item) as T) : initialValue;
     } catch (error) {
       console.warn(
@@ -22,10 +18,8 @@ function useLocalStorage<T>(
   });
 
   useEffect(() => {
-    if (!localStorage) return;
-
     try {
-      localStorage.setItem(key, JSON.stringify(storedValue));
+      window.localStorage.setItem(key, JSON.stringify(storedValue));
     } catch (error) {
       console.warn(`Error while writing to localStorage key "${key}":`, error);
     }

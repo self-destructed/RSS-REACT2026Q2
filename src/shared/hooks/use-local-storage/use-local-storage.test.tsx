@@ -58,7 +58,7 @@ describe('useLocalStorage', () => {
       act(() => {
         setValue(newValue);
       });
-      const storedValue = JSON.parse(localStorage.getItem('testKey') || '');
+      const storedValue = JSON.parse(localStorage.getItem('testKey') ?? '');
 
       expect(storedValue).toBe(newValue);
     });
@@ -70,7 +70,7 @@ describe('useLocalStorage', () => {
       act(() => {
         setValue((prev) => prev + 1);
       });
-      const storedValue = JSON.parse(localStorage.getItem('testKey') || '123');
+      const storedValue = JSON.parse(localStorage.getItem('testKey') ?? '123');
 
       expect(storedValue).toBe(1);
     });
