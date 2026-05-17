@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-export const createLocalStorageMock = () => {
+export const createLocalStorageMock = (): Storage => {
   let store: Record<string, string> = {};
 
   return {
@@ -9,11 +9,13 @@ export const createLocalStorageMock = () => {
       store[key] = value;
     }),
     removeItem: vi.fn((key: string) => {
-      delete store[key];
+      const { [key]: _, ...rest } = store;
+      store = rest;
     }),
     clear: vi.fn(() => {
       store = {};
     }),
+    key: vi.fn((index: number) => Object.keys(store)[index] ?? null),
     get length() {
       return Object.keys(store).length;
     },
