@@ -1,4 +1,4 @@
-export default function Spinner() {
+export default function Spinner(): React.JSX.Element {
   return (
     <div role="status" className="flex flex-col items-center">
       <svg
