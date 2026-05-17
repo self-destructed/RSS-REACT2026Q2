@@ -6,7 +6,7 @@ const NAV_LINK_STYLES = {
   active: 'lg:px-2 font-semibold text-black dark:text-white',
 };
 
-export default function Navbar() {
+export default function Navbar(): React.JSX.Element {
   return (
     <nav className="shadow-dark-mild relative flex w-full flex-nowrap items-center justify-between bg-zinc-50 py-2 text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 lg:flex-wrap lg:justify-start lg:py-4 dark:bg-neutral-700">
       <div className="flex w-full flex-wrap items-center justify-between px-3">
