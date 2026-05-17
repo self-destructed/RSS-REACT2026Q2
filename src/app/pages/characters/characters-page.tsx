@@ -12,7 +12,7 @@ import Layout from '../../../shared/ui/layout';
 
 const CHARACTER_QUERY_STORAGE_KEY = 'characterQuery';
 
-export default function CharactersPage() {
+export default function CharactersPage(): React.JSX.Element {
   const [params, setParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage(
     CHARACTER_QUERY_STORAGE_KEY,
@@ -21,7 +21,7 @@ export default function CharactersPage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const name = params.get('name') || searchQuery;
+  const name = params.get('name') ?? searchQuery;
   const page = Number(params.get('page')) || 1;
 
   const state = useCharacters({ name, page });
@@ -55,7 +55,9 @@ export default function CharactersPage() {
       name: params.get('name') ?? undefined,
       page: Number(params.get('page')) || undefined,
     });
-    navigate(`/characters/${characterId}${query ? `?${query}` : ''}`);
+    void navigate(
+      `/characters/${String(characterId)}${query ? `?${query}` : ''}`
+    );
   };
 
   const handleSidebarClose = () => {
@@ -63,7 +65,7 @@ export default function CharactersPage() {
       name: params.get('name') ?? undefined,
       page: Number(params.get('page')) || undefined,
     });
-    navigate(`/characters${query ? `?${query}` : ''}`);
+    void navigate(`/characters${query ? `?${query}` : ''}`);
   };
 
   return (
@@ -82,11 +84,11 @@ export default function CharactersPage() {
               </div>
             )}
             {state.status === 'error' && (
-              <ErrorDisplay message={state.error?.message ?? 'Unknown error'} />
+              <ErrorDisplay message={state.error.message} />
             )}
             {state.status === 'success' && (
               <CharacterList
-                data={state.data?.results ?? []}
+                data={state.data.results ?? []}
                 onSelect={handleCharacterSelect}
               />
             )}
@@ -95,7 +97,7 @@ export default function CharactersPage() {
             <div className="mt-4 flex justify-center">
               <Pagination
                 currentPage={page}
-                totalPages={state.data?.info?.pages ?? 1}
+                totalPages={state.data.info?.pages ?? 1}
                 onPrev={handlePrev}
                 onNext={handleNext}
               />
@@ -103,9 +105,7 @@ export default function CharactersPage() {
           )}
         </section>
       </Main>
-      <Outlet
-        context={{ characterId: id, onClose: handleSidebarClose }}
-      ></Outlet>
+      <Outlet context={{ characterId: id, onClose: handleSidebarClose }} />
     </Layout>
   );
 }

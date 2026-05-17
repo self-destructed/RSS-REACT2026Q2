@@ -173,7 +173,7 @@ describe.skip('render', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
-  it('should render spinner on loading', async () => {
+  it('should render spinner on loading', () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation(
       () => new Promise(() => {})
     );
@@ -222,7 +222,9 @@ describe.skip('behavior', () => {
   });
 
   it('should load characters from localStorage on mount', async () => {
-    const mockLocalStorage = createLocalStorageMock();
+    const mockLocalStorage = createLocalStorageMock() as unknown as {
+      getItem: ReturnType<typeof vi.fn>;
+    };
     mockLocalStorage.getItem.mockReturnValue(JSON.stringify('rick'));
     vi.stubGlobal('localStorage', mockLocalStorage);
 
