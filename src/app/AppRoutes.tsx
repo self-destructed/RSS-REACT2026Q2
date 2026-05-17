@@ -5,7 +5,7 @@ import AboutPage from './pages/about';
 import ErrorPage from './pages/error';
 import CharacterSidebar from '../features/characters/widgets';
 
-export function AppRoutes() {
+export function AppRoutes(): React.JSX.Element {
   return (
     <Routes>
       <Route index element={<Navigate to={PATHS.CHARACTERS} replace />} />
