@@ -3,7 +3,7 @@ import Main from '../../../shared/ui/main';
 
 const ATTEMPT_NUMBER = Math.floor(Math.random() * 100) + 1;
 
-export default function AboutPage() {
+export default function AboutPage(): React.JSX.Element {
   return (
     <Layout>
       <Main>
