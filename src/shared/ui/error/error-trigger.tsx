@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ErrorTrigger() {
+export default function ErrorTrigger(): React.JSX.Element {
   const [shouldError, setShouldError] = React.useState(false);
 
   if (shouldError) {
@@ -8,7 +8,9 @@ export default function ErrorTrigger() {
   }
   return (
     <button
-      onClick={() => setShouldError(true)}
+      onClick={() => {
+        setShouldError(true);
+      }}
       className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:cursor-pointer hover:bg-red-700"
     >
       💣 Trigger Error
