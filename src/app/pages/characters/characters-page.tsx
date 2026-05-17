@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router';
 import Search from '../../../shared/ui/search';
 import type { Character } from '../../../shared/api/types';
 import { APIService } from '../../../shared/api/api';
@@ -36,6 +36,8 @@ export default function CharactersPage() {
     CHARACTER_QUERY_STORAGE_KEY,
     ''
   );
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const [state, setState] = useState<CharactersPageState>(() => ({
     status: 'idle',
@@ -141,6 +143,28 @@ export default function CharactersPage() {
     }));
   };
 
+  const handleCharacterSelect = (characterId: number) => {
+    const page = params.get('page');
+    const name = params.get('name');
+    const query = new URLSearchParams();
+    if (name) query.set('name', name);
+    if (page) query.set('page', page);
+    const queryString = query.toString();
+    navigate(
+      `/characters/${characterId}${queryString ? `?${queryString}` : ''}`
+    );
+  };
+
+  const handleSidebarClose = () => {
+    const page = params.get('page') || '';
+    const name = params.get('name') || '';
+    const query = new URLSearchParams();
+    if (name) query.set('name', name);
+    if (page) query.set('page', page);
+    const queryString = query.toString();
+    navigate(`/characters${queryString ? `?${queryString}` : ''}`);
+  };
+
   return (
     <Layout>
       <Main>
@@ -159,7 +183,12 @@ export default function CharactersPage() {
             {state.status === 'error' && (
               <ErrorDisplay message={state.error.message} />
             )}
-            {state.status === 'success' && <CharacterList data={state.data} />}
+            {state.status === 'success' && (
+              <CharacterList
+                data={state.data}
+                onSelect={handleCharacterSelect}
+              />
+            )}
           </div>
           {state.status === 'success' && (
             <div className="mt-4 flex justify-center">
@@ -173,6 +202,9 @@ export default function CharactersPage() {
           )}
         </section>
       </Main>
+      <Outlet
+        context={{ characterId: id, onClose: handleSidebarClose }}
+      ></Outlet>
     </Layout>
   );
 }

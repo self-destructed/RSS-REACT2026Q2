@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Character } from '../../../../shared/api/types';
 import CharacterDetail from '../../ui/character-detail';
+import { useOutletContext, useParams } from 'react-router';
 
 type LoadingState<T> =
   | { status: 'idle' }
@@ -8,15 +9,19 @@ type LoadingState<T> =
   | { status: 'success'; data: T }
   | { status: 'error'; error: Error };
 
-type Props = {
-  characterId: number | null;
+type Context = {
   onClose: () => void;
 };
 
 type State = LoadingState<Character>;
 
-export default function CharacterSidebar({ characterId, onClose }: Props) {
+export default function CharacterSidebar() {
+  const { id } = useParams();
+  const characterId = id ? Number(id) : null;
+  const { onClose } = useOutletContext<Context>();
+
   const [state, setState] = useState<State>(() => ({ status: 'idle' }));
+
   useEffect(() => {
     if (characterId === null) {
       return;
