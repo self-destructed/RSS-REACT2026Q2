@@ -9,7 +9,7 @@ const ThrowError = ({ shouldThrow = true }: { shouldThrow?: boolean }) => {
   if (shouldThrow) {
     throw new Error('Test');
   }
-  return <></>;
+  return null;
 };
 
 const createCustomFallback = (reset: () => void) => (
