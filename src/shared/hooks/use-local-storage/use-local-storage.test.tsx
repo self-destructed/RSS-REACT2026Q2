@@ -86,5 +86,27 @@ describe("useLocalStorage", () => {
 
       expect(value).toBe("initialValue");
     });
+
+    it("should catch error when setValue fails", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+      const { result } = renderHook(() =>
+        useLocalStorage("testKey", "initialValue"),
+      );
+      const [, setValue] = result.current;
+
+      act(() => {
+        setValue(() => {
+          throw new Error("Updater error");
+        });
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        "Error while updating localStorage:",
+        expect.any(Error),
+      );
+
+      warnSpy.mockRestore();
+    });
   });
 });
