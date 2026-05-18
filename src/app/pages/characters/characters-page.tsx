@@ -53,7 +53,6 @@ export default function CharactersPage(): React.JSX.Element {
   };
 
   const handleCharacterSelect = (characterId: number) => {
-    console.log(location);
     void navigate(`/characters/${String(characterId)}${location.search}`);
   };
 
