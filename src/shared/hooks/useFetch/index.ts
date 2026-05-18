@@ -1,1 +1,1 @@
-export { default } from './use-fetch';
+export { default } from "./use-fetch";

@@ -1,12 +1,12 @@
 export function buildQueryString(
   params: Record<string, string | number | undefined | null> | undefined | null
 ): string {
-  if (!params) return '';
+  if (!params) return "";
 
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
+    if (value !== undefined && value !== null && value !== "") {
       searchParams.set(key, String(value));
     }
   });

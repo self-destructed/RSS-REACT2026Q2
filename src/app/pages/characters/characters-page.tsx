@@ -3,19 +3,19 @@ import {
   useLocation,
   useNavigate,
   useSearchParams,
-} from 'react-router';
-import Search from '../../../shared/ui/search';
-import useLocalStorage from '../../../shared/hooks/use-local-storage';
-import { Spinner } from '../../../shared/ui/spinner';
-import { ErrorDisplay } from '../../../shared/ui/error';
-import { CharacterList } from '../../../features/characters/ui';
-import { Pagination } from '../../../shared/ui/pagination';
-import { updateSearchParams } from '../../../shared/utils';
-import { useCharacters } from '../../../features/characters/hooks';
-import Main from '../../../shared/ui/main';
-import Layout from '../../../shared/ui/layout';
+} from "react-router";
+import Search from "../../../shared/ui/search";
+import useLocalStorage from "../../../shared/hooks/use-local-storage";
+import { Spinner } from "../../../shared/ui/spinner";
+import { ErrorDisplay } from "../../../shared/ui/error";
+import { CharacterList } from "../../../features/characters/ui";
+import { Pagination } from "../../../shared/ui/pagination";
+import { updateSearchParams } from "../../../shared/utils";
+import { useCharacters } from "../../../features/characters/hooks";
+import Main from "../../../shared/ui/main";
+import Layout from "../../../shared/ui/layout";
 
-const CHARACTER_QUERY_STORAGE_KEY = 'characterQuery';
+const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
 export default function CharactersPage(): React.JSX.Element {
   const location = useLocation();
@@ -23,10 +23,10 @@ export default function CharactersPage(): React.JSX.Element {
   const [params, setParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage(
     CHARACTER_QUERY_STORAGE_KEY,
-    ''
+    ""
   );
-  const name = params.get('name') ?? searchQuery;
-  const page = Number(params.get('page')) || 1;
+  const name = params.get("name") ?? searchQuery;
+  const page = Number(params.get("page")) || 1;
   const state = useCharacters({ name, page });
 
   const handlePrev = () => {
@@ -40,13 +40,13 @@ export default function CharactersPage(): React.JSX.Element {
   };
 
   const handleSearch = (query: string) => {
-    if (query === name && state.status !== 'error') {
+    if (query === name && state.status !== "error") {
       return;
     }
     setParams((prev) =>
       updateSearchParams(prev, {
         name: query || null,
-        page: '1',
+        page: "1",
       })
     );
     setSearchQuery(query);
@@ -71,22 +71,22 @@ export default function CharactersPage(): React.JSX.Element {
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
           <div className="p-4 sm:p-5 lg:p-6">
-            {state.status === 'loading' && (
+            {state.status === "loading" && (
               <div className="flex justify-center py-6">
                 <Spinner />
               </div>
             )}
-            {state.status === 'error' && (
+            {state.status === "error" && (
               <ErrorDisplay message={state.error.message} />
             )}
-            {state.status === 'success' && (
+            {state.status === "success" && (
               <CharacterList
                 data={state.data.results ?? []}
                 onSelect={handleCharacterSelect}
               />
             )}
           </div>
-          {state.status === 'success' && (
+          {state.status === "success" && (
             <div className="mt-4 flex justify-center">
               <Pagination
                 currentPage={page}

@@ -1,9 +1,9 @@
-import { NavLink } from 'react-router';
-import { PATHS } from '../../constants/paths';
+import { NavLink } from "react-router";
+import { PATHS } from "../../constants/paths";
 
 const NAV_LINK_STYLES = {
-  base: 'lg:px-2 text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80',
-  active: 'lg:px-2 font-semibold text-black dark:text-white',
+  base: "lg:px-2 text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80",
+  active: "lg:px-2 font-semibold text-black dark:text-white",
 };
 
 export default function Navbar(): React.JSX.Element {

@@ -1,9 +1,9 @@
-import { Navigate, Route, Routes } from 'react-router';
-import { PATHS } from '../shared/constants/paths';
-import CharactersPage from './pages/characters';
-import AboutPage from './pages/about';
-import ErrorPage from './pages/error';
-import CharacterSidebar from '../features/characters/widgets';
+import { Navigate, Route, Routes } from "react-router";
+import { PATHS } from "../shared/constants/paths";
+import CharactersPage from "./pages/characters";
+import AboutPage from "./pages/about";
+import ErrorPage from "./pages/error";
+import CharacterSidebar from "../features/characters/widgets";
 
 export function AppRoutes(): React.JSX.Element {
   return (

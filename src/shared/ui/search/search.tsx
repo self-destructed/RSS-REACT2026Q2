@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Props {
   query?: string;
@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function Search({
-  query = '',
+  query = "",
   onSubmit,
 }: Props): React.JSX.Element {
   const [searchTerm, setSearchTerm] = React.useState(query);

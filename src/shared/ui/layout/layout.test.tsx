@@ -1,21 +1,21 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import Layout from './layout';
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import Layout from "./layout";
 
 afterEach(cleanup);
 
 const MockChild = () => <div>Mock Child Content</div>;
 
-describe('Layout', () => {
-  describe('render', () => {
-    it.skip('should render children', () => {
+describe("Layout", () => {
+  describe("render", () => {
+    it.skip("should render children", () => {
       render(
         <Layout>
           <MockChild />
         </Layout>
       );
 
-      expect(screen.getByText('Mock Child Content')).toBeInTheDocument();
+      expect(screen.getByText("Mock Child Content")).toBeInTheDocument();
     });
   });
 });

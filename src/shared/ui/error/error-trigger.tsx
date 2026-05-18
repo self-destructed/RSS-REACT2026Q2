@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 export default function ErrorTrigger(): React.JSX.Element {
   const [shouldError, setShouldError] = React.useState(false);
 
   if (shouldError) {
-    throw new Error('💣 Boom! Error triggered by user');
+    throw new Error("💣 Boom! Error triggered by user");
   }
   return (
     <button

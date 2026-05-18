@@ -1,13 +1,13 @@
-import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import ErrorBoundary from './error-boundary';
-import userEvent from '@testing-library/user-event';
+import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import ErrorBoundary from "./error-boundary";
+import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup);
 
 const ThrowError = ({ shouldThrow = true }: { shouldThrow?: boolean }) => {
   if (shouldThrow) {
-    throw new Error('Test');
+    throw new Error("Test");
   }
   return null;
 };
@@ -22,7 +22,7 @@ const createCustomFallback = (reset: () => void) => (
 const realError = console.error;
 let user: ReturnType<typeof userEvent.setup>;
 
-describe('ErrorBoundary', () => {
+describe("ErrorBoundary", () => {
   beforeEach(() => {
     console.error = vi.fn();
     user = userEvent.setup();
@@ -31,8 +31,8 @@ describe('ErrorBoundary', () => {
     console.error = realError;
   });
 
-  describe('render', () => {
-    it('should render children when no error', () => {
+  describe("render", () => {
+    it("should render children when no error", () => {
       render(
         <ErrorBoundary>
           <p>Everything is fine</p>
@@ -41,7 +41,7 @@ describe('ErrorBoundary', () => {
       expect(screen.getByText(/Everything is fine/i)).toBeInTheDocument();
     });
 
-    it('should render fallback when error occurs', () => {
+    it("should render fallback when error occurs", () => {
       render(
         <ErrorBoundary>
           <ThrowError />
@@ -52,42 +52,42 @@ describe('ErrorBoundary', () => {
       expect(screen.queryByText(/Everything is fine/i)).not.toBeInTheDocument();
     });
 
-    it('should render default error message when no fallback provided', () => {
+    it("should render default error message when no fallback provided", () => {
       render(
         <ErrorBoundary>
           <ThrowError />
         </ErrorBoundary>
       );
       expect(
-        screen.getByRole('heading', { name: /Sorry, something went wrong/i })
+        screen.getByRole("heading", { name: /Sorry, something went wrong/i })
       ).toBeInTheDocument();
     });
 
-    it('should render default reset button when no fallback provided', () => {
+    it("should render default reset button when no fallback provided", () => {
       render(
         <ErrorBoundary>
           <ThrowError />
         </ErrorBoundary>
       );
       expect(
-        screen.getByRole('button', { name: /try again/i })
+        screen.getByRole("button", { name: /try again/i })
       ).toBeInTheDocument();
     });
 
-    it('should render custom fallback when provided', () => {
+    it("should render custom fallback when provided", () => {
       render(
         <ErrorBoundary fallback={createCustomFallback}>
           <ThrowError />
         </ErrorBoundary>
       );
 
-      expect(screen.getByText('Custom error message')).toBeInTheDocument();
+      expect(screen.getByText("Custom error message")).toBeInTheDocument();
       expect(
-        screen.getByRole('button', { name: /Custom Reset/i })
+        screen.getByRole("button", { name: /Custom Reset/i })
       ).toBeInTheDocument();
     });
 
-    it('should call reset on custom fallback button click', async () => {
+    it("should call reset on custom fallback button click", async () => {
       render(
         <ErrorBoundary fallback={createCustomFallback}>
           <ThrowError />
@@ -95,15 +95,15 @@ describe('ErrorBoundary', () => {
         </ErrorBoundary>
       );
 
-      expect(screen.getByText('Custom error message')).toBeInTheDocument();
+      expect(screen.getByText("Custom error message")).toBeInTheDocument();
 
-      const button = screen.getByRole('button', { name: /Custom Reset/i });
+      const button = screen.getByRole("button", { name: /Custom Reset/i });
       await user.click(button);
     });
   });
 
-  describe('behavior', () => {
-    it('should reset error when reset function is called (default fallback)', async () => {
+  describe("behavior", () => {
+    it("should reset error when reset function is called (default fallback)", async () => {
       let shouldThrowError = true;
 
       const { rerender } = render(
@@ -124,12 +124,12 @@ describe('ErrorBoundary', () => {
           <p>Everything is fine</p>
         </ErrorBoundary>
       );
-      await user.click(screen.getByRole('button', { name: /try again/i }));
+      await user.click(screen.getByRole("button", { name: /try again/i }));
 
       expect(screen.getByText(/Everything is fine/i)).toBeInTheDocument();
     });
 
-    it('should reset error when reset function is called (custom fallback)', async () => {
+    it("should reset error when reset function is called (custom fallback)", async () => {
       let shouldThrowError = true;
 
       const { rerender } = render(
@@ -139,7 +139,7 @@ describe('ErrorBoundary', () => {
         </ErrorBoundary>
       );
 
-      expect(screen.getByText('Custom error message')).toBeInTheDocument();
+      expect(screen.getByText("Custom error message")).toBeInTheDocument();
 
       shouldThrowError = false;
       rerender(
@@ -149,13 +149,13 @@ describe('ErrorBoundary', () => {
         </ErrorBoundary>
       );
 
-      await user.click(screen.getByRole('button', { name: /Custom Reset/i }));
+      await user.click(screen.getByRole("button", { name: /Custom Reset/i }));
 
       expect(
-        screen.queryByText('Custom error message')
+        screen.queryByText("Custom error message")
       ).not.toBeInTheDocument();
       expect(
-        screen.getByText('Content restored after reset')
+        screen.getByText("Content restored after reset")
       ).toBeInTheDocument();
     });
   });

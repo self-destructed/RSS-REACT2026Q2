@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 export const createLocalStorageMock = (): Storage => {
   let store: Record<string, string> = {};

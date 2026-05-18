@@ -1,4 +1,4 @@
-import type { Character } from '../../../../shared/api/types';
+import type { Character } from "../../../../shared/api/types";
 
 interface Props {
   data: Character;
@@ -7,34 +7,34 @@ interface Props {
 export default function CharacterCard({ data }: Props): React.JSX.Element {
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'Alive':
-        return 'bg-green-500';
-      case 'Dead':
-        return 'bg-red-500';
+      case "Alive":
+        return "bg-green-500";
+      case "Dead":
+        return "bg-red-500";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
   const getStatusTextColor = (status: string): string => {
     switch (status) {
-      case 'Alive':
-        return 'text-green-600 dark:text-green-400';
-      case 'Dead':
-        return 'text-red-600 dark:text-red-400';
+      case "Alive":
+        return "text-green-600 dark:text-green-400";
+      case "Dead":
+        return "text-red-600 dark:text-red-400";
       default:
-        return 'text-gray-600 dark:text-gray-400';
+        return "text-gray-600 dark:text-gray-400";
     }
   };
 
   const getGenderIcon = (gender: string): string => {
     switch (gender) {
-      case 'Female':
-        return '♀';
-      case 'Male':
-        return '♂';
+      case "Female":
+        return "♀";
+      case "Male":
+        return "♂";
       default:
-        return '⚲';
+        return "⚲";
     }
   };
   return (

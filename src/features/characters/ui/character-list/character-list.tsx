@@ -1,5 +1,5 @@
-import CharacterCard from '../character-card';
-import type { Character } from '../../../../shared/api/types';
+import CharacterCard from "../character-card";
+import type { Character } from "../../../../shared/api/types";
 
 interface Props {
   onSelect?: (id: number) => void;
@@ -18,7 +18,7 @@ export default function CharacterList({
             tabIndex={0}
             onClick={() => onSelect?.(item.id)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+              if (e.key === "Enter" || e.key === " ") {
                 onSelect?.(item.id);
               }
             }}

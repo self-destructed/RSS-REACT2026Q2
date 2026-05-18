@@ -1,6 +1,6 @@
-import { ErrorBoundary, ErrorFallback, ErrorTrigger } from '../shared/ui/error';
-import { BrowserRouter } from 'react-router';
-import { AppRoutes } from './AppRoutes';
+import { ErrorBoundary, ErrorFallback, ErrorTrigger } from "../shared/ui/error";
+import { BrowserRouter } from "react-router";
+import { AppRoutes } from "./AppRoutes";
 
 export default function App(): React.JSX.Element {
   return (

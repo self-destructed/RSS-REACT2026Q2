@@ -1,6 +1,6 @@
-import CharacterDetail from '../../ui/character-detail';
-import { useOutletContext, useParams } from 'react-router';
-import { useCharacter } from '../../hooks';
+import CharacterDetail from "../../ui/character-detail";
+import { useOutletContext, useParams } from "react-router";
+import { useCharacter } from "../../hooks";
 
 interface Context {
   onClose: () => void;
@@ -27,9 +27,9 @@ export default function CharacterSidebar(): React.JSX.Element {
         </button>
       </div>
       <div className="p-4">
-        {state.status === 'loading' && <p>Loading...</p>}
-        {state.status === 'error' && <p>Error: {state.error.message}</p>}
-        {state.status === 'success' && (
+        {state.status === "loading" && <p>Loading...</p>}
+        {state.status === "error" && <p>Error: {state.error.message}</p>}
+        {state.status === "success" && (
           <CharacterDetail character={state.data} />
         )}
       </div>

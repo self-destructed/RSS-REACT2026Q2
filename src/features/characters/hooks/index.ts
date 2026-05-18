@@ -1,1 +1,1 @@
-export { useCharacters, useCharacter } from './use-character/index';
+export { useCharacters, useCharacter } from "./use-character/index";

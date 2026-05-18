@@ -1,25 +1,25 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  base: '/RSS-REACT2026Q2/',
+  base: "/RSS-REACT2026Q2/",
   plugins: [react(), tailwindcss()],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/__tests__/setupTests.ts'],
+    environment: "jsdom",
+    setupFiles: ["./src/__tests__/setupTests.ts"],
     css: true,
 
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html', 'lcov'],
-      include: ['src/**/*.{ts,tsx}'],
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: ["src/**/*.{ts,tsx}"],
       exclude: [
-        'src/main.tsx',
-        'src/**/*.d.ts',
-        'src/**/*.stories.{ts,tsx}',
-        'src/types/**',
+        "src/main.tsx",
+        "src/**/*.d.ts",
+        "src/**/*.stories.{ts,tsx}",
+        "src/types/**",
       ],
 
       thresholds: {

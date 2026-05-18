@@ -1,1 +1,1 @@
-export { default } from './character-sidebar';
+export { default } from "./character-sidebar";

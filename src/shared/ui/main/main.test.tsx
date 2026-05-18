@@ -1,31 +1,31 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import Main from './main';
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import Main from "./main";
 
 afterEach(cleanup);
 
 const MockChild = () => <div>Mock Child Content</div>;
 
-describe('Main', () => {
-  describe('render', () => {
-    it('should render children', () => {
+describe("Main", () => {
+  describe("render", () => {
+    it("should render children", () => {
       render(
         <Main>
           <MockChild />
         </Main>
       );
 
-      expect(screen.getByText('Mock Child Content')).toBeInTheDocument();
+      expect(screen.getByText("Mock Child Content")).toBeInTheDocument();
     });
 
-    it('should render main element', () => {
+    it("should render main element", () => {
       render(
         <Main>
           <MockChild />
         </Main>
       );
 
-      expect(screen.getByRole('main')).toBeInTheDocument();
+      expect(screen.getByRole("main")).toBeInTheDocument();
     });
   });
 });
