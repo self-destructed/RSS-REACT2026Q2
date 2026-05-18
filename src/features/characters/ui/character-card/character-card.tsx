@@ -4,39 +4,29 @@ interface Props {
   data: Character;
 }
 
+const STATUS_BG_STYLES: Record<string, string> = {
+  Alive: "bg-green-500",
+  Dead: "bg-red-500",
+};
+const DEFAULT_BG = "bg-gray-500";
+
+const STATUS_TEXT_STYLES: Record<string, string> = {
+  Alive: "text-green-600 dark:text-green-400",
+  Dead: "text-red-600 dark:text-red-400",
+};
+const DEFAULT_TEXT = "text-gray-600 dark:text-gray-400";
+
+const GENDER_ICONS: Record<string, string> = {
+  Female: "♀",
+  Male: "♂",
+};
+const DEFAULT_ICON = "⚲";
+
 export default function CharacterCard({ data }: Props): React.JSX.Element {
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case "Alive":
-        return "bg-green-500";
-      case "Dead":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
+  const bgClass = STATUS_BG_STYLES[data.status] ?? DEFAULT_BG;
+  const textClass = STATUS_TEXT_STYLES[data.status] ?? DEFAULT_TEXT;
+  const icon = GENDER_ICONS[data.gender] ?? DEFAULT_ICON;
 
-  const getStatusTextColor = (status: string): string => {
-    switch (status) {
-      case "Alive":
-        return "text-green-600 dark:text-green-400";
-      case "Dead":
-        return "text-red-600 dark:text-red-400";
-      default:
-        return "text-gray-600 dark:text-gray-400";
-    }
-  };
-
-  const getGenderIcon = (gender: string): string => {
-    switch (gender) {
-      case "Female":
-        return "♀";
-      case "Male":
-        return "♂";
-      default:
-        return "⚲";
-    }
-  };
   return (
     <article
       id={data.id.toString()}
@@ -48,12 +38,8 @@ export default function CharacterCard({ data }: Props): React.JSX.Element {
             {data.name}
           </h3>
           <div className="ml-2 flex flex-shrink-0 items-center gap-1.5">
-            <span
-              className={`h-2 w-2 rounded-full ${getStatusColor(data.status)} animate-pulse`}
-            />
-            <span
-              className={`text-xs font-medium ${getStatusTextColor(data.status)}`}
-            >
+            <span className={`h-2 w-2 rounded-full ${bgClass} animate-pulse`} />
+            <span className={`text-xs font-medium ${textClass}`}>
               {data.status}
             </span>
           </div>
@@ -62,7 +48,7 @@ export default function CharacterCard({ data }: Props): React.JSX.Element {
         <div className="mt-3 mt-auto space-y-1.5">
           <div className="flex items-center gap-2 text-sm">
             <span className="text-slate-700 dark:text-slate-300">
-              {getGenderIcon(data.gender)} {data.gender}
+              {icon} {data.gender}
             </span>
           </div>
 
