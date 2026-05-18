@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
 import { render, screen, cleanup, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router";
 import CharactersPage from "./characters-page";
 import type { Character } from "../../../shared/api/types";
 import { createLocalStorageMock } from "../../../shared/api/__mocks__/local-storage";
@@ -150,9 +151,14 @@ const mockCharacters: Character[] = [
   },
 ];
 
-const renderComponent = () => render(<CharactersPage />);
+const renderComponent = () =>
+  render(
+    <MemoryRouter>
+      <CharactersPage />
+    </MemoryRouter>,
+  );
 
-describe.skip("render", () => {
+describe("render", () => {
   beforeEach(() => {
     vi.stubGlobal("localStorage", createLocalStorageMock());
   });
@@ -181,7 +187,7 @@ describe.skip("render", () => {
     renderComponent();
 
     expect(screen.getByRole("status")).toBeInTheDocument();
-    expect(screen.queryByText(/error/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/not found/i)).not.toBeInTheDocument();
     expect(screen.queryByText("Rick Sanchez")).not.toBeInTheDocument();
   });
 
@@ -215,7 +221,7 @@ describe.skip("render", () => {
   });
 });
 
-describe.skip("behavior", () => {
+describe("behavior", () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
@@ -236,8 +242,9 @@ describe.skip("behavior", () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(globalThis.fetch).toHaveBeenCalledWith(
+      expect(globalThis.fetch).toHaveBeenLastCalledWith(
         expect.stringContaining("name=rick"),
+        expect.any(Object),
       );
     });
 
@@ -258,8 +265,9 @@ describe.skip("behavior", () => {
     await userEvent.type(input, "morty{Enter}");
 
     await waitFor(() => {
-      expect(fetchSpy).toHaveBeenCalledWith(
+      expect(fetchSpy).toHaveBeenLastCalledWith(
         expect.stringContaining("name=morty"),
+        expect.any(Object),
       );
     });
 
@@ -284,9 +292,10 @@ describe.skip("behavior", () => {
     await userEvent.type(input, "rick{Enter}");
 
     await waitFor(() => {
-      expect(screen.getAllByRole("listitem")).toHaveLength(
-        filteredCharacters.length,
-      );
+      const lists = screen.getAllByRole("list");
+      const characterList = lists[lists.length - 1];
+      const characterItems = characterList.querySelectorAll("li");
+      expect(characterItems).toHaveLength(filteredCharacters.length);
     });
   });
 });
