@@ -33,12 +33,12 @@ export interface CharacterFilter {
 
 export interface LocationFilter extends Pick<
   CharacterFilter,
-  'name' | 'type' | 'page'
+  "name" | "type" | "page"
 > {
   dimension?: string;
 }
 
-export interface EpisodeFilter extends Pick<CharacterFilter, 'name' | 'page'> {
+export interface EpisodeFilter extends Pick<CharacterFilter, "name" | "page"> {
   /**
    * Filter by the given episode code.
    * i.e: `{ episode: "S01E01" }`
@@ -47,10 +47,10 @@ export interface EpisodeFilter extends Pick<CharacterFilter, 'name' | 'page'> {
 }
 
 export interface Character extends ResourceBase {
-  status: 'Dead' | 'Alive' | 'unknown';
+  status: "Dead" | "Alive" | "unknown";
   species: string;
   type: string;
-  gender: 'Female' | 'Male' | 'Genderless' | 'unknown';
+  gender: "Female" | "Male" | "Genderless" | "unknown";
   origin: CharacterLocation;
   location: CharacterLocation;
   image: string;
