@@ -1,16 +1,33 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeEach,
+  afterEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type MockInstance,
+} from "vitest";
 import useLocalStorage from "./use-local-storage";
 import { createLocalStorageMock } from "../../api/__mocks__/local-storage";
 import { act, renderHook } from "@testing-library/react";
 
 describe("useLocalStorage", () => {
+  let warnSpy: MockInstance;
+
   beforeEach(() => {
     const mock = createLocalStorageMock();
     vi.stubGlobal("localStorage", mock);
+    warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    warnSpy.mockClear();
   });
 
   afterAll(() => {
     vi.unstubAllGlobals();
+    warnSpy.mockRestore();
   });
 
   describe("initialization", () => {
@@ -88,8 +105,6 @@ describe("useLocalStorage", () => {
     });
 
     it("should catch error when setValue fails", () => {
-      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-
       const { result } = renderHook(() =>
         useLocalStorage("testKey", "initialValue"),
       );
@@ -105,8 +120,6 @@ describe("useLocalStorage", () => {
         "Error while updating localStorage:",
         expect.any(Error),
       );
-
-      warnSpy.mockRestore();
     });
   });
 });
