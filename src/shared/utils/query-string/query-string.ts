@@ -1,5 +1,5 @@
 export function buildQueryString(
-  params: Record<string, string | number | undefined | null> | undefined | null
+  params: Record<string, string | number | undefined | null> | undefined | null,
 ): string {
   if (!params) return "";
 

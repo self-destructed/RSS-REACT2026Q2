@@ -21,13 +21,13 @@ describe("Search", () => {
 
     it("should render input", () => {
       expect(
-        screen.getByLabelText("Search", { selector: "input" })
+        screen.getByLabelText("Search", { selector: "input" }),
       ).toBeInTheDocument();
     });
 
     it("should render submit button", () => {
       expect(
-        screen.getByRole("button", { name: /search/i })
+        screen.getByRole("button", { name: /search/i }),
       ).toBeInTheDocument();
     });
   });

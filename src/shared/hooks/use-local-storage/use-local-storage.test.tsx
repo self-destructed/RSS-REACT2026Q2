@@ -17,7 +17,7 @@ describe("useLocalStorage", () => {
     it("should return initial value when localStorage is empty", () => {
       const initialValue = "initialValue";
       const { result } = renderHook(() =>
-        useLocalStorage("testKey", initialValue)
+        useLocalStorage("testKey", initialValue),
       );
       const [value] = result.current;
 
@@ -29,7 +29,7 @@ describe("useLocalStorage", () => {
       localStorage.setItem("testKey", JSON.stringify(storedValue));
 
       const { result } = renderHook(() =>
-        useLocalStorage("testKey", "initialValue")
+        useLocalStorage("testKey", "initialValue"),
       );
       const [value] = result.current;
 
@@ -39,7 +39,7 @@ describe("useLocalStorage", () => {
     it("should return initial value if localStorage is unavailable", () => {
       vi.stubGlobal("localStorage", undefined);
       const { result } = renderHook(() =>
-        useLocalStorage("testKey", "initialValue")
+        useLocalStorage("testKey", "initialValue"),
       );
       const [value] = result.current;
 
@@ -50,7 +50,7 @@ describe("useLocalStorage", () => {
   describe("setValue", () => {
     it("should update localStorage when the value changes", () => {
       const { result } = renderHook(() =>
-        useLocalStorage("testKey", "initialValue")
+        useLocalStorage("testKey", "initialValue"),
       );
       const [, setValue] = result.current;
       const newValue = "newValue";
@@ -80,7 +80,7 @@ describe("useLocalStorage", () => {
     it("should return initial value if JSON.parse fails", () => {
       localStorage.setItem("testKey", "invalidJson{");
       const { result } = renderHook(() =>
-        useLocalStorage("testKey", "initialValue")
+        useLocalStorage("testKey", "initialValue"),
       );
       const [value] = result.current;
 

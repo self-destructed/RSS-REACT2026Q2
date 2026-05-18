@@ -10,7 +10,7 @@ describe("ErrorDisplay", () => {
       render(<ErrorDisplay message="Something went wrong" />);
 
       expect(
-        screen.getByText("Error: Something went wrong")
+        screen.getByText("Error: Something went wrong"),
       ).toBeInTheDocument();
     });
   });

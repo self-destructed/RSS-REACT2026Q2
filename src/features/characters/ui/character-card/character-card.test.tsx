@@ -33,7 +33,7 @@ afterEach(cleanup);
 describe("CharacterCard", () => {
   test("renders with name", () => {
     expect(
-      screen.getByRole("heading", { name: /Rick Sanchez/ })
+      screen.getByRole("heading", { name: /Rick Sanchez/ }),
     ).toBeInTheDocument();
   });
   test("renders with status", () => {

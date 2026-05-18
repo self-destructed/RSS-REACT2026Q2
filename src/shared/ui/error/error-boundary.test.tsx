@@ -36,7 +36,7 @@ describe("ErrorBoundary", () => {
       render(
         <ErrorBoundary>
           <p>Everything is fine</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
       expect(screen.getByText(/Everything is fine/i)).toBeInTheDocument();
     });
@@ -46,7 +46,7 @@ describe("ErrorBoundary", () => {
         <ErrorBoundary>
           <ThrowError />
           <p>Everything is fine</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
       expect(screen.queryByText(/Everything is fine/i)).not.toBeInTheDocument();
@@ -56,10 +56,10 @@ describe("ErrorBoundary", () => {
       render(
         <ErrorBoundary>
           <ThrowError />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
       expect(
-        screen.getByRole("heading", { name: /Sorry, something went wrong/i })
+        screen.getByRole("heading", { name: /Sorry, something went wrong/i }),
       ).toBeInTheDocument();
     });
 
@@ -67,10 +67,10 @@ describe("ErrorBoundary", () => {
       render(
         <ErrorBoundary>
           <ThrowError />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
       expect(
-        screen.getByRole("button", { name: /try again/i })
+        screen.getByRole("button", { name: /try again/i }),
       ).toBeInTheDocument();
     });
 
@@ -78,12 +78,12 @@ describe("ErrorBoundary", () => {
       render(
         <ErrorBoundary fallback={createCustomFallback}>
           <ThrowError />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
       expect(screen.getByText("Custom error message")).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: /Custom Reset/i })
+        screen.getByRole("button", { name: /Custom Reset/i }),
       ).toBeInTheDocument();
     });
 
@@ -92,7 +92,7 @@ describe("ErrorBoundary", () => {
         <ErrorBoundary fallback={createCustomFallback}>
           <ThrowError />
           <p>Original content</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
       expect(screen.getByText("Custom error message")).toBeInTheDocument();
@@ -110,11 +110,11 @@ describe("ErrorBoundary", () => {
         <ErrorBoundary>
           <ThrowError shouldThrow={shouldThrowError} />
           <p>Everything is fine</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
       expect(
-        screen.getByText(/Sorry, something went wrong/i)
+        screen.getByText(/Sorry, something went wrong/i),
       ).toBeInTheDocument();
 
       shouldThrowError = false;
@@ -122,7 +122,7 @@ describe("ErrorBoundary", () => {
         <ErrorBoundary>
           <ThrowError shouldThrow={shouldThrowError} />
           <p>Everything is fine</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
       await user.click(screen.getByRole("button", { name: /try again/i }));
 
@@ -136,7 +136,7 @@ describe("ErrorBoundary", () => {
         <ErrorBoundary fallback={createCustomFallback}>
           <ThrowError shouldThrow={shouldThrowError} />
           <p>Content restored after reset</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
       expect(screen.getByText("Custom error message")).toBeInTheDocument();
@@ -146,16 +146,16 @@ describe("ErrorBoundary", () => {
         <ErrorBoundary fallback={createCustomFallback}>
           <ThrowError shouldThrow={shouldThrowError} />
           <p>Content restored after reset</p>
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
       await user.click(screen.getByRole("button", { name: /Custom Reset/i }));
 
       expect(
-        screen.queryByText("Custom error message")
+        screen.queryByText("Custom error message"),
       ).not.toBeInTheDocument();
       expect(
-        screen.getByText("Content restored after reset")
+        screen.getByText("Content restored after reset"),
       ).toBeInTheDocument();
     });
   });

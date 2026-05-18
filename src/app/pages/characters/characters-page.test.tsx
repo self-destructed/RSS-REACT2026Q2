@@ -164,7 +164,7 @@ describe.skip("render", () => {
 
   it("should render search and main elements", () => {
     vi.spyOn(globalThis, "fetch").mockImplementation(
-      () => new Promise(() => {})
+      () => new Promise(() => {}),
     );
 
     renderComponent();
@@ -175,7 +175,7 @@ describe.skip("render", () => {
 
   it("should render spinner on loading", () => {
     vi.spyOn(globalThis, "fetch").mockImplementation(
-      () => new Promise(() => {})
+      () => new Promise(() => {}),
     );
 
     renderComponent();
@@ -237,7 +237,7 @@ describe.skip("behavior", () => {
 
     await waitFor(() => {
       expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining("name=rick")
+        expect.stringContaining("name=rick"),
       );
     });
 
@@ -259,7 +259,7 @@ describe.skip("behavior", () => {
 
     await waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledWith(
-        expect.stringContaining("name=morty")
+        expect.stringContaining("name=morty"),
       );
     });
 
@@ -270,7 +270,7 @@ describe.skip("behavior", () => {
     vi.stubGlobal("localStorage", createLocalStorageMock());
 
     const filteredCharacters = mockCharacters.filter((char) =>
-      char.name.toLowerCase().includes("rick")
+      char.name.toLowerCase().includes("rick"),
     );
 
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
@@ -285,7 +285,7 @@ describe.skip("behavior", () => {
 
     await waitFor(() => {
       expect(screen.getAllByRole("listitem")).toHaveLength(
-        filteredCharacters.length
+        filteredCharacters.length,
       );
     });
   });

@@ -16,7 +16,7 @@ type LoadingState<T> =
   | { status: "error"; error: Error };
 
 export function useCharacters(
-  filters?: CharacterFilter
+  filters?: CharacterFilter,
 ): LoadingState<Info<Character[]>> {
   const params = filters as
     | Record<string, string | number | null | undefined>

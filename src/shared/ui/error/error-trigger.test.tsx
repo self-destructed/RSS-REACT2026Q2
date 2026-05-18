@@ -11,7 +11,7 @@ describe("ErrorTrigger", () => {
       render(<ErrorTrigger />);
 
       expect(
-        screen.getByRole("button", { name: /trigger error/i })
+        screen.getByRole("button", { name: /trigger error/i }),
       ).toBeInTheDocument();
     });
   });
@@ -22,7 +22,7 @@ describe("ErrorTrigger", () => {
       const user = userEvent.setup();
 
       await expect(user.click(screen.getByRole("button"))).rejects.toThrow(
-        "💣 Boom! Error triggered by user"
+        "💣 Boom! Error triggered by user",
       );
     });
   });

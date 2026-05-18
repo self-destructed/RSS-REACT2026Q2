@@ -2,7 +2,7 @@ type ParamUpdates = Record<string, string | null>;
 
 export function updateSearchParams(
   current: URLSearchParams,
-  updates: ParamUpdates
+  updates: ParamUpdates,
 ): URLSearchParams {
   const next = new URLSearchParams(current);
   Object.entries(updates).forEach(([key, value]) => {

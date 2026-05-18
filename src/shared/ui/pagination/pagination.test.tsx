@@ -14,7 +14,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={vi.fn()}
           onNext={vi.fn()}
-        />
+        />,
       );
     });
 
@@ -38,7 +38,7 @@ describe("Pagination", () => {
           totalPages={1}
           onPrev={vi.fn()}
           onNext={vi.fn()}
-        />
+        />,
       );
       expect(screen.getByText("1/1")).toBeInTheDocument();
     });
@@ -52,7 +52,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={vi.fn()}
           onNext={vi.fn()}
-        />
+        />,
       );
       expect(screen.getByRole("button", { name: /prev/i })).toBeDisabled();
     });
@@ -64,7 +64,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={vi.fn()}
           onNext={vi.fn()}
-        />
+        />,
       );
       expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
     });
@@ -76,7 +76,7 @@ describe("Pagination", () => {
           totalPages={1}
           onPrev={vi.fn()}
           onNext={vi.fn()}
-        />
+        />,
       );
       expect(screen.getByRole("button", { name: /prev/i })).toBeDisabled();
       expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
@@ -89,7 +89,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={vi.fn()}
           onNext={vi.fn()}
-        />
+        />,
       );
       expect(screen.getByRole("button", { name: /prev/i })).toBeEnabled();
       expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
@@ -106,7 +106,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={onPrev}
           onNext={vi.fn()}
-        />
+        />,
       );
       await user.click(screen.getByRole("button", { name: /prev/i }));
       expect(onPrev).toHaveBeenCalledTimes(1);
@@ -121,7 +121,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={vi.fn()}
           onNext={onNext}
-        />
+        />,
       );
       await user.click(screen.getByRole("button", { name: /next/i }));
       expect(onNext).toHaveBeenCalledTimes(1);
@@ -136,7 +136,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={onPrev}
           onNext={vi.fn()}
-        />
+        />,
       );
       await user.click(screen.getByRole("button", { name: /prev/i }));
       expect(onPrev).not.toHaveBeenCalled();
@@ -151,7 +151,7 @@ describe("Pagination", () => {
           totalPages={20}
           onPrev={vi.fn()}
           onNext={onNext}
-        />
+        />,
       );
       await user.click(screen.getByRole("button", { name: /next/i }));
       expect(onNext).not.toHaveBeenCalled();

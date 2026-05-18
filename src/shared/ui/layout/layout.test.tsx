@@ -12,7 +12,7 @@ describe("Layout", () => {
       render(
         <Layout>
           <MockChild />
-        </Layout>
+        </Layout>,
       );
 
       expect(screen.getByText("Mock Child Content")).toBeInTheDocument();

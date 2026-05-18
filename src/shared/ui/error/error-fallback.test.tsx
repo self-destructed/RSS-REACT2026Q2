@@ -10,7 +10,7 @@ describe("ErrorFallback", () => {
       render(<ErrorFallback reset={vi.fn()} />);
 
       expect(
-        screen.getByText("Oops! Something went wrong")
+        screen.getByText("Oops! Something went wrong"),
       ).toBeInTheDocument();
     });
 
@@ -18,7 +18,7 @@ describe("ErrorFallback", () => {
       render(<ErrorFallback reset={vi.fn()} />);
 
       expect(
-        screen.getByText("The application encountered an unexpected error.")
+        screen.getByText("The application encountered an unexpected error."),
       ).toBeInTheDocument();
     });
 
@@ -26,7 +26,7 @@ describe("ErrorFallback", () => {
       render(<ErrorFallback reset={vi.fn()} />);
 
       expect(
-        screen.getByRole("button", { name: "Try Again" })
+        screen.getByRole("button", { name: "Try Again" }),
       ).toBeInTheDocument();
     });
   });

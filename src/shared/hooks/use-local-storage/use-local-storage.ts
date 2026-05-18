@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 function useLocalStorage<T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((val: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
@@ -11,7 +11,7 @@ function useLocalStorage<T>(
     } catch (error) {
       console.warn(
         `Error while reading from localStorage key "${key}":`,
-        error
+        error,
       );
       return initialValue;
     }

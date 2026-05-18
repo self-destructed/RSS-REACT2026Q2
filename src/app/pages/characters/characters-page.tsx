@@ -23,7 +23,7 @@ export default function CharactersPage(): React.JSX.Element {
   const [params, setParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage(
     CHARACTER_QUERY_STORAGE_KEY,
-    ""
+    "",
   );
   const name = params.get("name") ?? searchQuery;
   const page = Number(params.get("page")) || 1;
@@ -47,7 +47,7 @@ export default function CharactersPage(): React.JSX.Element {
       updateSearchParams(prev, {
         name: query || null,
         page: "1",
-      })
+      }),
     );
     setSearchQuery(query);
   };

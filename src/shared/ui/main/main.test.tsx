@@ -12,7 +12,7 @@ describe("Main", () => {
       render(
         <Main>
           <MockChild />
-        </Main>
+        </Main>,
       );
 
       expect(screen.getByText("Mock Child Content")).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("Main", () => {
       render(
         <Main>
           <MockChild />
-        </Main>
+        </Main>,
       );
 
       expect(screen.getByRole("main")).toBeInTheDocument();
