@@ -45,4 +45,49 @@ describe("CharacterCard", () => {
   test("renders with location", () => {
     expect(screen.getByText("Citadel of Ricks")).toBeInTheDocument();
   });
+
+  test("renders with unknown status uses default styles", () => {
+    const mockCharacter: Character = {
+      id: 2,
+      name: "Unknown Person",
+      status: "unknown",
+      species: "Alien",
+      type: "",
+      gender: "unknown",
+      origin: { name: "", url: "" },
+      location: { name: "Space", url: "" },
+      image: "",
+      episode: [],
+      url: "",
+      created: "",
+    };
+
+    render(<CharacterCard data={mockCharacter} />);
+
+    expect(
+      screen.getByRole("heading", { name: /Unknown Person/ }),
+    ).toBeInTheDocument();
+  });
+
+  test("renders with Dead status", () => {
+    const mockCharacter: Character = {
+      id: 3,
+      name: "Dead Character",
+      status: "Dead",
+      species: "Human",
+      type: "",
+      gender: "Female",
+      origin: { name: "", url: "" },
+      location: { name: "Earth", url: "" },
+      image: "",
+      episode: [],
+      url: "",
+      created: "",
+    };
+
+    render(<CharacterCard data={mockCharacter} />);
+
+    expect(screen.getByText("Dead")).toBeInTheDocument();
+    expect(screen.getByText(/Female/)).toBeInTheDocument();
+  });
 });
