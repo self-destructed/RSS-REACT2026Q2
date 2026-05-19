@@ -45,7 +45,7 @@ export default function CharacterCard({ data }: Props): React.JSX.Element {
           </div>
         </div>
 
-        <div className="mt-3 mt-auto space-y-1.5">
+        <div className="mt-2 space-y-1.5">
           <div className="flex items-center gap-2 text-sm">
             <span className="text-slate-700 dark:text-slate-300">
               {icon} {data.gender}

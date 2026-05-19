@@ -22,7 +22,7 @@ export default function CharacterList({
                 onSelect?.(item.id);
               }
             }}
-            className="cursor-pointer"
+            className="cursor-pointer h-full"
           >
             <CharacterCard data={item} />
           </div>
