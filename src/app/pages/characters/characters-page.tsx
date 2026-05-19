@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Outlet,
   useLocation,
@@ -29,6 +30,18 @@ export default function CharactersPage(): React.JSX.Element {
   const page = Number(params.get("page")) || 1;
   const state = useCharacters({ name, page });
 
+  useEffect(() => {
+    const urlName = params.get("name");
+    if (searchQuery && !urlName) {
+      setParams((prev) =>
+        updateSearchParams(prev, {
+          name: searchQuery,
+          page: "1",
+        }),
+      );
+    }
+  }, [params, searchQuery, setParams]);
+
   const handlePrev = () => {
     const newPage = page - 1;
     setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
@@ -59,7 +72,6 @@ export default function CharactersPage(): React.JSX.Element {
   const handleSidebarClose = () => {
     void navigate(`/characters${location.search}`);
   };
-
   return (
     <Layout>
       <Main>
