@@ -1,1 +1,2 @@
-export { default } from "./use-fetch";
+export { default as useFetch } from "./use-fetch";
+export type { LoadingState } from "./use-fetch";

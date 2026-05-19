@@ -3,8 +3,7 @@ import type {
   Info,
   Character,
 } from "../../../../shared/api/types";
-import useFetch from "../../../../shared/hooks/useFetch";
-import type { LoadingState } from "../../../../shared/hooks/useFetch/use-fetch";
+import { useFetch, type LoadingState } from "../../../../shared/hooks/useFetch";
 import { buildQueryString } from "../../../../shared/utils";
 import { API_BASE_URL, API_ENDPOINTS } from "../../../../shared/constants/api";
 

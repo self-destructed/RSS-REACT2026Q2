@@ -4,7 +4,7 @@ import { useCharacters, useCharacter } from "./use-character";
 
 // Mock useFetch
 vi.mock("../../../../shared/hooks/useFetch", () => ({
-  default: vi.fn((url) => ({ status: url ? "success" : "idle", data: null })),
+  useFetch: vi.fn((url) => ({ status: url ? "success" : "idle", data: null })),
 }));
 
 describe("useCharacters", () => {

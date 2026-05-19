@@ -141,5 +141,5 @@ export default tseslint.config(
       "@typescript-eslint/no-unsafe-assignment": "off",
       "no-console": "off",
     },
-  }
+  },
 );

@@ -1,1 +1,1 @@
-export { default } from "./character-detail";
+export { default as CharacterDetail } from "./character-detail";

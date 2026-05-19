@@ -1,4 +1,4 @@
-import CharacterDetail from "../../ui/character-detail";
+import { CharacterDetail } from "../../ui/character-detail";
 import { useOutletContext, useParams } from "react-router";
 import { useCharacter } from "../../hooks";
 import { Spinner } from "../../../../shared/ui/spinner";
