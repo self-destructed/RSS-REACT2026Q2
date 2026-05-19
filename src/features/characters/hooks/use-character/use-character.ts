@@ -1,11 +1,7 @@
-import type {
-  CharacterFilter,
-  Info,
-  Character,
-} from "../../../../shared/api/types";
-import { useFetch, type LoadingState } from "../../../../shared/hooks/useFetch";
-import { buildQueryString } from "../../../../shared/utils";
-import { API_BASE_URL, API_ENDPOINTS } from "../../../../shared/constants/api";
+import type { CharacterFilter, Info, Character } from "@shared/api/types";
+import { useFetch, type LoadingState } from "@shared/hooks";
+import { buildQueryString } from "@shared/utils";
+import { API_BASE_URL, API_ENDPOINTS } from "@shared/constants/api";
 
 export function useCharacters(
   filters?: CharacterFilter,

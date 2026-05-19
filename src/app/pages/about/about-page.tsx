@@ -1,5 +1,4 @@
-import { Layout } from "../../../shared/ui/layout";
-import { Main } from "../../../shared/ui/main";
+import { Layout, Main } from "@shared/ui";
 
 const ATTEMPT_NUMBER = Math.floor(Math.random() * 100) + 1;
 

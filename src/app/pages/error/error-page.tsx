@@ -1,7 +1,6 @@
 import { Link } from "react-router";
-import { PATHS } from "../../../shared/constants/paths";
-import { Layout } from "../../../shared/ui/layout";
-import { Main } from "../../../shared/ui/main";
+import { PATHS } from "@shared/constants/paths";
+import { Layout, Main } from "@shared/ui";
 
 export default function ErrorPage(): React.JSX.Element {
   return (

@@ -5,16 +5,12 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router";
-import { Search } from "../../../shared/ui/search";
-import { useLocalStorage } from "../../../shared/hooks/use-local-storage";
-import { Spinner } from "../../../shared/ui/spinner";
-import { ErrorDisplay } from "../../../shared/ui/error";
-import { CharacterList } from "../../../features/characters/ui";
-import { Pagination } from "../../../shared/ui/pagination";
-import { updateSearchParams } from "../../../shared/utils";
-import { useCharacters } from "../../../features/characters/hooks";
-import { Main } from "../../../shared/ui/main";
-import { Layout } from "../../../shared/ui/layout";
+import { Search, Spinner, Pagination, Main, Layout } from "@shared/ui";
+import { ErrorDisplay } from "@shared/ui/error";
+import { useLocalStorage } from "@shared/hooks";
+import { CharacterList } from "@features/characters/ui";
+import { updateSearchParams } from "@shared/utils";
+import { useCharacters } from "@features/characters/hooks";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 

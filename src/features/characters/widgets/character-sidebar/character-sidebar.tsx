@@ -1,7 +1,7 @@
-import { CharacterDetail } from "../../ui/character-detail";
+import { CharacterDetail } from "@features/characters/ui";
 import { useOutletContext, useParams } from "react-router";
-import { useCharacter } from "../../hooks";
-import { Spinner } from "../../../../shared/ui/spinner";
+import { useCharacter } from "@features/characters/hooks";
+import { Spinner } from "@shared/ui";
 
 interface Context {
   onClose: () => void;

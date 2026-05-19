@@ -1,5 +1,5 @@
 import { CharacterCard } from "../character-card";
-import type { Character } from "../../../../shared/api/types";
+import type { Character } from "@shared/api/types";
 
 interface Props {
   onSelect?: (id: number) => void;

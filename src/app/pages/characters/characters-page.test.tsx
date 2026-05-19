@@ -3,7 +3,7 @@ import { render, screen, cleanup, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import CharactersPage from "./characters-page";
-import type { Character } from "../../../shared/api/types";
+import type { Character } from "@shared/api/types";
 import { createLocalStorageMock } from "../../../shared/api/__mocks__/local-storage";
 
 afterEach(cleanup);
