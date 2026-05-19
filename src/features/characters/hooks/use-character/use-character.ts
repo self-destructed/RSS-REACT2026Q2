@@ -6,9 +6,7 @@ import type {
 import useFetch from "../../../../shared/hooks/useFetch";
 import type { LoadingState } from "../../../../shared/hooks/useFetch/use-fetch";
 import { buildQueryString } from "../../../../shared/utils";
-
-const BASE_URL = "https://rickandmortyapi.com/api";
-const CHARACTER_ENDPOINT = "/character";
+import { API_BASE_URL, API_ENDPOINTS } from "../../../../shared/constants/api";
 
 export function useCharacters(
   filters?: CharacterFilter,
@@ -16,11 +14,13 @@ export function useCharacters(
   const params = filters as
     | Record<string, string | number | null | undefined>
     | undefined;
-  const url = `${BASE_URL}${CHARACTER_ENDPOINT}?${buildQueryString(params)}`;
+  const url = `${API_BASE_URL}${API_ENDPOINTS.character}?${buildQueryString(params)}`;
   return useFetch<Info<Character[]>>(url);
 }
 
 export function useCharacter(id: number | null): LoadingState<Character> {
-  const url = id ? `${BASE_URL}${CHARACTER_ENDPOINT}/${String(id)}` : null;
+  const url = id
+    ? `${API_BASE_URL}${API_ENDPOINTS.character}/${String(id)}`
+    : null;
   return useFetch<Character>(url);
 }
