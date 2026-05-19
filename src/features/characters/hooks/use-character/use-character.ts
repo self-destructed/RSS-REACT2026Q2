@@ -4,16 +4,11 @@ import type {
   Character,
 } from "../../../../shared/api/types";
 import useFetch from "../../../../shared/hooks/useFetch";
+import type { LoadingState } from "../../../../shared/hooks/useFetch/use-fetch";
 import { buildQueryString } from "../../../../shared/utils";
 
 const BASE_URL = "https://rickandmortyapi.com/api";
 const CHARACTER_ENDPOINT = "/character";
-
-type LoadingState<T> =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "success"; data: T }
-  | { status: "error"; error: Error };
 
 export function useCharacters(
   filters?: CharacterFilter,

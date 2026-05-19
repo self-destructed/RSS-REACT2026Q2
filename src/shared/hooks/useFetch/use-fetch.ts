@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type LoadingState<T> =
+export type LoadingState<T> =
   | { status: "idle" }
   | { status: "loading" }
   | { status: "success"; data: T }
