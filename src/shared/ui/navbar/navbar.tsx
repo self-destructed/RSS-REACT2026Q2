@@ -8,54 +8,50 @@ const NAV_LINK_STYLES = {
 
 export default function Navbar(): React.JSX.Element {
   return (
-    <nav className="shadow-dark-mild relative flex w-full flex-nowrap items-center justify-between bg-zinc-50 py-2 text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 lg:flex-wrap lg:justify-start lg:py-4 dark:bg-neutral-700">
-      <div className="flex w-full flex-wrap items-center justify-between px-3">
-        <div className="mt-2 flex-grow basis-[100%] items-center md:!flex lg:mt-0 lg:basis-auto">
-          <ul className="list-style-none me-auto flex flex-col ps-0 md:mt-1 md:flex-row">
-            <li className="my-4 ps-2 md:my-0 md:mb-4 lg:my-0 lg:ps-2 lg:pe-1">
-              <NavLink
-                to={PATHS.HOME}
-                end
-                className={({ isActive }) =>
-                  isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
-              <NavLink
-                to={PATHS.CHARACTERS}
-                className={({ isActive }) =>
-                  isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-                }
-              >
-                Characters
-              </NavLink>
-            </li>
-            <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
-              <NavLink
-                to={PATHS.ABOUT}
-                className={({ isActive }) =>
-                  isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-                }
-              >
-                About
-              </NavLink>
-            </li>
-            <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
-              <NavLink
-                to={PATHS.ERROR}
-                className={({ isActive }) =>
-                  isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-                }
-              >
-                Error
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <nav>
+      <ul className="list-style-none me-auto flex flex-col ps-0 md:mt-1 md:flex-row">
+        <li className="my-4 ps-2 md:my-0 md:mb-4 lg:my-0 lg:ps-2 lg:pe-1">
+          <NavLink
+            to={PATHS.HOME}
+            end
+            className={({ isActive }) =>
+              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
+            }
+          >
+            Home
+          </NavLink>
+        </li>
+        <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
+          <NavLink
+            to={PATHS.CHARACTERS}
+            className={({ isActive }) =>
+              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
+            }
+          >
+            Characters
+          </NavLink>
+        </li>
+        <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
+          <NavLink
+            to={PATHS.ABOUT}
+            className={({ isActive }) =>
+              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
+            }
+          >
+            About
+          </NavLink>
+        </li>
+        <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
+          <NavLink
+            to={PATHS.ERROR}
+            className={({ isActive }) =>
+              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
+            }
+          >
+            Error
+          </NavLink>
+        </li>
+      </ul>
     </nav>
   );
 }
