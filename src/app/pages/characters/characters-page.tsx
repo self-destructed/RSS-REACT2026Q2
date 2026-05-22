@@ -5,8 +5,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router";
-import { Search, Spinner, Pagination, Main, Layout } from "@shared/ui";
-import { ErrorDisplay } from "@shared/ui/error";
+import { Search, Spinner, Pagination, Main, ErrorDisplay } from "@shared/ui";
 import { useLocalStorage } from "@shared/hooks";
 import { CharacterList } from "@features/characters/ui";
 import { updateSearchParams } from "@shared/utils";
@@ -69,7 +68,7 @@ export default function CharactersPage(): React.JSX.Element {
     void navigate(`/characters${location.search}`);
   };
   return (
-    <Layout>
+    <>
       <Main>
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
@@ -106,6 +105,6 @@ export default function CharactersPage(): React.JSX.Element {
         </section>
       </Main>
       <Outlet context={{ onClose: handleSidebarClose }} />
-    </Layout>
+    </>
   );
 }
