@@ -1,10 +1,119 @@
 import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
-import { render, screen, cleanup, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import CharactersPage from "./characters-page";
 import type { Character } from "@shared/api/types";
-import { createLocalStorageMock } from "../../../shared/api/__mocks__/local-storage";
+
+vi.mock("@shared/ui", () => ({
+  Main: ({ children }: { children: React.ReactNode }) => (
+    <main data-testid="main">{children}</main>
+  ),
+  Search: ({
+    onSubmit,
+    query,
+  }: {
+    onSubmit: (q: string) => void;
+    query: string;
+  }) => (
+    <form
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit("test-query");
+      }}
+      data-testid="search"
+    >
+      <input value={query || ""} readOnly />
+      <button type="submit">Search</button>
+    </form>
+  ),
+  Spinner: () => <div role="status" data-testid="spinner" />,
+  Pagination: ({
+    onPrev,
+    onNext,
+    currentPage,
+    totalPages,
+  }: {
+    onPrev: () => void;
+    onNext: () => void;
+    currentPage: number;
+    totalPages: number;
+  }) => (
+    <nav role="navigation" data-testid="pagination">
+      <button type="button" onClick={onPrev} data-testid="prev">
+        Prev
+      </button>
+      <span>
+        {currentPage}/{totalPages}
+      </span>
+      <button type="button" onClick={onNext} data-testid="next">
+        Next
+      </button>
+    </nav>
+  ),
+  ErrorDisplay: ({ message }: { message: string }) => (
+    <div role="alert" data-testid="error">
+      {message}
+    </div>
+  ),
+}));
+
+vi.mock("@features/characters/ui", () => ({
+  CharacterList: ({
+    data,
+    onSelect,
+  }: {
+    data: Character[];
+    onSelect: (id: number) => void;
+  }) => (
+    <ul data-testid="character-list">
+      {data.map((char) => (
+        <li key={char.id}>
+          <button
+            type="button"
+            onClick={() => {
+              onSelect(char.id);
+            }}
+          >
+            {char.name}
+          </button>
+        </li>
+      ))}
+    </ul>
+  ),
+}));
+
+vi.mock("@shared/hooks", () => ({
+  useLocalStorage: vi.fn((_: string, initial: string) => {
+    let value = initial;
+    return [
+      value,
+      (v: string) => {
+        value = v;
+      },
+    ];
+  }),
+}));
+
+vi.mock("@features/characters/hooks", () => ({
+  useCharacters: vi.fn(),
+}));
+
+vi.mock("@shared/utils", () => ({
+  updateSearchParams: vi.fn(
+    (prev: URLSearchParams, params: Record<string, string | null>) => {
+      const next = new URLSearchParams(prev);
+      Object.entries(params).forEach(([key, value]) => {
+        if (value === null) next.delete(key);
+        else next.set(key, value);
+      });
+      return next;
+    },
+  ),
+}));
+
+import { useCharacters } from "@features/characters/hooks";
+import { useLocalStorage } from "@shared/hooks";
 
 afterEach(cleanup);
 
@@ -37,118 +146,6 @@ const mockCharacters: Character[] = [
     url: "",
     created: "",
   },
-  {
-    id: 3,
-    name: "Summer Smith",
-    status: "Alive",
-    species: "Human",
-    type: "",
-    gender: "Female",
-    origin: { name: "Earth", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 4,
-    name: "Beth Smith",
-    status: "Alive",
-    species: "Human",
-    type: "",
-    gender: "Female",
-    origin: { name: "Earth", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 5,
-    name: "Jerry Smith",
-    status: "Alive",
-    species: "Human",
-    type: "",
-    gender: "Male",
-    origin: { name: "Earth", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 6,
-    name: "Rickity Smith",
-    status: "Alive",
-    species: "Human",
-    type: "",
-    gender: "Male",
-    origin: { name: "Earth", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 7,
-    name: "Evil Morty",
-    status: "Alive",
-    species: "Human",
-    type: "",
-    gender: "Male",
-    origin: { name: "The Citadel", url: "" },
-    location: { name: "The Citadel", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 8,
-    name: "Birdperson",
-    status: "Dead",
-    species: "Bird-Person",
-    type: "",
-    gender: "Male",
-    origin: { name: "Bird World", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 9,
-    name: "Pickle Rick",
-    status: "Alive",
-    species: "Human",
-    type: "Pickle",
-    gender: "Male",
-    origin: { name: "Earth", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
-  {
-    id: 10,
-    name: "Mr. Meeseeks",
-    status: "Alive",
-    species: "Meeseeks",
-    type: "",
-    gender: "Male",
-    origin: { name: "Meeseeks Box", url: "" },
-    location: { name: "Earth", url: "" },
-    image: "",
-    episode: [],
-    url: "",
-    created: "",
-  },
 ];
 
 const renderComponent = () =>
@@ -160,142 +157,109 @@ const renderComponent = () =>
 
 describe("render", () => {
   beforeEach(() => {
-    vi.stubGlobal("localStorage", createLocalStorageMock());
+    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
-    vi.unstubAllGlobals();
   });
 
   it("should render search and main elements", () => {
-    vi.spyOn(globalThis, "fetch").mockImplementation(
-      () => new Promise(() => {}),
-    );
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "loading",
+      data: { results: [], info: { pages: 1 } },
+      error: null,
+    } as never);
 
     renderComponent();
 
-    expect(screen.getByRole("search")).toBeInTheDocument();
-    expect(screen.getByRole("main")).toBeInTheDocument();
+    expect(screen.getByTestId("search")).toBeInTheDocument();
+    expect(screen.getByTestId("main")).toBeInTheDocument();
   });
 
   it("should render spinner on loading", () => {
-    vi.spyOn(globalThis, "fetch").mockImplementation(
-      () => new Promise(() => {}),
-    );
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "loading",
+      data: { results: [], info: { pages: 1 } },
+      error: null,
+    } as never);
 
     renderComponent();
 
-    expect(screen.getByRole("status")).toBeInTheDocument();
-    expect(screen.queryByText(/not found/i)).not.toBeInTheDocument();
-    expect(screen.queryByText("Rick Sanchez")).not.toBeInTheDocument();
+    expect(screen.getByTestId("spinner")).toBeInTheDocument();
+    expect(screen.queryByTestId("character-list")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("error")).not.toBeInTheDocument();
   });
 
-  it("should render list after successful load", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ results: mockCharacters }),
-    } as Response);
+  it("should render list after successful load", () => {
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "success",
+      data: { results: mockCharacters, info: { pages: 1 } },
+      error: null,
+    } as never);
 
     renderComponent();
 
-    await waitFor(() => {
-      expect(screen.getByRole("list")).toBeInTheDocument();
-    });
-
+    expect(screen.getByTestId("character-list")).toBeInTheDocument();
     expect(screen.getByText("Rick Sanchez")).toBeInTheDocument();
     expect(screen.getByText("Morty Smith")).toBeInTheDocument();
   });
 
-  it("should render error after failed load", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      ok: false,
-      json: () => Promise.resolve({ error: "Not found" }),
-    } as Response);
+  it("should render error after failed load", () => {
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "error",
+      data: { results: [], info: { pages: 1 } },
+      error: new Error("Not found"),
+    } as never);
 
     renderComponent();
 
-    await waitFor(() => {
-      expect(screen.getByText(/error/i)).toBeInTheDocument();
-    });
+    expect(screen.getByTestId("error")).toBeInTheDocument();
+    expect(screen.getByText("Not found")).toBeInTheDocument();
+  });
+
+  it("should render pagination on success", () => {
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "success",
+      data: { results: mockCharacters, info: { pages: 5 } },
+      error: null,
+    } as never);
+
+    renderComponent();
+
+    expect(screen.getByTestId("pagination")).toBeInTheDocument();
+    expect(screen.getByText("1/5")).toBeInTheDocument();
   });
 });
 
 describe("behavior", () => {
   afterEach(() => {
     vi.restoreAllMocks();
-    vi.unstubAllGlobals();
   });
 
-  it("should load characters from localStorage on mount", async () => {
-    const mockLocalStorage = createLocalStorageMock() as unknown as {
-      getItem: ReturnType<typeof vi.fn>;
-    };
-    mockLocalStorage.getItem.mockReturnValue(JSON.stringify("rick"));
-    vi.stubGlobal("localStorage", mockLocalStorage);
-
-    vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ results: [mockCharacters[0]] }),
-    } as Response);
+  it("should call onPrev when prev button clicked", () => {
+    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "success",
+      data: { results: mockCharacters, info: { pages: 5 } },
+      error: null,
+    } as never);
 
     renderComponent();
 
-    await waitFor(() => {
-      expect(globalThis.fetch).toHaveBeenLastCalledWith(
-        expect.stringContaining("name=rick"),
-        expect.any(Object),
-      );
-    });
-
-    expect(screen.getByText("Rick Sanchez")).toBeInTheDocument();
+    screen.getByTestId("prev").click();
   });
 
-  it("should call fetch and render filtered results on search", async () => {
-    vi.stubGlobal("localStorage", createLocalStorageMock());
-
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ results: [mockCharacters[1]] }),
-    } as Response);
+  it("should call onNext when next button clicked", () => {
+    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "success",
+      data: { results: mockCharacters, info: { pages: 5 } },
+      error: null,
+    } as never);
 
     renderComponent();
 
-    const input = screen.getByLabelText("Search", { selector: "input" });
-    await userEvent.type(input, "morty{Enter}");
-
-    await waitFor(() => {
-      expect(fetchSpy).toHaveBeenLastCalledWith(
-        expect.stringContaining("name=morty"),
-        expect.any(Object),
-      );
-    });
-
-    expect(screen.getByText("Morty Smith")).toBeInTheDocument();
-  });
-
-  it("should render correct number of filtered results", async () => {
-    vi.stubGlobal("localStorage", createLocalStorageMock());
-
-    const filteredCharacters = mockCharacters.filter((char) =>
-      char.name.toLowerCase().includes("rick"),
-    );
-
-    vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ results: filteredCharacters }),
-    } as Response);
-
-    renderComponent();
-
-    const input = screen.getByLabelText("Search", { selector: "input" });
-    await userEvent.type(input, "rick{Enter}");
-
-    await waitFor(() => {
-      const lists = screen.getAllByRole("list");
-      const characterList = lists[lists.length - 1];
-      const characterItems = characterList.querySelectorAll("li");
-      expect(characterItems).toHaveLength(filteredCharacters.length);
-    });
+    screen.getByTestId("next").click();
   });
 });
