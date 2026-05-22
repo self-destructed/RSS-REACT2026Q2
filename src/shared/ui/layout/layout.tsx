@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { Navbar } from "../navbar";
+import { Header } from "../header";
 
 interface Props {
   children: ReactNode;
@@ -8,7 +8,7 @@ interface Props {
 export default function Layout({ children }: Props): React.JSX.Element {
   return (
     <div className="min-h-screen bg-slate-200 dark:bg-neutral-950">
-      <Navbar />
+      <Header />
       {children}
     </div>
   );
