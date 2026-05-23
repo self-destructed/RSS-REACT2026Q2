@@ -17,7 +17,6 @@ export function downloadFile({
   a.href = url;
 
   const clickEvt = new MouseEvent("click", {
-    view: window,
     bubbles: true,
     cancelable: true,
   });
