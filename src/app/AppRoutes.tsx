@@ -1,8 +1,6 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
 import { PATHS } from "@shared/constants";
-import { CharactersPage } from "@app/pages/characters";
-import { AboutPage } from "@app/pages/about";
-import { ErrorPage } from "@app/pages/error";
+import { CharactersPage, AboutPage, ErrorPage } from "@app/pages";
 import { CharacterSidebar } from "@features/characters";
 import { Layout } from "@shared/ui";
 
