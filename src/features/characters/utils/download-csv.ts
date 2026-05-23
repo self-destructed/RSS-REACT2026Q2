@@ -28,7 +28,7 @@ export async function downloadCsv(ids: number[]): Promise<void> {
 
   downloadFile({
     data: csv,
-    fileName: "selected-characters.csv",
+    fileName: `${String(ids.length)}_items.csv`,
     fileType: "text/csv",
   });
 }
