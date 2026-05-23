@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import { CharactersPage } from "./characters-page";
 import type { Character } from "@shared/api/types";
@@ -114,6 +115,7 @@ vi.mock("@shared/utils", () => ({
 
 import { useCharacters } from "@features/characters/hooks";
 import { useLocalStorage } from "@shared/hooks";
+import { updateSearchParams } from "@shared/utils";
 
 afterEach(cleanup);
 
@@ -148,9 +150,9 @@ const mockCharacters: Character[] = [
   },
 ];
 
-const renderComponent = () =>
+const renderComponent = (initialEntries?: string[]) =>
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={initialEntries}>
       <CharactersPage />
     </MemoryRouter>,
   );
@@ -237,7 +239,7 @@ describe("behavior", () => {
     vi.restoreAllMocks();
   });
 
-  it("should call onPrev when prev button clicked", () => {
+  it("should not call onPrev on first page", async () => {
     vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
@@ -247,10 +249,33 @@ describe("behavior", () => {
 
     renderComponent();
 
-    screen.getByTestId("prev").click();
+    const spy = vi.mocked(updateSearchParams);
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("prev"));
+
+    expect(spy).not.toHaveBeenCalled();
   });
 
-  it("should call onNext when next button clicked", () => {
+  it("should call onPrev when page is not first", async () => {
+    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "success",
+      data: { results: mockCharacters, info: { pages: 5 } },
+      error: null,
+    } as never);
+
+    renderComponent(["/?page=2"]);
+
+    const spy = vi.mocked(updateSearchParams);
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("prev"));
+
+    expect(spy).toHaveBeenCalledWith(expect.any(URLSearchParams), {
+      page: "1",
+    });
+  });
+
+  it("should call onNext when next button clicked", async () => {
     vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
@@ -260,6 +285,12 @@ describe("behavior", () => {
 
     renderComponent();
 
-    screen.getByTestId("next").click();
+    const spy = vi.mocked(updateSearchParams);
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("next"));
+
+    expect(spy).toHaveBeenCalledWith(expect.any(URLSearchParams), {
+      page: "2",
+    });
   });
 });
