@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useCharacters, useCharacter } from "./use-character";
+import { useFetch } from "@shared/hooks";
 
 // Mock useFetch
 vi.mock("../../../../shared/hooks/useFetch", () => ({
@@ -19,12 +20,14 @@ describe("useCharacters", () => {
     const { result } = renderHook(() => useCharacters({ name: "rick" }));
 
     expect(result.current).toBeDefined();
+    expect(useFetch).toHaveBeenCalledWith(expect.stringContaining("name=rick"));
   });
 
   it("accepts page filter", () => {
     const { result } = renderHook(() => useCharacters({ page: 2 }));
 
     expect(result.current).toBeDefined();
+    expect(useFetch).toHaveBeenCalledWith(expect.stringContaining("page=2"));
   });
 
   it("accepts both name and page filters", () => {
@@ -33,6 +36,8 @@ describe("useCharacters", () => {
     );
 
     expect(result.current).toBeDefined();
+    expect(useFetch).toHaveBeenCalledWith(expect.stringContaining("name=rick"));
+    expect(useFetch).toHaveBeenCalledWith(expect.stringContaining("page=2"));
   });
 });
 
