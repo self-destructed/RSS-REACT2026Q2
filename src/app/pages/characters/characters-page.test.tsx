@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { useCharacters } from "@features/characters";
 import { updateSearchParams } from "@shared/utils";
 import { CharactersPage } from "./characters-page";
-import type { Character } from "@shared/api/types";
+import type { Character } from "@shared/api";
 
 afterEach(cleanup);
 
