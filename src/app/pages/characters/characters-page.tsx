@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   Outlet,
   useLocation,
@@ -38,17 +38,18 @@ export function CharactersPage(): React.JSX.Element {
   const page = Number(params.get("page")) || 1;
   const state = useCharacters({ name, page });
 
+  const hasRestored = useRef(false);
+
   useEffect(() => {
-    const urlName = params.get("name");
-    if (searchQuery && !urlName) {
-      setParams((prev) =>
-        updateSearchParams(prev, {
-          name: searchQuery,
-          page: "1",
-        }),
-      );
-    }
-  }, [params, searchQuery, setParams]);
+    if (hasRestored.current || !searchQuery || params.get("name")) return;
+    hasRestored.current = true;
+    setParams((prev) =>
+      updateSearchParams(prev, {
+        name: searchQuery,
+        page: "1",
+      }),
+    );
+  }, [searchQuery, params, setParams]);
 
   const handlePrev = () => {
     if (page <= 1) return;
