@@ -10,8 +10,7 @@ interface Context {
 export function CharacterSidebar(): React.JSX.Element {
   const { id } = useParams();
   const { onClose } = useOutletContext<Context>();
-
-  const characterId = id ? Number(id) : null;
+  const characterId = id !== undefined ? Number(id) : null;
   const state = useCharacter(characterId);
 
   return (
