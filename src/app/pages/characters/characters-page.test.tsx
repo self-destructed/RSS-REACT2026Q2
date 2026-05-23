@@ -1,9 +1,14 @@
-import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
+import { useState } from "react";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
+import { useCharacters } from "@features/characters/hooks";
+import { updateSearchParams } from "@shared/utils";
 import { CharactersPage } from "./characters-page";
 import type { Character } from "@shared/api/types";
+
+afterEach(cleanup);
 
 vi.mock("@shared/ui", () => ({
   Main: ({ children }: { children: React.ReactNode }) => (
@@ -87,13 +92,8 @@ vi.mock("@features/characters/ui", () => ({
 
 vi.mock("@shared/hooks", () => ({
   useLocalStorage: vi.fn((_: string, initial: string) => {
-    let value = initial;
-    return [
-      value,
-      (v: string) => {
-        value = v;
-      },
-    ];
+    const [value, setValue] = useState(initial);
+    return [value, setValue];
   }),
 }));
 
@@ -113,12 +113,6 @@ vi.mock("@shared/utils", () => ({
     },
   ),
 }));
-
-import { useCharacters } from "@features/characters/hooks";
-import { useLocalStorage } from "@shared/hooks";
-import { updateSearchParams } from "@shared/utils";
-
-afterEach(cleanup);
 
 const mockCharacters: Character[] = [
   {
@@ -159,10 +153,6 @@ const renderComponent = (initialEntries?: string[]) =>
   );
 
 describe("render", () => {
-  beforeEach(() => {
-    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
-  });
-
   afterEach(() => {
     vi.restoreAllMocks();
   });
@@ -241,7 +231,6 @@ describe("behavior", () => {
   });
 
   it("should not call onPrev on first page", async () => {
-    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
@@ -258,7 +247,6 @@ describe("behavior", () => {
   });
 
   it("should call onPrev when page is not first", async () => {
-    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
@@ -277,7 +265,6 @@ describe("behavior", () => {
   });
 
   it("should call onNext when next button clicked", async () => {
-    vi.mocked(useLocalStorage).mockReturnValue(["", () => {}]);
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
