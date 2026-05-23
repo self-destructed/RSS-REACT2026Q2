@@ -59,7 +59,7 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleSearch = (query: string) => {
-    if (query === name && state.status !== "error") {
+    if (query === name && state.status !== "error" && page === 1) {
       return;
     }
     setParams((prev) =>
