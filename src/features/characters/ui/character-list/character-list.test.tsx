@@ -40,7 +40,13 @@ const mockCharacters: Character[] = [
 describe("CharacterList", () => {
   describe("render", () => {
     it("should render correct number of items", () => {
-      render(<CharacterList data={mockCharacters} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+        />,
+      );
 
       const items = screen.getAllByRole("listitem");
 
@@ -48,20 +54,32 @@ describe("CharacterList", () => {
     });
 
     it("should pass correct data to CharacterCard", () => {
-      render(<CharacterList data={mockCharacters} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+        />,
+      );
 
       expect(screen.getByText("Rick Sanchez")).toBeInTheDocument();
       expect(screen.getByText("Morty Smith")).toBeInTheDocument();
     });
 
     it("should render nothing when data is empty", () => {
-      render(<CharacterList data={[]} />);
+      render(<CharacterList data={[]} selectedIds={[]} onToggle={vi.fn()} />);
 
       expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
     });
 
     it("renders items with button role for accessibility", () => {
-      render(<CharacterList data={mockCharacters} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+        />,
+      );
 
       const items = screen.getAllByRole("button");
       expect(items).toHaveLength(2);
@@ -72,7 +90,14 @@ describe("CharacterList", () => {
     it("calls onSelect with character id on click", async () => {
       const onSelectMock = vi.fn();
       const user = userEvent.setup();
-      render(<CharacterList data={mockCharacters} onSelect={onSelectMock} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+          onSelect={onSelectMock}
+        />,
+      );
 
       const firstItem = screen.getAllByRole("button")[0];
       await user.click(firstItem);
@@ -83,7 +108,14 @@ describe("CharacterList", () => {
     it("calls onSelect on Enter key press", async () => {
       const onSelectMock = vi.fn();
       const user = userEvent.setup();
-      render(<CharacterList data={mockCharacters} onSelect={onSelectMock} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+          onSelect={onSelectMock}
+        />,
+      );
 
       const firstItem = screen.getAllByRole("button")[0];
       firstItem.focus();
@@ -95,7 +127,14 @@ describe("CharacterList", () => {
     it("calls onSelect on Space key press", async () => {
       const onSelectMock = vi.fn();
       const user = userEvent.setup();
-      render(<CharacterList data={mockCharacters} onSelect={onSelectMock} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+          onSelect={onSelectMock}
+        />,
+      );
 
       const firstItem = screen.getAllByRole("button")[0];
       firstItem.focus();
@@ -107,7 +146,14 @@ describe("CharacterList", () => {
     it("does not call onSelect on other key press", async () => {
       const onSelectMock = vi.fn();
       const user = userEvent.setup();
-      render(<CharacterList data={mockCharacters} onSelect={onSelectMock} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+          onSelect={onSelectMock}
+        />,
+      );
 
       await user.tab();
       await user.keyboard("a");
@@ -117,7 +163,13 @@ describe("CharacterList", () => {
 
     it("does not throw when onSelect is not provided", async () => {
       const user = userEvent.setup();
-      render(<CharacterList data={mockCharacters} />);
+      render(
+        <CharacterList
+          data={mockCharacters}
+          selectedIds={[]}
+          onToggle={vi.fn()}
+        />,
+      );
 
       const firstItem = screen.getAllByRole("button")[0];
 
