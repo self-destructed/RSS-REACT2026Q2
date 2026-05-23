@@ -6,51 +6,36 @@ const NAV_LINK_STYLES = {
   active: "lg:px-2 font-semibold text-black dark:text-white",
 };
 
+interface NavItem {
+  to: string;
+  label: string;
+  end?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { to: PATHS.HOME, label: "Home", end: true },
+  { to: PATHS.CHARACTERS, label: "Characters" },
+  { to: PATHS.ABOUT, label: "About" },
+  { to: PATHS.ERROR, label: "Error" },
+];
+
 export function Navbar(): React.JSX.Element {
   return (
     <nav>
-      <ul className="list-style-none me-auto flex flex-col ps-0 md:mt-1 md:flex-row">
-        <li className="my-4 ps-2 md:my-0 md:mb-4 lg:my-0 lg:ps-2 lg:pe-1">
-          <NavLink
-            to={PATHS.HOME}
-            end
-            className={({ isActive }) =>
-              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-            }
-          >
-            Home
-          </NavLink>
-        </li>
-        <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
-          <NavLink
-            to={PATHS.CHARACTERS}
-            className={({ isActive }) =>
-              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-            }
-          >
-            Characters
-          </NavLink>
-        </li>
-        <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
-          <NavLink
-            to={PATHS.ABOUT}
-            className={({ isActive }) =>
-              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-            }
-          >
-            About
-          </NavLink>
-        </li>
-        <li className="mb-4 ps-2 lg:mb-0 lg:ps-0 lg:pe-1">
-          <NavLink
-            to={PATHS.ERROR}
-            className={({ isActive }) =>
-              isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
-            }
-          >
-            Error
-          </NavLink>
-        </li>
+      <ul className="list-style-none flex flex-col gap-y-4 md:flex-row md:gap-x-2 md:gap-y-0">
+        {NAV_ITEMS.map((item) => (
+          <li key={item.to}>
+            <NavLink
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                isActive ? NAV_LINK_STYLES.active : NAV_LINK_STYLES.base
+              }
+            >
+              {item.label}
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </nav>
   );
