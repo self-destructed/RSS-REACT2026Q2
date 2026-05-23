@@ -1,4 +1,4 @@
-import type { Character } from "@shared/api/types";
+import type { Character } from "@shared/api";
 
 interface CharacterDetailProps {
   character: Character;

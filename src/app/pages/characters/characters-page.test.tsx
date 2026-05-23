@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import CharactersPage from "./characters-page";
-import type { Character } from "@shared/api/types";
+import type { Character } from "@shared/api";
 
 vi.mock("@shared/ui", () => ({
   Main: ({ children }: { children: React.ReactNode }) => (

@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CharacterList from "./character-list";
-import type { Character } from "@shared/api/types";
+import type { Character } from "@shared/api";
 
 afterEach(cleanup);
 

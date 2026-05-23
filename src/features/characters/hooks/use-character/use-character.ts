@@ -1,7 +1,7 @@
-import type { CharacterFilter, Info, Character } from "@shared/api/types";
+import type { CharacterFilter, Info, Character } from "@shared/api";
 import { useFetch, type LoadingState } from "@shared/hooks";
 import { buildQueryString } from "@shared/utils";
-import { API_BASE_URL, API_ENDPOINTS } from "@shared/constants/api";
+import { API_BASE_URL, API_ENDPOINTS } from "@shared/constants";
 
 export function useCharacters(
   filters?: CharacterFilter,

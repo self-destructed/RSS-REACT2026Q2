@@ -1,4 +1,4 @@
-import { ErrorBoundary, ErrorFallback, ErrorTrigger } from "@shared/ui/error";
+import { ErrorBoundary, ErrorFallback, ErrorTrigger } from "@shared/ui";
 import { BrowserRouter } from "react-router";
 import { AppRoutes } from "./AppRoutes";
 import { ThemeProvider } from "@shared/context";

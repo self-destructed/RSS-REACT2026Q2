@@ -1,5 +1,4 @@
-import { Navbar } from "@shared/ui/navbar";
-import { ThemeToggle } from "@shared/ui/theme-toggle";
+import { Navbar, ThemeToggle } from "@shared/ui";
 import { useTheme } from "@shared/hooks";
 
 export default function Header(): React.JSX.Element {
