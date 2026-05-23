@@ -38,8 +38,8 @@ export function CharactersPage(): React.JSX.Element {
   }, [params, searchQuery, setParams]);
 
   const handlePrev = () => {
-    const newPage = page - 1;
-    setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
+    if (page <= 1) return;
+    setParams((prev) => updateSearchParams(prev, { page: String(page - 1) }));
   };
 
   const handleNext = () => {
