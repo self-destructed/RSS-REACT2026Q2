@@ -27,9 +27,9 @@ export function useLocalStorage<T>(
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
+      setStoredValue((prev) =>
+        value instanceof Function ? value(prev) : value,
+      );
     } catch (error) {
       console.warn(`Error while updating localStorage:`, error);
     }
