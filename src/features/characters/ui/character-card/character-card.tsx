@@ -6,17 +6,14 @@ interface Props {
   onToggle?: () => void;
 }
 
-const STATUS_BG_STYLES: Record<string, string> = {
-  Alive: "bg-green-500",
-  Dead: "bg-red-500",
+const STATUS_CONFIG: Record<string, { bg: string; text: string }> = {
+  Alive: { bg: "bg-green-500", text: "text-green-600 dark:text-green-400" },
+  Dead: { bg: "bg-red-500", text: "text-red-600 dark:text-red-400" },
 };
-const DEFAULT_BG = "bg-gray-500";
-
-const STATUS_TEXT_STYLES: Record<string, string> = {
-  Alive: "text-green-600 dark:text-green-400",
-  Dead: "text-red-600 dark:text-red-400",
+const DEFAULT_STATUS = {
+  bg: "bg-gray-500",
+  text: "text-gray-600 dark:text-gray-400",
 };
-const DEFAULT_TEXT = "text-gray-600 dark:text-gray-400";
 
 const GENDER_ICONS: Record<string, string> = {
   Female: "♀",
@@ -32,8 +29,8 @@ export function CharacterCard({
   isSelected = false,
   onToggle,
 }: Props): React.JSX.Element {
-  const bgClass = STATUS_BG_STYLES[data.status] ?? DEFAULT_BG;
-  const textClass = STATUS_TEXT_STYLES[data.status] ?? DEFAULT_TEXT;
+  const { bg: bgClass, text: textClass } =
+    STATUS_CONFIG[data.status] ?? DEFAULT_STATUS;
   const icon = GENDER_ICONS[data.gender] ?? DEFAULT_ICON;
 
   return (
