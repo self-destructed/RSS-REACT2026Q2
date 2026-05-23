@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CharacterSidebar } from "./character-sidebar";
-import { useCharacter } from "@features/characters/hooks";
+import { useCharacter } from "@features/characters";
 import { useParams, useOutletContext } from "react-router";
 
 afterEach(cleanup);
@@ -12,11 +12,8 @@ vi.mock("react-router", () => ({
   useOutletContext: vi.fn<() => { onClose: () => void }>(),
 }));
 
-vi.mock("@features/characters/hooks", () => ({
+vi.mock("@features/characters", () => ({
   useCharacter: vi.fn<() => { status: string }>(),
-}));
-
-vi.mock("@features/characters/ui", () => ({
   CharacterDetail: ({ character }: { character: { name: string } }) => (
     <div data-testid="character-detail">{character.name}</div>
   ),

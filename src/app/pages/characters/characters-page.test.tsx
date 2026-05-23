@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
-import { useCharacters } from "@features/characters/hooks";
+import { useCharacters } from "@features/characters";
 import { updateSearchParams } from "@shared/utils";
 import { CharactersPage } from "./characters-page";
 import type { Character } from "@shared/api/types";
@@ -65,7 +65,7 @@ vi.mock("@shared/ui", () => ({
   Flyout: () => null,
 }));
 
-vi.mock("@features/characters/ui", () => ({
+vi.mock("@features/characters", () => ({
   CharacterList: ({
     data,
     onSelect,
@@ -88,6 +88,8 @@ vi.mock("@features/characters/ui", () => ({
       ))}
     </ul>
   ),
+  useCharacters: vi.fn(),
+  downloadCsv: vi.fn(),
 }));
 
 vi.mock("@shared/hooks", () => ({
@@ -95,10 +97,6 @@ vi.mock("@shared/hooks", () => ({
     const [value, setValue] = useState(initial);
     return [value, setValue];
   }),
-}));
-
-vi.mock("@features/characters/hooks", () => ({
-  useCharacters: vi.fn(),
 }));
 
 vi.mock("@shared/utils", () => ({

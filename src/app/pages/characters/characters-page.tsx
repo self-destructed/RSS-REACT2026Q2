@@ -15,10 +15,12 @@ import {
 } from "@shared/ui";
 import { useLocalStorage } from "@shared/hooks";
 import { useSelectedCharactersStore } from "@shared/store";
-import { CharacterList } from "@features/characters/ui";
+import {
+  CharacterList,
+  downloadCsv,
+  useCharacters,
+} from "@features/characters";
 import { updateSearchParams } from "@shared/utils";
-import { downloadCsv } from "@features/characters/utils";
-import { useCharacters } from "@features/characters/hooks";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 

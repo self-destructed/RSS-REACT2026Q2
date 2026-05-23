@@ -3,7 +3,7 @@ import { PATHS } from "@shared/constants";
 import { CharactersPage } from "@app/pages/characters";
 import { AboutPage } from "@app/pages/about";
 import { ErrorPage } from "@app/pages/error";
-import { CharacterSidebar } from "@features/characters/widgets";
+import { CharacterSidebar } from "@features/characters";
 import { Layout } from "@shared/ui";
 
 function RootLayout(): React.JSX.Element {
