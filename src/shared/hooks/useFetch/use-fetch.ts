@@ -10,12 +10,7 @@ export function useFetch<T>(url: string | null): LoadingState<T> {
   const [state, setState] = useState<LoadingState<T>>({ status: "idle" });
 
   useEffect(() => {
-    if (!url) {
-      (() => {
-        setState({ status: "idle" });
-      })();
-      return;
-    }
+    if (!url) return;
 
     const abortController = new AbortController();
     let isMounted = true;
