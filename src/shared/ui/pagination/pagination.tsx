@@ -13,6 +13,23 @@ const BTN_STYLES = {
   counter: "text-surface text-sm font-medium dark:text-white select-none",
 };
 
+function renderNavButton(
+  label: string,
+  disabled: boolean,
+  onClick: () => void,
+): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${disabled ? BTN_STYLES.disabled : ""}`}
+    >
+      {label}
+    </button>
+  );
+}
+
 export function Pagination({
   currentPage,
   totalPages,
@@ -25,31 +42,13 @@ export function Pagination({
   return (
     <nav aria-label="Pagination">
       <ul className="list-style-none flex items-center gap-4">
-        <li>
-          <button
-            type="button"
-            onClick={onPrev}
-            disabled={isFirstPage}
-            className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${isFirstPage ? BTN_STYLES.disabled : ""}`}
-          >
-            Prev
-          </button>
-        </li>
+        <li>{renderNavButton("Prev", isFirstPage, onPrev)}</li>
         <li>
           <span className={BTN_STYLES.counter}>
             {currentPage}/{totalPages}
           </span>
         </li>
-        <li>
-          <button
-            type="button"
-            onClick={onNext}
-            disabled={isLastPage}
-            className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${isLastPage ? BTN_STYLES.disabled : ""}`}
-          >
-            Next
-          </button>
-        </li>
+        <li>{renderNavButton("Next", isLastPage, onNext)}</li>
       </ul>
     </nav>
   );
