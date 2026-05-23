@@ -1,7 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
 import { PATHS } from "@shared/constants";
 import { CharactersPage, AboutPage, ErrorPage } from "@app/pages";
-import { CharacterSidebar } from "@features/characters";
+import { CharacterSidebar } from "@widgets";
 import { Layout } from "@shared/ui";
 
 function RootLayout(): React.JSX.Element {
