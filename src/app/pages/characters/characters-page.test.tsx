@@ -57,6 +57,7 @@ vi.mock("@shared/ui", () => ({
       {message}
     </div>
   ),
+  Flyout: () => null,
 }));
 
 vi.mock("@features/characters/ui", () => ({

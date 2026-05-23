@@ -5,13 +5,22 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router";
-import { Search, Spinner, Pagination, Main, ErrorDisplay } from "@shared/ui";
+import {
+  Search,
+  Spinner,
+  Pagination,
+  Main,
+  ErrorDisplay,
+  Flyout,
+} from "@shared/ui";
 import { useLocalStorage } from "@shared/hooks";
 import { CharacterList } from "@features/characters/ui";
 import { updateSearchParams } from "@shared/utils";
 import { useCharacters } from "@features/characters/hooks";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
+
+const noop = (): undefined => undefined;
 
 export function CharactersPage(): React.JSX.Element {
   const location = useLocation();
@@ -69,7 +78,7 @@ export function CharactersPage(): React.JSX.Element {
   };
   return (
     <>
-      <Main>
+      <Main className="pb-32 sm:pb-16 md:pb-14 lg:pb-10">
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
             <Search onSubmit={handleSearch} query={name} />
@@ -103,6 +112,11 @@ export function CharactersPage(): React.JSX.Element {
             </div>
           )}
         </section>
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex w-full justify-center">
+          <div className="w-full lg:max-w-4xl rounded-t-xl">
+            <Flyout count={0} onUnselectAll={noop} onDownload={noop} />
+          </div>
+        </div>
       </Main>
       <Outlet context={{ onClose: handleSidebarClose }} />
     </>
