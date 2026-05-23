@@ -54,6 +54,9 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleNext = () => {
+    if (state.status !== "success") return;
+    const totalPages = state.data.info?.pages ?? 1;
+    if (page >= totalPages) return;
     const newPage = page + 1;
     setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
   };
