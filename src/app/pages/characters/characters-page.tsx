@@ -85,7 +85,7 @@ export function CharactersPage(): React.JSX.Element {
       >
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
-            <Search onSubmit={handleSearch} query={name} />
+            <Search key={name} onSubmit={handleSearch} query={name} />
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
