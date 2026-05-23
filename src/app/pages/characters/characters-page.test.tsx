@@ -182,6 +182,19 @@ describe("render", () => {
     expect(screen.queryByTestId("error")).not.toBeInTheDocument();
   });
 
+  it("should render nothing on idle state", () => {
+    vi.mocked(useCharacters).mockReturnValue({
+      status: "idle",
+    } as never);
+
+    renderComponent();
+
+    expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("character-list")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("error")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("pagination")).not.toBeInTheDocument();
+  });
+
   it("should render list after successful load", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
