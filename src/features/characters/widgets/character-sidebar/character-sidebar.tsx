@@ -7,7 +7,7 @@ interface Context {
   onClose: () => void;
 }
 
-export default function CharacterSidebar(): React.JSX.Element {
+export function CharacterSidebar(): React.JSX.Element {
   const { id } = useParams();
   const { onClose } = useOutletContext<Context>();
 

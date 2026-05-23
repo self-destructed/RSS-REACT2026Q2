@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router";
-import ErrorPage from "./error-page";
+import { ErrorPage } from "./error-page";
 
 const renderWithRouter = () => {
   return render(

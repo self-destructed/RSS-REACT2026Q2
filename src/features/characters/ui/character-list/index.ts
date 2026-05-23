@@ -1,1 +1,1 @@
-export { default as CharacterList } from "./character-list";
+export { CharacterList } from "./character-list";

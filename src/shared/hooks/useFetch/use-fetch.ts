@@ -6,7 +6,7 @@ export type LoadingState<T> =
   | { status: "success"; data: T }
   | { status: "error"; error: Error };
 
-export default function useFetch<T>(url: string | null): LoadingState<T> {
+export function useFetch<T>(url: string | null): LoadingState<T> {
   const [state, setState] = useState<LoadingState<T>>({ status: "idle" });
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { PATHS } from "@shared/constants";
 import { Main } from "@shared/ui";
 
-export default function ErrorPage(): React.JSX.Element {
+export function ErrorPage(): React.JSX.Element {
   return (
     <Main>
       <div className="flex min-h-[60vh] flex-col items-center justify-center">

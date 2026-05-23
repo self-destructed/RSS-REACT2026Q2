@@ -1,7 +1,8 @@
-import React from "react";
+import { useState } from "react";
+import type { JSX } from "react";
 
-export default function ErrorTrigger(): React.JSX.Element {
-  const [shouldError, setShouldError] = React.useState(false);
+export function ErrorTrigger(): JSX.Element {
+  const [shouldError, setShouldError] = useState(false);
 
   if (shouldError) {
     throw new Error("💣 Boom! Error triggered by user");

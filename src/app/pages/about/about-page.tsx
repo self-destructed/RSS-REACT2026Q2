@@ -2,7 +2,7 @@ import { Main } from "@shared/ui";
 
 const ATTEMPT_NUMBER = Math.floor(Math.random() * 100) + 1;
 
-export default function AboutPage(): React.JSX.Element {
+export function AboutPage(): React.JSX.Element {
   return (
     <Main>
       <article className="flex min-h-[60vh] flex-col items-center justify-center">

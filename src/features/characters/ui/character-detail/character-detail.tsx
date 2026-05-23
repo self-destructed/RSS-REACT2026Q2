@@ -4,7 +4,7 @@ interface CharacterDetailProps {
   character: Character;
 }
 
-export default function CharacterDetail({
+export function CharacterDetail({
   character,
 }: CharacterDetailProps): React.JSX.Element {
   return (

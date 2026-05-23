@@ -22,7 +22,7 @@ const GENDER_ICONS: Record<string, string> = {
 };
 const DEFAULT_ICON = "⚲";
 
-export default function CharacterCard({ data }: Props): React.JSX.Element {
+export function CharacterCard({ data }: Props): React.JSX.Element {
   const bgClass = STATUS_BG_STYLES[data.status] ?? DEFAULT_BG;
   const textClass = STATUS_TEXT_STYLES[data.status] ?? DEFAULT_TEXT;
   const icon = GENDER_ICONS[data.gender] ?? DEFAULT_ICON;

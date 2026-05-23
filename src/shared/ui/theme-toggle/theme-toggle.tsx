@@ -3,7 +3,7 @@ interface ThemeToggleProps {
   onToggle: () => void;
 }
 
-export default function ThemeToggle({
+export function ThemeToggle({
   theme,
   onToggle,
 }: ThemeToggleProps): React.JSX.Element {

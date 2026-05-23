@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { ThemeContext, type Theme } from "./theme-context";
-import useLocalStorage from "@shared/hooks/use-local-storage/use-local-storage";
+import { useLocalStorage } from "@shared/hooks";
 
 const initialTheme: Theme = window.matchMedia("(prefers-color-scheme: dark)")
   .matches

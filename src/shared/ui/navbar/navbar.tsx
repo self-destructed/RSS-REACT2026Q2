@@ -6,7 +6,7 @@ const NAV_LINK_STYLES = {
   active: "lg:px-2 font-semibold text-black dark:text-white",
 };
 
-export default function Navbar(): React.JSX.Element {
+export function Navbar(): React.JSX.Element {
   return (
     <nav>
       <ul className="list-style-none me-auto flex flex-col ps-0 md:mt-1 md:flex-row">

@@ -13,7 +13,7 @@ import { useCharacters } from "@features/characters/hooks";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
-export default function CharactersPage(): React.JSX.Element {
+export function CharactersPage(): React.JSX.Element {
   const location = useLocation();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();

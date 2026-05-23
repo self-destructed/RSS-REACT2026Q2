@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router";
 import { AppRoutes } from "./AppRoutes";
 import { ThemeProvider } from "@shared/context";
 
-export default function App(): React.JSX.Element {
+export function App(): React.JSX.Element {
   return (
     <ThemeProvider>
       <ErrorBoundary fallback={(reset) => <ErrorFallback reset={reset} />}>
