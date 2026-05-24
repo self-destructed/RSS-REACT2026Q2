@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { PATHS } from "@shared/constants";
+import { PATHS } from "@shared/routes";
 import { Main } from "@shared/ui";
 
 export function ErrorPage(): React.JSX.Element {

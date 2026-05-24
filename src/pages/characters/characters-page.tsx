@@ -24,6 +24,7 @@ import {
   downloadCsv,
   useCharacters,
 } from "@features/characters";
+import { PATHS } from "@shared/routes";
 import { updateSearchParams } from "@shared/utils";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
@@ -85,12 +86,12 @@ export function CharactersPage(): React.JSX.Element {
 
   const handleCharacterSelect = (characterId: number) => {
     void navigate(
-      `/characters/details/${String(characterId)}${location.search}`,
+      `${PATHS.CHARACTERS_DETAILS(String(characterId))}${location.search}`,
     );
   };
 
   const handleSidebarClose = () => {
-    void navigate(`/characters${location.search}`);
+    void navigate(`${PATHS.CHARACTERS}${location.search}`);
   };
   return (
     <>
