@@ -1,12 +1,10 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
 import { PATHS } from "@shared/routes";
 import { Layout } from "../layout";
-import {
-  AboutPage,
-  CharacterDetailPage,
-  CharactersPage,
-  ErrorPage,
-} from "@pages";
+import { AboutPage } from "@pages/about/about-page";
+import { CharacterDetailPage } from "@pages/characters/character-detail";
+import { CharactersPage } from "@pages/characters/characters-page";
+import { ErrorPage } from "@pages/error/error-page";
 
 export function Router(): React.JSX.Element {
   return (

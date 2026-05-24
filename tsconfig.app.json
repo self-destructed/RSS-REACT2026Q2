@@ -26,9 +26,6 @@
       "@app/*": [
         "src/app/*"
       ],
-      "@pages": [
-        "src/pages/index"
-      ],
       "@pages/*": [
         "src/pages/*"
       ],
