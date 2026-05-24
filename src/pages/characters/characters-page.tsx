@@ -84,7 +84,9 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleCharacterSelect = (characterId: number) => {
-    void navigate(`/characters/${String(characterId)}${location.search}`);
+    void navigate(
+      `/characters/details/${String(characterId)}${location.search}`,
+    );
   };
 
   const handleSidebarClose = () => {
