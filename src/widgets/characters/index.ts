@@ -1,1 +1,1 @@
-export { CharacterSidebar } from "./character-sidebar";
+export { CharacterSidebar } from "./ui/character-sidebar";
