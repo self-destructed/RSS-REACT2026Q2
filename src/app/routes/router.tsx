@@ -1,8 +1,8 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
 import { PATHS } from "@shared/constants";
-import { CharactersPage, AboutPage, ErrorPage } from "@app/pages";
 import { CharacterSidebar } from "@widgets/characters";
 import { Layout } from "@shared/ui";
+import { CharactersPage, AboutPage, ErrorPage } from "@pages";
 
 function RootLayout(): React.JSX.Element {
   return (
@@ -12,7 +12,7 @@ function RootLayout(): React.JSX.Element {
   );
 }
 
-export function AppRoutes(): React.JSX.Element {
+export function Router(): React.JSX.Element {
   return (
     <Routes>
       <Route element={<RootLayout />}>
