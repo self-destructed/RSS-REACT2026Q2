@@ -14,7 +14,11 @@ import {
   Flyout,
 } from "@shared/ui";
 import { useLocalStorage } from "@shared/hooks";
-import { useSelectedCharactersStore } from "@shared/store";
+import {
+  useSelectedIds,
+  useToggleCharacter,
+  useUnselectAllCharacters,
+} from "@shared/store";
 import {
   CharacterList,
   downloadCsv,
@@ -25,7 +29,9 @@ import { updateSearchParams } from "@shared/utils";
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
 export function CharactersPage(): React.JSX.Element {
-  const { selectedIds, toggle, unselectAll } = useSelectedCharactersStore();
+  const selectedIds = useSelectedIds();
+  const toggle = useToggleCharacter();
+  const unselectAll = useUnselectAllCharacters();
   const count = selectedIds.length;
   const location = useLocation();
   const navigate = useNavigate();

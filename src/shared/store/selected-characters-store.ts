@@ -41,3 +41,15 @@ export const useSelectedCharactersStore = create<SelectedCharactersStore>()(
     { name: "selected-characters" },
   ),
 );
+
+export function useSelectedIds(): number[] {
+  return useSelectedCharactersStore((s) => s.selectedIds);
+}
+
+export function useToggleCharacter(): (id: number) => void {
+  return useSelectedCharactersStore((s) => s.toggle);
+}
+
+export function useUnselectAllCharacters(): () => void {
+  return useSelectedCharactersStore((s) => s.unselectAll);
+}
