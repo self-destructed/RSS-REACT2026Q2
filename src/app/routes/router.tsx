@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
 import { PATHS } from "@shared/constants";
-import { Layout } from "@shared/ui";
+import { Layout } from "../layout";
 import {
   AboutPage,
   CharacterDetailPage,
@@ -8,18 +8,16 @@ import {
   ErrorPage,
 } from "@pages";
 
-function RootLayout(): React.JSX.Element {
-  return (
-    <Layout>
-      <Outlet />
-    </Layout>
-  );
-}
-
 export function Router(): React.JSX.Element {
   return (
     <Routes>
-      <Route element={<RootLayout />}>
+      <Route
+        element={
+          <Layout>
+            <Outlet />
+          </Layout>
+        }
+      >
         <Route index element={<Navigate to={PATHS.CHARACTERS} replace />} />
         <Route path={PATHS.CHARACTERS} element={<CharactersPage />}>
           <Route index element={null} />
