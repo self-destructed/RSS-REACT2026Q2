@@ -1,5 +1,5 @@
 import { fetchCharacters } from "./fetch-characters";
-import { toCsv, downloadFile } from "@shared/utils";
+import { toCsv, downloadFile } from "@shared/lib";
 
 const CHARACTER_COLUMNS = [
   "id",

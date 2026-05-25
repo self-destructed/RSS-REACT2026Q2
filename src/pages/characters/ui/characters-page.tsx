@@ -25,7 +25,7 @@ import {
   useCharacters,
 } from "@features/characters";
 import { PATHS } from "@shared/routes";
-import { updateSearchParams } from "@shared/utils";
+import { updateSearchParams } from "@shared/lib";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 

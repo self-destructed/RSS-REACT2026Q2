@@ -1,14 +1,25 @@
 import { useState } from "react";
 import { describe, it, expect, afterEach, vi } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import { useCharacters } from "@features/characters";
-import { updateSearchParams } from "@shared/utils";
-import { CharactersPage } from "./characters-page";
+import { updateSearchParams } from "@shared/lib";
 import type { Character } from "@shared/api";
+import { CharactersPage } from "./characters-page";
 
-afterEach(cleanup);
+vi.mock("@shared/lib", () => ({
+  updateSearchParams: vi.fn(
+    (prev: URLSearchParams, params: Record<string, string | null>) => {
+      const next = new URLSearchParams(prev);
+      Object.entries(params).forEach(([key, value]) => {
+        if (value === null) next.delete(key);
+        else next.set(key, value);
+      });
+      return next;
+    },
+  ),
+}));
 
 vi.mock("@shared/ui", () => ({
   Main: ({ children }: { children: React.ReactNode }) => (
@@ -97,19 +108,6 @@ vi.mock("@shared/hooks", () => ({
     const [value, setValue] = useState(initial);
     return [value, setValue];
   }),
-}));
-
-vi.mock("@shared/utils", () => ({
-  updateSearchParams: vi.fn(
-    (prev: URLSearchParams, params: Record<string, string | null>) => {
-      const next = new URLSearchParams(prev);
-      Object.entries(params).forEach(([key, value]) => {
-        if (value === null) next.delete(key);
-        else next.set(key, value);
-      });
-      return next;
-    },
-  ),
 }));
 
 const mockCharacters: Character[] = [

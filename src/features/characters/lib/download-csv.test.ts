@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { downloadCsv } from "./download-csv";
 import { fetchCharacters } from "./fetch-characters";
-import { toCsv, downloadFile } from "@shared/utils";
+import { toCsv, downloadFile } from "@shared/lib";
 import type { Character } from "@shared/api";
 
 vi.mock("./fetch-characters", () => ({ fetchCharacters: vi.fn() }));
 
-vi.mock("@shared/utils", () => ({
+vi.mock("@shared/lib", () => ({
   toCsv: vi.fn(),
   downloadFile: vi.fn(),
 }));
