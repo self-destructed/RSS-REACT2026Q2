@@ -12,3 +12,4 @@ export { Search } from "./search";
 export { Spinner } from "./spinner";
 export { ThemeToggle } from "./theme-toggle";
 export { Flyout } from "./flyout";
+export { CharacterSidebar } from "./character-sidebar";
