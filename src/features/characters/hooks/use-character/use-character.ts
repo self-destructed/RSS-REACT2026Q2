@@ -1,5 +1,5 @@
 import type { CharacterFilter, Info, Character } from "@shared/api";
-import { useFetch, type LoadingState } from "@shared/hooks";
+import { useFetch, type LoadingState } from "@shared/lib";
 import { buildQueryString } from "@shared/lib";
 import { API_BASE_URL, API_ENDPOINTS } from "@shared/api-config";
 

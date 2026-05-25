@@ -13,7 +13,7 @@ import {
   ErrorDisplay,
   Flyout,
 } from "@shared/ui";
-import { useLocalStorage } from "@shared/hooks";
+import { useLocalStorage } from "@shared/lib";
 import {
   useSelectedIds,
   useToggleCharacter,

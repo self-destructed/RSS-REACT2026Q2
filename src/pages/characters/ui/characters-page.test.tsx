@@ -19,6 +19,10 @@ vi.mock("@shared/lib", () => ({
       return next;
     },
   ),
+  useLocalStorage: vi.fn((_: string, initial: string) => {
+    const [value, setValue] = useState(initial);
+    return [value, setValue];
+  }),
 }));
 
 vi.mock("@shared/ui", () => ({
@@ -101,13 +105,6 @@ vi.mock("@features/characters", () => ({
   ),
   useCharacters: vi.fn(),
   downloadCsv: vi.fn(),
-}));
-
-vi.mock("@shared/hooks", () => ({
-  useLocalStorage: vi.fn((_: string, initial: string) => {
-    const [value, setValue] = useState(initial);
-    return [value, setValue];
-  }),
 }));
 
 const mockCharacters: Character[] = [

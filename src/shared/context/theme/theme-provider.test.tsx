@@ -5,11 +5,11 @@ import { ThemeProvider } from "./theme-provider";
 import { useContext } from "react";
 import { ThemeContext } from "./theme-context";
 
-vi.mock("@shared/hooks", () => ({
+vi.mock("@shared/lib", () => ({
   useLocalStorage: vi.fn(),
 }));
 
-import { useLocalStorage } from "@shared/hooks";
+import { useLocalStorage } from "@shared/lib";
 
 afterEach(() => {
   cleanup();

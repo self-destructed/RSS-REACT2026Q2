@@ -1,12 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useCharacters, useCharacter } from "./use-character";
-import { useFetch } from "@shared/hooks";
+import { useFetch } from "@shared/lib";
 
-// Mock useFetch
-vi.mock("../../../../shared/hooks/useFetch", () => ({
-  useFetch: vi.fn((url) => ({ status: url ? "success" : "idle", data: null })),
-}));
+vi.mock(import("@shared/lib"), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useFetch: vi.fn((url) => ({
+      status: url ? "success" : "idle",
+      data: null,
+    })),
+  };
+});
 
 describe("useCharacters", () => {
   it("returns correct state structure", () => {
