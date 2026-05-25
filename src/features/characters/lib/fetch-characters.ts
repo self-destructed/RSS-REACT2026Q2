@@ -1,5 +1,5 @@
 import type { Character } from "@shared/api";
-import { API_BASE_URL, API_ENDPOINTS } from "@shared/constants";
+import { API_BASE_URL, API_ENDPOINTS } from "@shared/api-config";
 
 export async function fetchCharacters(ids: number[]): Promise<Character[]> {
   if (ids.length === 0) return [];
