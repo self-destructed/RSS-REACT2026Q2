@@ -1,4 +1,4 @@
-export const ROUTES = {
+export const PATHS = {
   HOME: "/",
   CHARACTERS: "/characters",
   CHARACTERS_DETAILS: (id: string) => `/characters/details/${id}`,

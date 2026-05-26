@@ -1,1 +1,1 @@
-export { ROUTES as PATHS } from "./routes";
+export { PATHS } from "./routes";
