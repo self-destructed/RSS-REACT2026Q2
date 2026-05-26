@@ -1,4 +1,4 @@
-import { fetchCharacters } from "./fetch-characters";
+import { fetchCharacters } from "@entities/character";
 import { toCsv, downloadFile } from "@shared/lib";
 
 const CHARACTER_COLUMNS = [
