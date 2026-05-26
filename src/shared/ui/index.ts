@@ -4,7 +4,6 @@ export {
   ErrorTrigger,
   ErrorFallback,
 } from "./error";
-export { Header } from "./header";
 export { Main } from "./main";
 export { Navbar } from "./navbar";
 export { Pagination } from "./pagination";

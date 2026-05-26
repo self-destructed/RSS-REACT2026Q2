@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { Header } from "@shared/ui";
+import { Header } from "@widgets/header";
 
 interface Props {
   children: ReactNode;

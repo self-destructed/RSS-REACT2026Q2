@@ -16,6 +16,6 @@ Object.defineProperty(window, "matchMedia", {
   }),
 });
 
-vi.mock("@shared/ui/header", () => ({
+vi.mock("@widgets/header", () => ({
   Header: () => null,
 }));
