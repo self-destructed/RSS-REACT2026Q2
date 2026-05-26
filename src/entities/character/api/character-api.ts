@@ -1,5 +1,5 @@
 import type { Character } from "../model";
-import { API_BASE_URL } from "@shared/api-config";
+import { API_BASE_URL } from "@shared/api";
 import { http } from "@shared/api";
 
 export const CHARACTER_API = {
