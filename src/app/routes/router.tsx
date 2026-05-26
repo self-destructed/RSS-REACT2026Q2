@@ -1,5 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from "react-router";
-import { PATHS } from "@shared/routes";
+import { ROUTES } from "@shared/routes";
 import { Layout } from "../layout";
 import { AboutPage } from "@pages/about";
 import { CharacterDetailPage, CharactersPage } from "@pages/characters";
@@ -15,18 +15,18 @@ export function Router(): React.JSX.Element {
           </Layout>
         }
       >
-        <Route index element={<Navigate to={PATHS.CHARACTERS} replace />} />
-        <Route path={PATHS.CHARACTERS} element={<CharactersPage />}>
+        <Route index element={<Navigate to={ROUTES.CHARACTERS} replace />} />
+        <Route path={ROUTES.CHARACTERS} element={<CharactersPage />}>
           <Route index element={null} />
           <Route
-            path={PATHS.CHARACTERS_DETAILS_ROUTE}
+            path={ROUTES.CHARACTERS_DETAILS_ROUTE}
             element={<CharacterDetailPage />}
           />
         </Route>
-        <Route path={PATHS.ABOUT} element={<AboutPage />} />
-        <Route path={PATHS.ERROR} element={<ErrorPage />} />
+        <Route path={ROUTES.ABOUT} element={<AboutPage />} />
+        <Route path={ROUTES.ERROR} element={<ErrorPage />} />
       </Route>
-      <Route path="*" element={<Navigate to={PATHS.ERROR} replace />} />
+      <Route path="*" element={<Navigate to={ROUTES.ERROR} replace />} />
     </Routes>
   );
 }
