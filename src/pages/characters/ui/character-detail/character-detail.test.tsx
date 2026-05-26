@@ -14,6 +14,9 @@ vi.mock("react-router", () => ({
 
 vi.mock("@features/characters", () => ({
   useCharacter: vi.fn<() => { status: string }>(),
+}));
+
+vi.mock("@entities/character", () => ({
   CharacterDetail: ({ character }: { character: { name: string } }) => (
     <div data-testid="character-detail">{character.name}</div>
   ),

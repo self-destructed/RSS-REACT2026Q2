@@ -1,4 +1,4 @@
-export { CharacterList, CharacterDetail, CharacterCard } from "./ui";
+export { CharacterList, CharacterCard } from "./ui";
 export { useCharacters, useCharacter, downloadCsv } from "./lib";
 export {
   useSelectedIds,

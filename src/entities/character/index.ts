@@ -6,3 +6,4 @@ export type {
   Gender,
 } from "./model";
 export { fetchCharacters } from "./api";
+export { CharacterDetail } from "./ui";
