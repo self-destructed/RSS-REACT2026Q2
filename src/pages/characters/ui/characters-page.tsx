@@ -18,7 +18,7 @@ import {
   useSelectedIds,
   useToggleCharacter,
   useUnselectAllCharacters,
-} from "@shared/store";
+} from "@features/characters";
 import {
   CharacterList,
   downloadCsv,

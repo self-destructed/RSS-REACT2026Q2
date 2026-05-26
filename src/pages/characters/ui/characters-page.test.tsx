@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import { useCharacters } from "@features/characters";
 import { updateSearchParams } from "@shared/lib";
-import type { Character } from "@shared/api";
+import type { Character } from "@entities/character";
 import { CharactersPage } from "./characters-page";
 
 vi.mock("@shared/lib", () => ({
@@ -105,6 +105,9 @@ vi.mock("@features/characters", () => ({
   ),
   useCharacters: vi.fn(),
   downloadCsv: vi.fn(),
+  useSelectedIds: vi.fn(() => [] as number[]),
+  useToggleCharacter: vi.fn(() => vi.fn()),
+  useUnselectAllCharacters: vi.fn(() => vi.fn()),
 }));
 
 const mockCharacters: Character[] = [
