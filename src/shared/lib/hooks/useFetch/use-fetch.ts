@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { http } from "@shared/api";
 
 export type LoadingState<T> =
   | { status: "idle" }
@@ -17,11 +18,8 @@ export function useFetch<T>(url: string | null): LoadingState<T> {
 
     const fetchData = async () => {
       setState({ status: "loading" });
-      let response: Response;
       try {
-        response = await fetch(url, { signal: abortController.signal });
-        if (!response.ok) throw new Error(`HTTP ${String(response.status)}`);
-        const data = (await response.json()) as T;
+        const data = await http.get<T>(url, abortController.signal);
         if (isMounted) setState({ status: "success", data });
       } catch (error) {
         if (
