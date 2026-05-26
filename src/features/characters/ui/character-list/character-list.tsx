@@ -1,5 +1,5 @@
 import { CharacterCard } from "../character-card";
-import type { Character } from "@shared/api";
+import type { Character } from "@entities/character";
 
 interface Props {
   onSelect?: (id: number) => void;

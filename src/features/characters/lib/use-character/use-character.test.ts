@@ -3,16 +3,15 @@ import { renderHook } from "@testing-library/react";
 import { useCharacters, useCharacter } from "./use-character";
 import { useFetch } from "@shared/lib";
 
-vi.mock(import("@shared/lib"), async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    useFetch: vi.fn((url) => ({
-      status: url ? "success" : "idle",
-      data: null,
-    })),
-  };
-});
+vi.mock("@shared/lib", () => ({
+  useFetch: vi.fn((url) => ({
+    status: url ? "success" : "idle",
+    data: null,
+  })),
+  buildQueryString: vi.fn((params: Record<string, string>) =>
+    new URLSearchParams(params).toString(),
+  ),
+}));
 
 describe("useCharacters", () => {
   it("returns correct state structure", () => {

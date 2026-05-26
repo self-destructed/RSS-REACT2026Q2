@@ -2,7 +2,7 @@ import { expect, afterEach, describe, test, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { cleanup } from "@testing-library/react";
 import { CharacterCard } from "./character-card";
-import type { Character } from "@shared/api";
+import type { Character } from "@entities/character";
 
 beforeEach(() => {
   const mockCharacter: Character = {
