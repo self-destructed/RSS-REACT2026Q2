@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import Spinner from "./spinner";
+import { Spinner } from "./spinner";
 
 afterEach(cleanup);
 

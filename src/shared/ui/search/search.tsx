@@ -1,21 +1,19 @@
-import React from "react";
+import { useState } from "react";
+import type { ChangeEvent, JSX, SubmitEvent } from "react";
 
 interface Props {
   query?: string;
   onSubmit?: (searchTerm: string) => void;
 }
 
-export default function Search({
-  query = "",
-  onSubmit,
-}: Props): React.JSX.Element {
-  const [searchTerm, setSearchTerm] = React.useState(query);
+export function Search({ query = "", onSubmit }: Props): JSX.Element {
+  const [searchTerm, setSearchTerm] = useState(query);
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const trimmed = searchTerm.trim();
     setSearchTerm(trimmed);

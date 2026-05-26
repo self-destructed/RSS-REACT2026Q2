@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup, fireEvent } from "@testing-library/react";
-import ErrorFallback from "./error-fallback";
+import { ErrorFallback } from "./error-fallback";
 
 afterEach(cleanup);
 
