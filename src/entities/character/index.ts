@@ -5,5 +5,5 @@ export type {
   Species,
   Gender,
 } from "./model";
-export { fetchCharacters } from "./api";
+export { fetchCharacters, CHARACTER_API } from "./api";
 export { CharacterDetail } from "./ui";

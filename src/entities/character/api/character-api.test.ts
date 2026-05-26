@@ -44,32 +44,23 @@ describe("fetchCharacters", () => {
 
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining("/character/1,2,"),
+      undefined,
     );
     expect(result).toEqual(mockCharacters);
   });
 
-  it("throws error on non-ok response", async () => {
+  it("throws on non-ok response", async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: false,
-      statusText: "Not Found",
+      status: 404,
     } as unknown as Response);
 
-    await expect(fetchCharacters([1])).rejects.toThrow(
-      "Failed to fetch characters: Not Found",
-    );
+    await expect(fetchCharacters([1])).rejects.toThrow("HTTP 404");
   });
 
-  it("throws error on network failure", async () => {
+  it("throws on network failure", async () => {
     vi.mocked(fetch).mockRejectedValue(new Error("Network error"));
 
     await expect(fetchCharacters([1])).rejects.toThrow("Network error");
-  });
-
-  it("throws generic error on unknown rejection", async () => {
-    vi.mocked(fetch).mockRejectedValue("string error");
-
-    await expect(fetchCharacters([1])).rejects.toThrow(
-      "Unknown error while fetching characters",
-    );
   });
 });

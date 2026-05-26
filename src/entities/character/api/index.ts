@@ -1,1 +1,1 @@
-export { fetchCharacters } from "./character-api";
+export { fetchCharacters, CHARACTER_API } from "./character-api";
