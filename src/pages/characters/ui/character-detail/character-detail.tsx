@@ -1,7 +1,7 @@
 import { CharacterDetail } from "@entities/character";
 import { useCharacter } from "@features/characters";
 import { useOutletContext, useParams } from "react-router";
-import { Sidebar, Spinner } from "@shared/ui";
+import { Sidebar, Spinner, MatchState } from "@shared/ui";
 
 interface Context {
   onClose: () => void;
@@ -15,13 +15,17 @@ export function CharacterDetailPage(): React.JSX.Element {
 
   return (
     <Sidebar onClose={onClose} title="Character Details">
-      {state.status === "loading" && (
-        <div>
-          <Spinner />
-        </div>
-      )}
-      {state.status === "error" && <p>Error: {state.error.message}</p>}
-      {state.status === "success" && <CharacterDetail character={state.data} />}
+      <MatchState
+        state={state}
+        loading={
+          <div>
+            <Spinner />
+          </div>
+        }
+        error={(e) => <p>Error: {e.message}</p>}
+      >
+        {(data) => <CharacterDetail character={data} />}
+      </MatchState>
     </Sidebar>
   );
 }

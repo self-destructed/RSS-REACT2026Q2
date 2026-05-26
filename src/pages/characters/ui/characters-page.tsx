@@ -5,7 +5,14 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router";
-import { Search, Spinner, Pagination, Main, ErrorDisplay } from "@shared/ui";
+import {
+  Search,
+  Spinner,
+  Pagination,
+  Main,
+  ErrorDisplay,
+  MatchState,
+} from "@shared/ui";
 import { useLocalStorage } from "@shared/lib";
 import {
   useSelectedIds,
@@ -98,34 +105,36 @@ export function CharactersPage(): React.JSX.Element {
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
-          <div className="p-4 sm:p-5 lg:p-6">
-            {state.status === "loading" && (
+          <MatchState
+            state={state}
+            loading={
               <div className="flex justify-center py-6">
                 <Spinner />
               </div>
+            }
+            error={(e) => <ErrorDisplay message={e.message} />}
+          >
+            {(data) => (
+              <>
+                <div className="p-4 sm:p-5 lg:p-6">
+                  <CharacterList
+                    data={data.results ?? []}
+                    onSelect={handleCharacterSelect}
+                    selectedIds={selectedIds}
+                    onToggle={toggle}
+                  />
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <Pagination
+                    currentPage={page}
+                    totalPages={data.info?.pages ?? 1}
+                    onPrev={handlePrev}
+                    onNext={handleNext}
+                  />
+                </div>
+              </>
             )}
-            {state.status === "error" && (
-              <ErrorDisplay message={state.error.message} />
-            )}
-            {state.status === "success" && (
-              <CharacterList
-                data={state.data.results ?? []}
-                onSelect={handleCharacterSelect}
-                selectedIds={selectedIds}
-                onToggle={toggle}
-              />
-            )}
-          </div>
-          {state.status === "success" && (
-            <div className="mt-4 flex justify-center">
-              <Pagination
-                currentPage={page}
-                totalPages={state.data.info?.pages ?? 1}
-                onPrev={handlePrev}
-                onNext={handleNext}
-              />
-            </div>
-          )}
+          </MatchState>
         </section>
         {count > 0 && (
           <div className="fixed bottom-0 left-0 right-0 z-50 flex w-full justify-center">

@@ -23,6 +23,22 @@ vi.mock("@entities/character", () => ({
 }));
 
 vi.mock("@shared/ui", () => ({
+  MatchState: ({
+    state,
+    loading,
+    error,
+    children,
+  }: {
+    state: { status: string; data?: unknown; error?: Error };
+    loading?: React.ReactNode;
+    error?: (e: Error) => React.ReactNode;
+    children: (data: unknown) => React.ReactNode;
+  }) => {
+    if (state.status === "loading") return loading ?? null;
+    if (state.status === "error") return error?.(state.error!) ?? null;
+    if (state.status === "success") return children(state.data);
+    return null;
+  },
   Spinner: () => <div data-testid="spinner" />,
   Sidebar: ({
     onClose,
@@ -53,7 +69,7 @@ describe("CharacterDetailPage", () => {
   });
 
   it("should render spinner on loading", () => {
-    vi.mocked(useCharacter).mockReturnValue({ status: "loading" } as never);
+    vi.mocked(useCharacter).mockReturnValue({ status: "loading" });
 
     render(<CharacterDetailPage />);
 
@@ -64,7 +80,7 @@ describe("CharacterDetailPage", () => {
     vi.mocked(useCharacter).mockReturnValue({
       status: "error",
       error: new Error("Not found"),
-    } as never);
+    });
 
     render(<CharacterDetailPage />);
 
@@ -75,7 +91,7 @@ describe("CharacterDetailPage", () => {
     vi.mocked(useCharacter).mockReturnValue({
       status: "success",
       data: { id: 1, name: "Rick Sanchez" },
-    } as never);
+    });
 
     render(<CharacterDetailPage />);
 
@@ -85,7 +101,7 @@ describe("CharacterDetailPage", () => {
 
   it("should render nothing in idle state", () => {
     vi.mocked(useParams).mockReturnValue({});
-    vi.mocked(useCharacter).mockReturnValue({ status: "idle" } as never);
+    vi.mocked(useCharacter).mockReturnValue({ status: "idle" });
 
     render(<CharacterDetailPage />);
 
@@ -94,7 +110,7 @@ describe("CharacterDetailPage", () => {
   });
 
   it("should call onClose when close button clicked", async () => {
-    vi.mocked(useCharacter).mockReturnValue({ status: "loading" } as never);
+    vi.mocked(useCharacter).mockReturnValue({ status: "loading" });
 
     render(<CharacterDetailPage />);
 

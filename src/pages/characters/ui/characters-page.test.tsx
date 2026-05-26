@@ -26,6 +26,22 @@ vi.mock("@shared/lib", () => ({
 }));
 
 vi.mock("@shared/ui", () => ({
+  MatchState: ({
+    state,
+    loading,
+    error,
+    children,
+  }: {
+    state: { status: string; data?: unknown; error?: Error };
+    loading?: React.ReactNode;
+    error?: (e: Error) => React.ReactNode;
+    children: (data: unknown) => React.ReactNode;
+  }) => {
+    if (state.status === "loading") return loading ?? null;
+    if (state.status === "error") return error?.(state.error!) ?? null;
+    if (state.status === "success") return children(state.data);
+    return null;
+  },
   Main: ({ children }: { children: React.ReactNode }) => (
     <main data-testid="main">{children}</main>
   ),
@@ -159,7 +175,7 @@ describe("render", () => {
       status: "loading",
       data: { results: [], info: { pages: 1 } },
       error: null,
-    } as never);
+    });
 
     renderComponent();
 
@@ -172,7 +188,7 @@ describe("render", () => {
       status: "loading",
       data: { results: [], info: { pages: 1 } },
       error: null,
-    } as never);
+    });
 
     renderComponent();
 
@@ -184,7 +200,7 @@ describe("render", () => {
   it("should render nothing on idle state", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "idle",
-    } as never);
+    });
 
     renderComponent();
 
@@ -199,7 +215,7 @@ describe("render", () => {
       status: "success",
       data: { results: mockCharacters, info: { pages: 1 } },
       error: null,
-    } as never);
+    });
 
     renderComponent();
 
@@ -213,7 +229,7 @@ describe("render", () => {
       status: "error",
       data: { results: [], info: { pages: 1 } },
       error: new Error("Not found"),
-    } as never);
+    });
 
     renderComponent();
 
@@ -226,7 +242,7 @@ describe("render", () => {
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
       error: null,
-    } as never);
+    });
 
     renderComponent();
 
@@ -245,7 +261,7 @@ describe("behavior", () => {
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
       error: null,
-    } as never);
+    });
 
     renderComponent();
 
@@ -261,7 +277,7 @@ describe("behavior", () => {
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
       error: null,
-    } as never);
+    });
 
     renderComponent(["/?page=2"]);
 
@@ -279,7 +295,7 @@ describe("behavior", () => {
       status: "success",
       data: { results: mockCharacters, info: { pages: 5 } },
       error: null,
-    } as never);
+    });
 
     renderComponent();
 
