@@ -173,8 +173,6 @@ describe("render", () => {
   it("should render search and main elements", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "loading",
-      data: { results: [], info: { pages: 1 } },
-      error: null,
     });
 
     renderComponent();
@@ -186,8 +184,6 @@ describe("render", () => {
   it("should render spinner on loading", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "loading",
-      data: { results: [], info: { pages: 1 } },
-      error: null,
     });
 
     renderComponent();
@@ -213,8 +209,10 @@ describe("render", () => {
   it("should render list after successful load", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
-      data: { results: mockCharacters, info: { pages: 1 } },
-      error: null,
+      data: {
+        results: mockCharacters,
+        info: { count: 2, pages: 1, next: null, prev: null },
+      },
     });
 
     renderComponent();
@@ -227,7 +225,6 @@ describe("render", () => {
   it("should render error after failed load", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "error",
-      data: { results: [], info: { pages: 1 } },
       error: new Error("Not found"),
     });
 
@@ -240,8 +237,10 @@ describe("render", () => {
   it("should render pagination on success", () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
-      data: { results: mockCharacters, info: { pages: 5 } },
-      error: null,
+      data: {
+        results: mockCharacters,
+        info: { count: 2, pages: 5, next: null, prev: null },
+      },
     });
 
     renderComponent();
@@ -259,8 +258,10 @@ describe("behavior", () => {
   it("should not call onPrev on first page", async () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
-      data: { results: mockCharacters, info: { pages: 5 } },
-      error: null,
+      data: {
+        results: mockCharacters,
+        info: { count: 2, pages: 5, next: null, prev: null },
+      },
     });
 
     renderComponent();
@@ -275,8 +276,10 @@ describe("behavior", () => {
   it("should call onPrev when page is not first", async () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
-      data: { results: mockCharacters, info: { pages: 5 } },
-      error: null,
+      data: {
+        results: mockCharacters,
+        info: { count: 2, pages: 5, next: null, prev: null },
+      },
     });
 
     renderComponent(["/?page=2"]);
@@ -293,8 +296,10 @@ describe("behavior", () => {
   it("should call onNext when next button clicked", async () => {
     vi.mocked(useCharacters).mockReturnValue({
       status: "success",
-      data: { results: mockCharacters, info: { pages: 5 } },
-      error: null,
+      data: {
+        results: mockCharacters,
+        info: { count: 2, pages: 5, next: null, prev: null },
+      },
     });
 
     renderComponent();

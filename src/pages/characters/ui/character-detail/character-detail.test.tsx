@@ -4,6 +4,24 @@ import userEvent from "@testing-library/user-event";
 import { CharacterDetailPage } from "./character-detail";
 import { useCharacter } from "@features/characters";
 import { useParams, useOutletContext } from "react-router";
+import type { Character } from "@entities/character";
+
+afterEach(cleanup);
+
+const mockCharacter: Character = {
+  id: 1,
+  name: "Rick Sanchez",
+  status: "Alive",
+  species: "Human",
+  type: "",
+  gender: "Male",
+  origin: { name: "Earth", url: "" },
+  location: { name: "Earth", url: "" },
+  image: "",
+  episode: [],
+  url: "",
+  created: "",
+};
 
 afterEach(cleanup);
 
@@ -90,7 +108,7 @@ describe("CharacterDetailPage", () => {
   it("should render CharacterDetail on success", () => {
     vi.mocked(useCharacter).mockReturnValue({
       status: "success",
-      data: { id: 1, name: "Rick Sanchez" },
+      data: mockCharacter,
     });
 
     render(<CharacterDetailPage />);

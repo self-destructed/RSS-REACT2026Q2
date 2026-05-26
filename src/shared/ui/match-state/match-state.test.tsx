@@ -1,19 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MatchState } from "./match-state";
-
-type TestState =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "success"; data: string }
-  | { status: "error"; error: Error };
+import type { LoadingState } from "@shared/lib";
 
 describe("MatchState", () => {
   it("renders loading when status is loading", () => {
-    const state: TestState = { status: "loading" };
+    const state: LoadingState<string> = { status: "loading" };
 
     render(
-      <MatchState
+      <MatchState<string>
         state={state}
         loading={<div data-testid="loader">Loading</div>}
         error={(e) => <span>{e.message}</span>}
@@ -27,9 +22,9 @@ describe("MatchState", () => {
   });
 
   it("renders loading as null when loading prop is omitted", () => {
-    const state: TestState = { status: "loading" };
+    const state: LoadingState<string> = { status: "loading" };
     const { container } = render(
-      <MatchState state={state} error={(e) => <span>{e.message}</span>}>
+      <MatchState<string> state={state} error={(e) => <span>{e.message}</span>}>
         {(data) => <div>{data}</div>}
       </MatchState>,
     );
@@ -38,13 +33,13 @@ describe("MatchState", () => {
   });
 
   it("renders error when status is error", () => {
-    const state: TestState = {
+    const state: LoadingState<string> = {
       status: "error",
       error: new Error("Something went wrong"),
     };
 
     render(
-      <MatchState
+      <MatchState<string>
         state={state}
         loading={<div data-testid="loader">Loading</div>}
         error={(e) => <span data-testid="error-msg">{e.message}</span>}
@@ -58,9 +53,12 @@ describe("MatchState", () => {
   });
 
   it("renders error as null when error prop is omitted", () => {
-    const state: TestState = { status: "error", error: new Error("fail") };
+    const state: LoadingState<string> = {
+      status: "error",
+      error: new Error("fail"),
+    };
     const { container } = render(
-      <MatchState state={state} loading={<div>loading</div>}>
+      <MatchState<string> state={state} loading={<div>loading</div>}>
         {(data) => <div>{data}</div>}
       </MatchState>,
     );
@@ -69,10 +67,10 @@ describe("MatchState", () => {
   });
 
   it("renders children when status is success", () => {
-    const state: TestState = { status: "success", data: "Hello" };
+    const state: LoadingState<string> = { status: "success", data: "Hello" };
 
     render(
-      <MatchState
+      <MatchState<string>
         state={state}
         loading={<div>Loading</div>}
         error={(e) => <span>{e.message}</span>}
@@ -86,9 +84,9 @@ describe("MatchState", () => {
   });
 
   it("renders nothing when status is idle", () => {
-    const state: TestState = { status: "idle" };
+    const state: LoadingState<string> = { status: "idle" };
     const { container } = render(
-      <MatchState
+      <MatchState<string>
         state={state}
         loading={<div>Loading</div>}
         error={(e) => <span>{e.message}</span>}
