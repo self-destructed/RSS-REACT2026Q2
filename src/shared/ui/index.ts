@@ -11,3 +11,4 @@ export { Search } from "./search";
 export { Spinner } from "./spinner";
 export { ThemeToggle } from "./theme-toggle";
 export { Sidebar } from "./sidebar";
+export { MatchState } from "./match-state";
