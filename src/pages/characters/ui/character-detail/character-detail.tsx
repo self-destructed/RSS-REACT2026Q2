@@ -1,5 +1,4 @@
-import { CharacterDetail } from "@entities/character";
-import { useCharacter } from "@features/characters";
+import { CharacterDetail, useCharacter } from "@entities/character";
 import { useOutletContext, useParams } from "react-router";
 import { Sidebar, Spinner, MatchState } from "@shared/ui";
 

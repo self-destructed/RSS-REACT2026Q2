@@ -1,5 +1,5 @@
-import type { CharacterFilter, Character } from "@entities/character";
-import { CHARACTER_API } from "@entities/character";
+import type { CharacterFilter, Character } from "../../model";
+import { CHARACTER_API } from "../character-api";
 import type { Info } from "@shared/api";
 import { useFetch, type LoadingState } from "@shared/lib";
 import { buildQueryString } from "@shared/lib";

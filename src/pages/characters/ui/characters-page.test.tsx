@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
-import { useCharacters } from "@features/characters";
+import { useCharacters } from "@entities/character";
 import { updateSearchParams } from "@shared/lib";
 import type { Character } from "@entities/character";
 import { CharactersPage } from "./characters-page";
@@ -119,12 +119,15 @@ vi.mock("@features/characters", () => ({
       ))}
     </ul>
   ),
-  useCharacters: vi.fn(),
   downloadCsv: vi.fn(),
   useSelectedIds: vi.fn(() => [] as number[]),
   useToggleCharacter: vi.fn(() => vi.fn()),
   useUnselectAllCharacters: vi.fn(() => vi.fn()),
   Flyout: () => null,
+}));
+
+vi.mock("@entities/character", () => ({
+  useCharacters: vi.fn(),
 }));
 
 const mockCharacters: Character[] = [

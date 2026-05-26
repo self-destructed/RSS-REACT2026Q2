@@ -19,12 +19,9 @@ import {
   useToggleCharacter,
   useUnselectAllCharacters,
 } from "@features/characters";
-import {
-  CharacterList,
-  downloadCsv,
-  useCharacters,
-  Flyout,
-} from "@features/characters";
+import { useCharacters } from "@entities/character";
+
+import { CharacterList, downloadCsv, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
 import { updateSearchParams } from "@shared/lib";
 
