@@ -1,6 +1,5 @@
 export { downloadFile, escapeCsvValue, toCsv } from "./csv";
-export { buildQueryString } from "./query-string";
-export { updateSearchParams } from "./search-params";
+export { buildQueryString, updateSearchParams } from "./url-params";
 export {
   useFetch,
   useLocalStorage,
