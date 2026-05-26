@@ -5,14 +5,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router";
-import {
-  Search,
-  Spinner,
-  Pagination,
-  Main,
-  ErrorDisplay,
-  Flyout,
-} from "@shared/ui";
+import { Search, Spinner, Pagination, Main, ErrorDisplay } from "@shared/ui";
 import { useLocalStorage } from "@shared/lib";
 import {
   useSelectedIds,
@@ -23,6 +16,7 @@ import {
   CharacterList,
   downloadCsv,
   useCharacters,
+  Flyout,
 } from "@features/characters";
 import { PATHS } from "@shared/routes";
 import { updateSearchParams } from "@shared/lib";

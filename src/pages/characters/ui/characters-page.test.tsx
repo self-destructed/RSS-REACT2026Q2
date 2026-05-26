@@ -108,6 +108,7 @@ vi.mock("@features/characters", () => ({
   useSelectedIds: vi.fn(() => [] as number[]),
   useToggleCharacter: vi.fn(() => vi.fn()),
   useUnselectAllCharacters: vi.fn(() => vi.fn()),
+  Flyout: () => null,
 }));
 
 const mockCharacters: Character[] = [
