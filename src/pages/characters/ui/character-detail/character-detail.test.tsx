@@ -24,7 +24,7 @@ vi.mock("@entities/character", () => ({
 
 vi.mock("@shared/ui", () => ({
   Spinner: () => <div data-testid="spinner" />,
-  CharacterSidebar: ({
+  Sidebar: ({
     onClose,
     children,
   }: {

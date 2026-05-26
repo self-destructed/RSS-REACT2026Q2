@@ -4,7 +4,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function CharacterSidebar({
+export function Sidebar({
   onClose,
   title = "Details",
   children,
