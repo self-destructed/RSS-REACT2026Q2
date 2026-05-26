@@ -1,5 +1,24 @@
 import type { ResourceBase } from "@shared/api";
 
+export type Species =
+  | "Human"
+  | "Alien"
+  | "Humanoid"
+  | "Animal"
+  | "Robot"
+  | "Disease"
+  | "Cronenberg"
+  | "Mythological Creature"
+  | "Poopybutthole"
+  | (string & {});
+
+export type Gender =
+  | "Female"
+  | "Male"
+  | "Genderless"
+  | "unknown"
+  | (string & {});
+
 export interface CharacterLocation {
   name: string;
   url: string;
@@ -8,17 +27,17 @@ export interface CharacterLocation {
 export interface CharacterFilter {
   name?: string;
   type?: string;
-  species?: string;
-  status?: string;
-  gender?: string;
+  species?: Species;
+  status?: "Alive" | "Dead" | "unknown";
+  gender?: Gender;
   page?: number;
 }
 
 export interface Character extends ResourceBase {
-  status: "Dead" | "Alive" | "unknown";
-  species: string;
+  status: "Alive" | "Dead" | "unknown";
+  species: Species;
   type: string;
-  gender: "Female" | "Male" | "Genderless" | "unknown";
+  gender: Gender;
   origin: CharacterLocation;
   location: CharacterLocation;
   image: string;

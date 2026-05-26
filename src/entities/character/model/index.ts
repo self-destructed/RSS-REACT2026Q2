@@ -1,1 +1,7 @@
-export type { Character, CharacterFilter, CharacterLocation } from "./types";
+export type {
+  Character,
+  CharacterFilter,
+  CharacterLocation,
+  Species,
+  Gender,
+} from "./types";
