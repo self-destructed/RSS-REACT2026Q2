@@ -1,4 +1,8 @@
-import { queryOptions } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useQuery,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import type { CharacterFilter, Character } from "../../model";
 import { CHARACTER_API } from "../character-api";
 import { http, type Info } from "@shared/api";
@@ -23,6 +27,18 @@ export function charactersQueryOptions(filters?: CharacterFilter) {
     queryKey: ["characters", url],
     queryFn: ({ signal }) => http.get<Info<Character[]>>(url, signal),
   });
+}
+
+export function useCharactersQuery(
+  filters?: CharacterFilter,
+): UseQueryResult<Info<Character[]>> {
+  return useQuery(charactersQueryOptions(filters));
+}
+
+export function useCharacterQuery(
+  id: string | undefined,
+): UseQueryResult<Character> {
+  return useQuery(characterQueryOptions(id));
 }
 
 export function characterQueryOptions(id: string | undefined) {
