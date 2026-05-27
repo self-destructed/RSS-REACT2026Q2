@@ -29,7 +29,7 @@ const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
 export function CharactersPage(): React.JSX.Element {
   const selectedIds = useSelectedIds();
-  const toggle = useToggleCharacter();
+  const toggleSelection = useToggleCharacter();
   const unselectAll = useUnselectAllCharacters();
   const count = selectedIds.length;
   const location = useLocation();
@@ -118,7 +118,7 @@ export function CharactersPage(): React.JSX.Element {
                     data={data.results ?? []}
                     onViewDetails={handleCharacterSelect}
                     selectedIds={selectedIds}
-                    onToggleSelection={toggle}
+                    onToggleSelection={toggleSelection}
                   />
                 </div>
                 <div className="mt-4 flex justify-center">
