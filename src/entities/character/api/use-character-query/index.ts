@@ -1,6 +1,8 @@
 export {
   charactersQueryOptions,
-  characterQueryOptions,
   useCharactersQuery,
+} from "./use-characters-query";
+export {
+  characterQueryOptions,
   useCharacterQuery,
-} from "./use-character";
+} from "./use-character-query";
