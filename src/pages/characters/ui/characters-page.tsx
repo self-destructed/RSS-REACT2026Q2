@@ -11,7 +11,7 @@ import {
   Pagination,
   Main,
   ErrorDisplay,
-  MatchState,
+  QueryMatch,
 } from "@shared/ui";
 import { useLocalStorage } from "@shared/lib";
 import {
@@ -19,7 +19,7 @@ import {
   useToggleCharacter,
   useUnselectAllCharacters,
 } from "@features/characters";
-import { useCharacters } from "@entities/character";
+import { useCharactersQuery } from "@entities/character";
 
 import { CharacterList, downloadCsv, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
@@ -41,7 +41,7 @@ export function CharactersPage(): React.JSX.Element {
   );
   const name = params.get("name") ?? searchQuery;
   const page = Number(params.get("page")) || 1;
-  const state = useCharacters({ name, page });
+  const charactersQuery = useCharactersQuery({ name, page });
 
   const hasRestored = useRef(false);
 
@@ -62,15 +62,15 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleNext = () => {
-    if (state.status !== "success") return;
-    const totalPages = state.data.info?.pages ?? 1;
+    if (page <= 1) return;
+    const totalPages = charactersQuery.data?.info?.pages ?? 1;
     if (page >= totalPages) return;
     const newPage = page + 1;
     setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
   };
 
   const handleSearch = (query: string) => {
-    if (query === name && state.status !== "error" && page === 1) {
+    if (query === name && !charactersQuery.isError && page === 1) {
       return;
     }
     setParams((prev) =>
@@ -102,8 +102,8 @@ export function CharactersPage(): React.JSX.Element {
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
-          <MatchState
-            state={state}
+          <QueryMatch
+            query={charactersQuery}
             loading={
               <div className="flex justify-center py-6">
                 <Spinner />
@@ -131,7 +131,7 @@ export function CharactersPage(): React.JSX.Element {
                 </div>
               </>
             )}
-          </MatchState>
+          </QueryMatch>
         </section>
         {count > 0 && (
           <div className="fixed bottom-0 left-0 right-0 z-50 flex w-full justify-center">

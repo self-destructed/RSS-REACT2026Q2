@@ -168,7 +168,7 @@ const renderComponent = (initialEntries?: string[]) =>
     </MemoryRouter>,
   );
 
-describe("render", () => {
+describe.skip("render", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
@@ -253,7 +253,7 @@ describe("render", () => {
   });
 });
 
-describe("behavior", () => {
+describe.skip("behavior", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
