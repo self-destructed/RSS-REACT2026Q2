@@ -101,6 +101,7 @@ export function CharacterCard({
         <div className="mt-3 flex justify-end">
           <button
             type="button"
+            id={`details-btn-${String(data.id)}`}
             onClick={onViewDetails}
             aria-label={`View ${data.name} details`}
             className="inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-blue-300"

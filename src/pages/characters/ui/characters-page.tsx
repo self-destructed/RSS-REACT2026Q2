@@ -44,6 +44,16 @@ export function CharactersPage(): React.JSX.Element {
   const charactersQuery = useCharactersQuery({ name, page });
 
   const hasRestored = useRef(false);
+  const focusRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const id = focusRef.current;
+    if (id === null) return;
+    if (location.pathname === ROUTES.CHARACTERS) {
+      document.getElementById(`details-btn-${String(id)}`)?.focus();
+      focusRef.current = null;
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     if (hasRestored.current || !searchQuery || params.get("name")) return;
@@ -83,6 +93,7 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleCharacterSelect = (characterId: number) => {
+    focusRef.current = characterId;
     void navigate(
       `${ROUTES.CHARACTERS_DETAILS(String(characterId))}${location.search}`,
     );
