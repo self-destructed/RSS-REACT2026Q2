@@ -116,9 +116,9 @@ export function CharactersPage(): React.JSX.Element {
                 <div className="p-4 sm:p-5 lg:p-6">
                   <CharacterList
                     data={data.results ?? []}
-                    onSelect={handleCharacterSelect}
+                    onViewDetails={handleCharacterSelect}
                     selectedIds={selectedIds}
-                    onToggle={toggle}
+                    onToggleSelection={toggle}
                   />
                 </div>
                 <div className="mt-4 flex justify-center">

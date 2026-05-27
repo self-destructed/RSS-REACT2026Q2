@@ -4,7 +4,8 @@ import { Checkbox } from "@shared/ui";
 interface Props {
   data: Character;
   isSelected?: boolean;
-  onToggle?: () => void;
+  onToggleSelection?: () => void;
+  onViewDetails?: () => void;
 }
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string }> = {
@@ -25,7 +26,8 @@ const DEFAULT_ICON = "⚲";
 export function CharacterCard({
   data,
   isSelected = false,
-  onToggle,
+  onToggleSelection,
+  onViewDetails,
 }: Props): React.JSX.Element {
   const { bg: bgClass, text: textClass } =
     STATUS_CONFIG[data.status] ?? DEFAULT_STATUS;
@@ -38,17 +40,17 @@ export function CharacterCard({
     >
       <div className="flex h-full flex-col justify-between p-4">
         <div className="mb-2 flex items-start justify-between">
-          <div className="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
+          <div className="flex items-center gap-2">
             <Checkbox
               checked={isSelected}
               id={`checkbox-${String(data.id)}`}
               onChange={() => {
-                onToggle?.();
+                onToggleSelection?.();
               }}
             />
             <label
               htmlFor={`checkbox-${String(data.id)}`}
-              className="inline-block ps-[0.15rem] hover:cursor-pointer"
+              className="hover:cursor-pointer"
             >
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                 {data.name}
@@ -94,6 +96,31 @@ export function CharacterCard({
               {data.location.name}
             </span>
           </div>
+        </div>
+
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            onClick={onViewDetails}
+            aria-label={`View ${data.name} details`}
+            className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-blue-300"
+          >
+            View details
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </article>
