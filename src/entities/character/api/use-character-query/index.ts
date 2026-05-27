@@ -1,6 +1,4 @@
 export {
-  useCharacters,
-  useCharacter,
   charactersQueryOptions,
   characterQueryOptions,
   useCharactersQuery,
