@@ -13,3 +13,4 @@ export { ThemeToggle } from "./theme-toggle";
 export { Sidebar } from "./sidebar";
 export { MatchState } from "./match-state";
 export { QueryMatch } from "./query-match";
+export { Checkbox } from "./checkbox";
