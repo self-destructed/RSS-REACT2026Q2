@@ -72,7 +72,6 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleNext = () => {
-    if (page <= 1) return;
     const totalPages = charactersQuery.data?.info?.pages ?? 1;
     if (page >= totalPages) return;
     const newPage = page + 1;
