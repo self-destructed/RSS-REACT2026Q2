@@ -4,7 +4,7 @@ import { http } from "@shared/api";
 
 export const CHARACTER_API = {
   list: `${API_BASE_URL}/character` as const,
-  byId: (id: number) => `${API_BASE_URL}/character/${String(id)}`,
+  byId: (id: string) => `${API_BASE_URL}/character/${id}`,
   byIds: (ids: number[]) => `${API_BASE_URL}/character/${ids.join(",")},`,
 } as const;
 

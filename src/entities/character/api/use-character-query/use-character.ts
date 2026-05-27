@@ -12,6 +12,6 @@ export function useCharacters(
 }
 
 export function useCharacter(id: number | null): LoadingState<Character> {
-  const url = id ? CHARACTER_API.byId(id) : null;
+  const url = id !== null ? CHARACTER_API.byId(String(id)) : null;
   return useFetch<Character>(url);
 }
