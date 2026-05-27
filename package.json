@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "NODE_OPTIONS=\"--no-warnings\" vite --host 127.0.0.1",
+    "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:changed": "eslint $(git diff --name-only --diff-filter=ACMRT -- '*.ts' '*.tsx' | xargs || true)",
@@ -15,10 +15,10 @@
     "prepare": "husky && chmod ug+x .husky/*",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "test": "NODE_OPTIONS=\"--no-warnings\" vitest",
-    "test:run": "NODE_OPTIONS=\"--no-warnings\" vitest run",
-    "test:coverage": "NODE_OPTIONS=\"--no-warnings\" vitest run --coverage",
-    "test:ui": "NODE_OPTIONS=\"--no-warnings\" vitest --ui",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
     "fsd": "npx steiger ./src",
     "fsd:watch": "npx steiger --watch ./src"
   },
