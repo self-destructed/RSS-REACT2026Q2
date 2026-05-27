@@ -1,6 +1,6 @@
-import { CharacterDetail, useCharacter } from "@entities/character";
+import { CharacterDetail, useCharacterQuery } from "@entities/character";
 import { useOutletContext, useParams } from "react-router";
-import { Sidebar, Spinner, MatchState } from "@shared/ui";
+import { Sidebar, Spinner, QueryMatch } from "@shared/ui";
 
 interface Context {
   onClose: () => void;
@@ -9,13 +9,13 @@ interface Context {
 export function CharacterDetailPage(): React.JSX.Element {
   const { id } = useParams();
   const { onClose } = useOutletContext<Context>();
-  const characterId = id !== undefined ? Number(id) : null;
-  const state = useCharacter(characterId);
+  const query = useCharacterQuery(id);
 
   return (
     <Sidebar onClose={onClose} title="Character Details">
-      <MatchState
-        state={state}
+      <QueryMatch
+        key={id}
+        query={query}
         loading={
           <div>
             <Spinner />
@@ -24,7 +24,7 @@ export function CharacterDetailPage(): React.JSX.Element {
         error={(e) => <p>Error: {e.message}</p>}
       >
         {(data) => <CharacterDetail character={data} />}
-      </MatchState>
+      </QueryMatch>
     </Sidebar>
   );
 }
