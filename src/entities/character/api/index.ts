@@ -5,3 +5,4 @@ export {
   useCharactersQuery,
   useCharacterQuery,
 } from "./use-character-query";
+export { charactersByIdQueryOptions } from "./characters-by-id-query-options";
