@@ -3,7 +3,7 @@ import type { JSX } from "react";
 interface FlyoutProps {
   count: number;
   onUnselectAll: () => void;
-  onDownload: () => void;
+  onDownload: () => Promise<void>;
 }
 
 export function Flyout({
@@ -26,7 +26,9 @@ export function Flyout({
         </button>
         <button
           type="button"
-          onClick={onDownload}
+          onClick={() => {
+            void onDownload();
+          }}
           className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
         >
           Download CSV

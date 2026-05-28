@@ -1,4 +1,4 @@
-import { fetchCharacters } from "@entities/character";
+import { type Character } from "@entities/character";
 import { toCsv, downloadFile } from "@shared/lib";
 
 const CHARACTER_COLUMNS = [
@@ -11,9 +11,7 @@ const CHARACTER_COLUMNS = [
   "location",
 ] as const;
 
-export async function downloadCsv(ids: number[]): Promise<void> {
-  const characters = await fetchCharacters(ids);
-
+export function downloadCsv(characters: Character[]): void {
   const rows = characters.map((c) => ({
     id: c.id,
     name: c.name,
@@ -28,7 +26,7 @@ export async function downloadCsv(ids: number[]): Promise<void> {
 
   downloadFile({
     data: csv,
-    fileName: `${String(ids.length)}_items.csv`,
+    fileName: `${String(characters.length)}_items.csv`,
     fileType: "text/csv",
   });
 }

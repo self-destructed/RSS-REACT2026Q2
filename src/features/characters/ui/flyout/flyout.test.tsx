@@ -7,13 +7,25 @@ afterEach(cleanup);
 
 describe("Flyout", () => {
   it("renders selected count", () => {
-    render(<Flyout count={3} onUnselectAll={vi.fn()} onDownload={vi.fn()} />);
+    render(
+      <Flyout
+        count={3}
+        onUnselectAll={vi.fn()}
+        onDownload={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
 
     expect(screen.getByText(/3/)).toBeInTheDocument();
   });
 
   it("renders Unselect all button", () => {
-    render(<Flyout count={1} onUnselectAll={vi.fn()} onDownload={vi.fn()} />);
+    render(
+      <Flyout
+        count={1}
+        onUnselectAll={vi.fn()}
+        onDownload={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
 
     expect(
       screen.getByRole("button", { name: /unselect/i }),
@@ -21,7 +33,13 @@ describe("Flyout", () => {
   });
 
   it("renders Download CSV button", () => {
-    render(<Flyout count={1} onUnselectAll={vi.fn()} onDownload={vi.fn()} />);
+    render(
+      <Flyout
+        count={1}
+        onUnselectAll={vi.fn()}
+        onDownload={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
 
     expect(
       screen.getByRole("button", { name: /download/i }),
@@ -32,7 +50,11 @@ describe("Flyout", () => {
     const onUnselectAll = vi.fn();
 
     render(
-      <Flyout count={2} onUnselectAll={onUnselectAll} onDownload={vi.fn()} />,
+      <Flyout
+        count={2}
+        onUnselectAll={onUnselectAll}
+        onDownload={vi.fn().mockResolvedValue(undefined)}
+      />,
     );
 
     const user = userEvent.setup();

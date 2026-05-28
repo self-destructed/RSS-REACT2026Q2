@@ -24,6 +24,8 @@ import { useCharactersQuery } from "@entities/character";
 import { CharacterList, downloadCsv, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
 import { updateSearchParams } from "@shared/lib";
+import { useQueryClient } from "@tanstack/react-query";
+import { charactersByIdQueryOptions } from "@entities/character/api";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
@@ -42,7 +44,7 @@ export function CharactersPage(): React.JSX.Element {
   const name = params.get("name") ?? searchQuery;
   const page = Number(params.get("page")) || 1;
   const charactersQuery = useCharactersQuery({ name, page });
-
+  const queryClient = useQueryClient();
   const hasRestored = useRef(false);
   const focusRef = useRef<number | null>(null);
 
@@ -101,6 +103,13 @@ export function CharactersPage(): React.JSX.Element {
   const handleSidebarClose = () => {
     void navigate(`${ROUTES.CHARACTERS}${location.search}`);
   };
+
+  const handleDownload = async () => {
+    const selectedCharacters = await queryClient.fetchQuery(
+      charactersByIdQueryOptions(selectedIds),
+    );
+    downloadCsv(selectedCharacters);
+  };
   return (
     <>
       <Main
@@ -149,9 +158,7 @@ export function CharactersPage(): React.JSX.Element {
               <Flyout
                 count={count}
                 onUnselectAll={unselectAll}
-                onDownload={() => {
-                  void downloadCsv(selectedIds);
-                }}
+                onDownload={handleDownload}
               />
             </div>
           </div>
