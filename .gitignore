@@ -27,3 +27,6 @@ coverage
 # Agent context files (local only)
 AGENTS.md
 docs
+
+# opencode configuration (local)
+.opencode/
