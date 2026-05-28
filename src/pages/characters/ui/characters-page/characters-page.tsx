@@ -25,7 +25,10 @@ import { CharacterList, downloadCsv, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
 import { updateSearchParams } from "@shared/lib";
 import { useQueryClient } from "@tanstack/react-query";
-import { charactersByIdQueryOptions } from "@entities/character/api";
+import {
+  charactersByIdQueryOptions,
+  charactersQueryOptions,
+} from "@entities/character/api";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
@@ -47,6 +50,21 @@ export function CharactersPage(): React.JSX.Element {
   const queryClient = useQueryClient();
   const hasRestored = useRef(false);
   const focusRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const pages = charactersQuery.data?.info?.pages ?? 1;
+
+    if (page <= 1 || page >= pages) {
+      return;
+    }
+
+    void queryClient.prefetchQuery(
+      charactersQueryOptions({ name, page: page + 1 }),
+    );
+    void queryClient.prefetchQuery(
+      charactersQueryOptions({ name, page: page - 1 }),
+    );
+  }, [page, name, charactersQuery.data?.info?.pages, queryClient]);
 
   useEffect(() => {
     const id = focusRef.current;
