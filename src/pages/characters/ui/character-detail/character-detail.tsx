@@ -8,13 +8,14 @@ interface Context {
 
 export function CharacterDetailPage(): React.JSX.Element {
   const { id } = useParams();
+  const characterId = id ? Number(id) : undefined;
   const { onClose } = useOutletContext<Context>();
-  const query = useCharacterQuery(id);
+  const query = useCharacterQuery(characterId);
 
   return (
     <Sidebar onClose={onClose} title="Character Details">
       <QueryMatch
-        key={id}
+        key={characterId}
         query={query}
         loading={
           <div>

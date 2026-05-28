@@ -4,17 +4,17 @@ import {
   type UseQueryResult,
   type UseQueryOptions,
 } from "@tanstack/react-query";
-import type { Character } from "../../model";
+import type { Character, CharacterId } from "../../model";
 import { CHARACTER_API } from "../character-api";
 import { http } from "@shared/api";
 
 export function characterQueryOptions(
-  id: string | undefined,
+  id: CharacterId | undefined,
 ): UseQueryOptions<
   Character,
   Error,
   Character,
-  readonly ["character", string | undefined]
+  readonly ["character", CharacterId | undefined]
 > {
   return queryOptions({
     queryKey: ["character", id] as const,
@@ -27,7 +27,7 @@ export function characterQueryOptions(
 }
 
 export function useCharacterQuery(
-  id: string | undefined,
+  id: CharacterId | undefined,
 ): UseQueryResult<Character> {
   return useQuery(characterQueryOptions(id));
 }

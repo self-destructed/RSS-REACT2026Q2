@@ -1,5 +1,6 @@
 export type {
   Character,
+  CharacterId,
   CharacterFilter,
   CharacterLocation,
   Species,

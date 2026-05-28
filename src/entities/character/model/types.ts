@@ -33,6 +33,8 @@ export interface CharacterFilter {
   page?: number;
 }
 
+export type CharacterId = Character["id"];
+
 export interface Character extends ResourceBase {
   status: "Alive" | "Dead" | "unknown";
   species: Species;
