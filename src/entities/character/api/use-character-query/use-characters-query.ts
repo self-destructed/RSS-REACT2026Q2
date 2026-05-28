@@ -15,12 +15,14 @@ export function charactersQueryOptions(
   Info<Character[]>,
   Error,
   Info<Character[]>,
-  readonly ["characters", string]
+  readonly ["characters", CharacterFilter | object]
 > {
-  const url = `${CHARACTER_API.list}?${buildQueryString(filters ?? null)}`;
   return queryOptions({
-    queryKey: ["characters", url] as const,
-    queryFn: ({ signal }) => http.get<Info<Character[]>>(url, signal),
+    queryKey: ["characters", filters ?? {}] as const,
+    queryFn: ({ signal }) => {
+      const url = `${CHARACTER_API.list}?${buildQueryString(filters ?? null)}`;
+      return http.get<Info<Character[]>>(url, signal);
+    },
   });
 }
 
