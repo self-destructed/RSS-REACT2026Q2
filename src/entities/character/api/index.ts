@@ -1,4 +1,4 @@
-export { fetchCharacters, CHARACTER_API } from "./character-api";
+export { CHARACTER_API } from "./character-api";
 export {
   charactersQueryOptions,
   characterQueryOptions,

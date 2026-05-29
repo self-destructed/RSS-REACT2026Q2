@@ -1,7 +1,6 @@
 import { queryOptions, type UseQueryOptions } from "@tanstack/react-query";
 import type { Character, CharacterId } from "../../model";
-import { CHARACTER_API } from "../character-api";
-import { http } from "@shared/api";
+import { API_BASE_URL, http } from "@shared/api";
 
 export function charactersByIdQueryOptions(
   ids: CharacterId[],
@@ -15,7 +14,10 @@ export function charactersByIdQueryOptions(
   return queryOptions({
     queryKey: ["charactersByIds", sortedIds] as const,
     queryFn: ({ signal }) => {
-      return http.get<Character[]>(CHARACTER_API.byIds(sortedIds), signal);
+      return http.get<Character[]>(
+        `${API_BASE_URL}/character/${sortedIds.join(",")},`,
+        signal,
+      );
     },
     enabled: ids.length > 0,
   });

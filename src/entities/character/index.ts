@@ -7,7 +7,6 @@ export type {
   Gender,
 } from "./model";
 export {
-  fetchCharacters,
   CHARACTER_API,
   charactersQueryOptions,
   characterQueryOptions,
