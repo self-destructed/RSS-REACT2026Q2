@@ -1,3 +1,3 @@
-export function escapeCsvValue(value: string): string {
+export function escapeCSVValue(value: string): string {
   return `"${value.replace(/"/g, '""')}"`;
 }

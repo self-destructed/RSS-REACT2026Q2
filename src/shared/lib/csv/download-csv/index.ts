@@ -1,1 +1,1 @@
-export { downloadCsv } from "./download-csv";
+export { downloadCSV } from "./download-csv";

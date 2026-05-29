@@ -1,4 +1,4 @@
-import { escapeCsvValue } from "../escape-csv-value";
+import { escapeCSVValue } from "../escape-csv-value";
 
 export function toCSV<T extends Record<keyof T, unknown>>(
   data: T[],
@@ -9,7 +9,7 @@ export function toCSV<T extends Record<keyof T, unknown>>(
     columns
       .map((col) => {
         const val = String(row[col]);
-        return /[,"\n]/.test(val) ? escapeCsvValue(val) : val;
+        return /[,"\n]/.test(val) ? escapeCSVValue(val) : val;
       })
       .join(","),
   );

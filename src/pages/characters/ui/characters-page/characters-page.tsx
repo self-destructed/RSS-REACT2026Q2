@@ -26,7 +26,7 @@ import {
 } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
-import { updateSearchParams, downloadCsv } from "@shared/lib";
+import { updateSearchParams, downloadCSV } from "@shared/lib";
 import { useQueryClient } from "@tanstack/react-query";
 import { charactersByIdQueryOptions } from "@entities/character/api";
 import { usePrefetchAdjacentPages } from "@pages/characters/lib";
@@ -118,7 +118,7 @@ export function CharactersPage(): React.JSX.Element {
       charactersByIdQueryOptions(selectedIds),
     );
     const rows = selectedCharacters.map(mapCharacterToCSVObject);
-    downloadCsv(
+    downloadCSV(
       rows,
       CHARACTER_CSV_COLUMNS,
       `${String(selectedCharacters.length)}_items.csv`,
