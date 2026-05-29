@@ -39,6 +39,15 @@ describe("toCSV", () => {
     expect(result).toBe("id,name");
   });
 
+  it("converts null and undefined to empty string", () => {
+    const data = [{ id: 1, name: null, status: undefined }];
+    const columns = ["id", "name", "status"] as const;
+
+    const result = toCSV(data, columns);
+
+    expect(result).toBe("id,name,status\n1,,");
+  });
+
   it("handles single row", () => {
     const data = [{ id: 1, name: "Rick" }];
     const result = toCSV(data, ["id", "name"]);

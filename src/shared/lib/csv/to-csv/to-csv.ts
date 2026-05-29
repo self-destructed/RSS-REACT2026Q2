@@ -8,7 +8,8 @@ export function toCSV<T extends Record<keyof T, unknown>>(
   const rows = data.map((row) =>
     columns
       .map((col) => {
-        const val = String(row[col]);
+        const raw = row[col];
+        const val = raw === null || raw === undefined ? "" : String(raw);
         return /[,"\n]/.test(val) ? escapeCSVValue(val) : val;
       })
       .join(","),
