@@ -1,4 +1,4 @@
-import { escapeCsvValue } from "./escape-csv-value";
+import { escapeCsvValue } from "../escape-csv-value";
 
 export function toCSV<T extends Record<keyof T, unknown>>(
   data: T[],

@@ -1,4 +1,4 @@
-import type { Character } from "../model";
+import type { Character } from "../../model";
 
 export interface CharacterCSVObject {
   id: number;

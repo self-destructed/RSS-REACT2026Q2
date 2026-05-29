@@ -1,5 +1,5 @@
-import { toCSV } from "./to-csv";
-import { downloadFile } from "./download-file";
+import { toCSV } from "../to-csv";
+import { downloadFile } from "../download-file";
 
 export function downloadCsv<T extends Record<keyof T, unknown>>(
   data: T[],
