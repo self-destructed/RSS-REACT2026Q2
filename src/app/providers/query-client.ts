@@ -10,8 +10,10 @@ export const queryClient = new QueryClient({
 
 declare global {
   interface Window {
-    __TANSTACK_QUERY_CLIENT__: typeof queryClient;
+    __TANSTACK_QUERY_CLIENT__?: typeof queryClient;
   }
 }
 
-window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+if (import.meta.env.DEV) {
+  window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}
