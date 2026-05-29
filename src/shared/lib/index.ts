@@ -1,4 +1,4 @@
-export { downloadFile, escapeCsvValue, toCsv } from "./csv";
+export { downloadFile, downloadCsv, escapeCsvValue, toCSV } from "./csv";
 export { buildQueryString, updateSearchParams } from "./url-params";
 export {
   useFetch,

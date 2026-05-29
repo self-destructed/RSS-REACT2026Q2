@@ -1,6 +1,6 @@
 import { escapeCsvValue } from "./escape-csv-value";
 
-export function toCsv<T extends Record<string, string | number>>(
+export function toCSV<T extends Record<keyof T, unknown>>(
   data: T[],
   columns: readonly (keyof T)[],
 ): string {

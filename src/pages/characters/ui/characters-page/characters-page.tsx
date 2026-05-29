@@ -19,11 +19,14 @@ import {
   useToggleCharacter,
   useUnselectAllCharacters,
 } from "@features/characters";
-import { useCharactersQuery } from "@entities/character";
-
-import { CharacterList, downloadCsv, Flyout } from "@features/characters";
+import {
+  useCharactersQuery,
+  mapCharacterToCSVObject,
+  CHARACTER_CSV_COLUMNS,
+} from "@entities/character";
+import { CharacterList, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
-import { updateSearchParams } from "@shared/lib";
+import { updateSearchParams, downloadCsv } from "@shared/lib";
 import { useQueryClient } from "@tanstack/react-query";
 import { charactersByIdQueryOptions } from "@entities/character/api";
 import { usePrefetchAdjacentPages } from "@pages/characters/lib";
@@ -114,7 +117,12 @@ export function CharactersPage(): React.JSX.Element {
     const selectedCharacters = await queryClient.fetchQuery(
       charactersByIdQueryOptions(selectedIds),
     );
-    downloadCsv(selectedCharacters);
+    const rows = selectedCharacters.map(mapCharacterToCSVObject);
+    downloadCsv(
+      rows,
+      CHARACTER_CSV_COLUMNS,
+      `${String(selectedCharacters.length)}_items.csv`,
+    );
   };
   return (
     <>
