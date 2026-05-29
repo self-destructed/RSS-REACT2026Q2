@@ -11,7 +11,7 @@ export function charactersByIdQueryOptions(
   Character[],
   readonly ["charactersByIds", CharacterId[]]
 > {
-  const sortedIds = ids.sort((a, b) => a - b);
+  const sortedIds = [...ids].sort((a, b) => a - b);
   return queryOptions({
     queryKey: ["charactersByIds", sortedIds] as const,
     queryFn: ({ signal }) => {
