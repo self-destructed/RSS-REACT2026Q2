@@ -1,23 +1,19 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
+import { renderHook } from "@testing-library/react";
 
 const mockStorage = vi.hoisted(() => {
   const createMock = (): Storage => {
-    let store: Record<string, string> = {};
+    const store: Record<string, string> = {};
     return {
-      getItem: vi.fn((key: string) => store[key] || null),
+      getItem: vi.fn((key: string) => store[key] ?? null),
       setItem: vi.fn((key: string, value: string) => {
         store[key] = value;
       }),
-      removeItem: vi.fn((key: string) => {
-        const { [key]: _, ...rest } = store;
-        store = rest;
-      }),
-      clear: vi.fn(() => {
-        store = {};
-      }),
-      key: vi.fn((index: number) => Object.keys(store)[index] ?? null),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+      key: vi.fn(),
       get length() {
-        return Object.keys(store).length;
+        return 0;
       },
     };
   };
@@ -26,7 +22,12 @@ const mockStorage = vi.hoisted(() => {
   return s;
 });
 
-import { useSelectedCharactersStore } from "./store";
+import {
+  useSelectedCharactersStore,
+  useSelectedIds,
+  useToggleCharacter,
+  useUnselectAllCharacters,
+} from "./store";
 
 describe("selectedCharactersStore", () => {
   afterEach(() => {
@@ -51,6 +52,7 @@ describe("selectedCharactersStore", () => {
 
     it("removes id when already selected", () => {
       useSelectedCharactersStore.setState({ selectedIds: [1, 2] });
+
       useSelectedCharactersStore.getState().toggle(1);
 
       const { selectedIds } = useSelectedCharactersStore.getState();
@@ -61,6 +63,7 @@ describe("selectedCharactersStore", () => {
   describe("unselectAll", () => {
     it("clears all selected ids", () => {
       useSelectedCharactersStore.setState({ selectedIds: [1, 2, 3] });
+
       useSelectedCharactersStore.getState().unselectAll();
 
       const { selectedIds } = useSelectedCharactersStore.getState();
@@ -81,6 +84,34 @@ describe("selectedCharactersStore", () => {
 
       const stored = mockStorage.getItem("selected-characters");
       expect(stored).toBeTruthy();
+    });
+  });
+
+  describe("selector hooks", () => {
+    it("useSelectedIds returns selectedIds", () => {
+      useSelectedCharactersStore.setState({ selectedIds: [1, 2] });
+
+      const { result } = renderHook(() => useSelectedIds());
+
+      expect(result.current).toEqual([1, 2]);
+    });
+
+    it("useToggleCharacter returns toggle function", () => {
+      const { result } = renderHook(() => useToggleCharacter());
+
+      result.current(42);
+
+      expect(useSelectedCharactersStore.getState().selectedIds).toContain(42);
+    });
+
+    it("useUnselectAllCharacters returns unselectAll function", () => {
+      useSelectedCharactersStore.setState({ selectedIds: [1, 2, 3] });
+
+      const { result } = renderHook(() => useUnselectAllCharacters());
+
+      result.current();
+
+      expect(useSelectedCharactersStore.getState().selectedIds).toEqual([]);
     });
   });
 });
