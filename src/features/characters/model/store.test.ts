@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
 const mockStorage = vi.hoisted(() => {
   const createMock = (): Storage => {
@@ -89,9 +89,11 @@ describe("selectedCharactersStore", () => {
 
   describe("selector hooks", () => {
     it("useSelectedIds returns selectedIds", () => {
-      useSelectedCharactersStore.setState({ selectedIds: [1, 2] });
-
       const { result } = renderHook(() => useSelectedIds());
+
+      act(() => {
+        useSelectedCharactersStore.setState({ selectedIds: [1, 2] });
+      });
 
       expect(result.current).toEqual([1, 2]);
     });
