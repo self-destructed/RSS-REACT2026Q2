@@ -15,7 +15,7 @@ export function AppRoutes(): React.JSX.Element {
       </Route>
       <Route path={PATHS.ABOUT} element={<AboutPage />} />
       <Route path={PATHS.ERROR} element={<ErrorPage />} />
-      <Route path="*" element={<Navigate to={PATHS.ERROR} replace />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
