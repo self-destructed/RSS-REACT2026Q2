@@ -13,13 +13,13 @@ import {
   ErrorDisplay,
   QueryMatch,
 } from "@shared/ui";
-import { useLocalStorage } from "@shared/lib";
+import { useFocusRestore, useLocalStorage } from "@shared/lib";
 import { useSelectedIds, useToggleCharacter } from "@features/characters";
 import { useCharactersQuery } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
 import { updateSearchParams } from "@shared/lib";
-import { usePrefetchAdjacentPages } from "@pages/characters/lib";
+import { usePrefetchAdjacentPages } from "../../lib";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
@@ -37,21 +37,12 @@ export function CharactersPage(): React.JSX.Element {
   const page = Number(params.get("page")) || 1;
   const charactersQuery = useCharactersQuery({ name, page });
   const hasRestored = useRef(false);
-  const focusRef = useRef<number | null>(null);
   usePrefetchAdjacentPages({
     page,
     name,
     totalPages: charactersQuery.data?.info?.pages ?? 1,
   });
-
-  useEffect(() => {
-    const id = focusRef.current;
-    if (id === null) return;
-    if (location.pathname === ROUTES.CHARACTERS) {
-      document.getElementById(`details-btn-${String(id)}`)?.focus();
-      focusRef.current = null;
-    }
-  }, [location.pathname]);
+  const setFocusId = useFocusRestore(location.pathname === ROUTES.CHARACTERS);
 
   useEffect(() => {
     if (hasRestored.current || !searchQuery || params.get("name")) return;
@@ -90,7 +81,7 @@ export function CharactersPage(): React.JSX.Element {
   };
 
   const handleCharacterSelect = (characterId: number) => {
-    focusRef.current = characterId;
+    setFocusId(`details-btn-${String(characterId)}`);
     void navigate(
       `${ROUTES.CHARACTERS_DETAILS(String(characterId))}${location.search}`,
     );
