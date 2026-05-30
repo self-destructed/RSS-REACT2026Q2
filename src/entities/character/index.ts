@@ -8,6 +8,7 @@ export type {
 } from "./model";
 export {
   CHARACTER_API,
+  charactersByIdQueryOptions,
   charactersQueryOptions,
   characterQueryOptions,
   useCharactersQuery,

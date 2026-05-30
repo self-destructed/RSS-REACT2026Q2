@@ -23,12 +23,12 @@ import {
   useCharactersQuery,
   mapCharacterToCSVObject,
   CHARACTER_CSV_COLUMNS,
+  charactersByIdQueryOptions,
 } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
 import { updateSearchParams, downloadCSV } from "@shared/lib";
 import { useQueryClient } from "@tanstack/react-query";
-import { charactersByIdQueryOptions } from "@entities/character/api";
 import { usePrefetchAdjacentPages } from "@pages/characters/lib";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
