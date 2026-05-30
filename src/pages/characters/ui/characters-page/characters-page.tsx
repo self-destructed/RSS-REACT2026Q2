@@ -126,15 +126,13 @@ export function CharactersPage(): React.JSX.Element {
   };
   return (
     <>
-      <Main
-        className={count > 0 ? "pb-32 sm:pb-16 md:pb-14 lg:pb-10" : undefined}
-      >
+      <Main>
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
             <Search key={name} onSubmit={handleSearch} query={name} />
           </div>
         </section>
-        <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
+        <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">
           <QueryMatch
             query={charactersQuery}
             loading={
@@ -165,18 +163,18 @@ export function CharactersPage(): React.JSX.Element {
               </>
             )}
           </QueryMatch>
-        </section>
-        {count > 0 && (
-          <div className="fixed bottom-0 left-0 right-0 z-50 flex w-full justify-center">
-            <div className="w-full max-w-4xl rounded-t-xl">
-              <Flyout
-                count={count}
-                onUnselectAll={unselectAll}
-                onDownload={handleDownload}
-              />
+          {count > 0 && (
+            <div className="sticky bottom-0 mt-2 left-0 right-0 z-50 flex w-full justify-center">
+              <div className="w-full max-w-4xl rounded-t-xl">
+                <Flyout
+                  count={count}
+                  onUnselectAll={unselectAll}
+                  onDownload={handleDownload}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </section>
       </Main>
       <Outlet context={{ onClose: handleSidebarClose }} />
     </>
