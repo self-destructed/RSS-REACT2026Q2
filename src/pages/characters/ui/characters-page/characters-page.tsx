@@ -14,21 +14,11 @@ import {
   QueryMatch,
 } from "@shared/ui";
 import { useLocalStorage } from "@shared/lib";
-import {
-  useSelectedIds,
-  useToggleCharacter,
-  useUnselectAllCharacters,
-} from "@features/characters";
-import {
-  useCharactersQuery,
-  mapCharacterToCSVObject,
-  CHARACTER_CSV_COLUMNS,
-  charactersByIdQueryOptions,
-} from "@entities/character";
+import { useSelectedIds, useToggleCharacter } from "@features/characters";
+import { useCharactersQuery } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
 import { ROUTES } from "@shared/routes";
-import { updateSearchParams, downloadCSV } from "@shared/lib";
-import { useQueryClient } from "@tanstack/react-query";
+import { updateSearchParams } from "@shared/lib";
 import { usePrefetchAdjacentPages } from "@pages/characters/lib";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
@@ -36,8 +26,6 @@ const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 export function CharactersPage(): React.JSX.Element {
   const selectedIds = useSelectedIds();
   const toggleSelection = useToggleCharacter();
-  const unselectAll = useUnselectAllCharacters();
-  const count = selectedIds.length;
   const location = useLocation();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
@@ -48,7 +36,6 @@ export function CharactersPage(): React.JSX.Element {
   const name = params.get("name") ?? searchQuery;
   const page = Number(params.get("page")) || 1;
   const charactersQuery = useCharactersQuery({ name, page });
-  const queryClient = useQueryClient();
   const hasRestored = useRef(false);
   const focusRef = useRef<number | null>(null);
   usePrefetchAdjacentPages({
@@ -113,17 +100,6 @@ export function CharactersPage(): React.JSX.Element {
     void navigate(`${ROUTES.CHARACTERS}${location.search}`);
   };
 
-  const handleDownload = async () => {
-    const selectedCharacters = await queryClient.fetchQuery(
-      charactersByIdQueryOptions(selectedIds),
-    );
-    const rows = selectedCharacters.map(mapCharacterToCSVObject);
-    downloadCSV(
-      rows,
-      CHARACTER_CSV_COLUMNS,
-      `${String(selectedCharacters.length)}_items.csv`,
-    );
-  };
   return (
     <>
       <Main>
@@ -163,17 +139,11 @@ export function CharactersPage(): React.JSX.Element {
               </>
             )}
           </QueryMatch>
-          {count > 0 && (
-            <div className="sticky bottom-0 mt-2 left-0 right-0 z-50 flex w-full justify-center">
-              <div className="w-full max-w-4xl rounded-t-xl">
-                <Flyout
-                  count={count}
-                  onUnselectAll={unselectAll}
-                  onDownload={handleDownload}
-                />
-              </div>
+          <div className="sticky bottom-0 mt-2 left-0 right-0 z-50 flex w-full justify-center">
+            <div className="w-full lg:max-w-4xl rounded-t-xl">
+              <Flyout />
             </div>
-          )}
+          </div>
         </section>
       </Main>
       <Outlet context={{ onClose: handleSidebarClose }} />
