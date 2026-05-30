@@ -16,9 +16,6 @@ export function Checkbox({ id, checked, onChange }: Props): JSX.Element {
       id={id}
       checked={checked}
       onChange={onChange}
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
       className={CHECKBOX_CLASSES}
     />
   );
