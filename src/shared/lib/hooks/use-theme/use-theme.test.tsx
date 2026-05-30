@@ -1,15 +1,19 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useTheme } from "./use-theme";
-import { ThemeProvider } from "@shared/context";
+import { ThemeContext } from "@shared/context";
 
 describe("useTheme", () => {
   it("returns theme context when used within provider", () => {
     const { result } = renderHook(() => useTheme(), {
-      wrapper: ({ children }) => <ThemeProvider>{children}</ThemeProvider>,
+      wrapper: ({ children }) => (
+        <ThemeContext.Provider value={{ theme: "light", toggleTheme: vi.fn() }}>
+          {children}
+        </ThemeContext.Provider>
+      ),
     });
 
-    expect(result.current.theme).toBeDefined();
+    expect(result.current.theme).toBe("light");
     expect(typeof result.current.toggleTheme).toBe("function");
   });
 
