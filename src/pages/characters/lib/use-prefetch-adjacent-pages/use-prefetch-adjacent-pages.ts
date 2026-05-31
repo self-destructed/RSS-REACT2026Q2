@@ -9,22 +9,26 @@ interface Props {
 }
 
 export function usePrefetchAdjacentPages({
-  name: _name,
-  page: _page,
-  totalPages: _totalPages,
+  name,
+  page,
+  totalPages,
 }: Props): void {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (_page <= 1 || _page >= _totalPages) {
+    if (page < 1 || page > totalPages) {
       return;
     }
 
-    void queryClient.prefetchQuery(
-      charactersQueryOptions({ name: _name, page: _page + 1 }),
-    );
-    void queryClient.prefetchQuery(
-      charactersQueryOptions({ name: _name, page: _page - 1 }),
-    );
-  }, [_name, _page, _totalPages, queryClient]);
+    if (page > 1) {
+      void queryClient.prefetchQuery(
+        charactersQueryOptions({ name, page: page - 1 }),
+      );
+    }
+    if (page < totalPages) {
+      void queryClient.prefetchQuery(
+        charactersQueryOptions({ name, page: page + 1 }),
+      );
+    }
+  }, [name, page, totalPages, queryClient]);
 }
