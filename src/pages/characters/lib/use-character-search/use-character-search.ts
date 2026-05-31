@@ -19,17 +19,24 @@ export function useCharacterSearch({ lsKey }: Props): UseCharacterSearchReturn {
   useEffect(() => {
     const urlName = params.get("name");
 
-    if (urlName) {
+    if (urlName === null) {
+      if (savedQuery) {
+        setParams((prev) => {
+          prev.set("name", savedQuery);
+          return prev;
+        });
+      }
+
       return;
     }
 
-    if (savedQuery) {
+    if (urlName === "") {
       setParams((prev) => {
-        prev.set("name", savedQuery);
+        prev.delete("name");
         return prev;
       });
     }
-  }, [params, setParams, savedQuery, setSavedQuery]);
+  }, [params, setParams, savedQuery]);
 
   const handleQueryChange = (newQuery: string) => {
     setParams((prev) => {
