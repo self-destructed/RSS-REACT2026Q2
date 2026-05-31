@@ -1,4 +1,4 @@
-import { Outlet, useSearchParams } from "react-router";
+import { Outlet } from "react-router";
 import {
   Search,
   Spinner,
@@ -7,28 +7,26 @@ import {
   ErrorDisplay,
   QueryMatch,
 } from "@shared/ui";
-import { useSelectedIds, useToggleCharacter } from "@features/characters";
-import { useCharactersQuery } from "@entities/character";
-import { CharacterList, Flyout } from "@features/characters";
-import { useCharacterDetails, useCharacterNavigation } from "../../lib";
-import { useCharacterSearch } from "@pages/characters/lib/use-character-search";
-
-const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
+import {
+  useSelectedIds,
+  useToggleCharacter,
+  CharacterList,
+  Flyout,
+} from "@features/characters";
+import { useCharacterDetails, useCharactersPageData } from "../../lib";
 
 export function CharactersPage(): React.JSX.Element {
   const selectedIds = useSelectedIds();
-  const [params] = useSearchParams();
-  const { query, handleQueryChange } = useCharacterSearch({
-    lsKey: CHARACTER_QUERY_STORAGE_KEY,
-  });
-  const page = Number(params.get("page")) || 1;
   const toggleSelection = useToggleCharacter();
   const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
-  const charactersQuery = useCharactersQuery({ name: query, page });
-  const { handleNext, handlePrev } = useCharacterNavigation({
-    totalPages: charactersQuery.data?.info?.pages ?? 1,
-    name: query,
-  });
+  const {
+    query,
+    page,
+    charactersQuery,
+    handleQueryChange,
+    handleNext,
+    handlePrev,
+  } = useCharactersPageData();
 
   return (
     <>
