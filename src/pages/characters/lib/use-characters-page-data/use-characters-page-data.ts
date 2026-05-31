@@ -1,5 +1,9 @@
 import { useSearchParams } from "react-router";
-import { useCharactersQuery } from "@entities/character";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  useCharactersQuery,
+  charactersQueryOptions,
+} from "@entities/character";
 import { useCharacterSearch, useCharacterNavigation } from "..";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
@@ -10,10 +14,12 @@ interface UseCharactersPageDataReturn {
   handleQueryChange: (newQuery: string) => void;
   handleNext: () => void;
   handlePrev: () => void;
+  handleRefresh: () => void;
   charactersQuery: ReturnType<typeof useCharactersQuery>;
 }
 
 export function useCharactersPageData(): UseCharactersPageDataReturn {
+  const queryClient = useQueryClient();
   const { query, handleQueryChange: searchHandleQueryChange } =
     useCharacterSearch({
       lsKey: CHARACTER_QUERY_STORAGE_KEY,
@@ -35,6 +41,12 @@ export function useCharactersPageData(): UseCharactersPageDataReturn {
     setPage(1);
   };
 
+  const handleRefresh = () => {
+    void queryClient.invalidateQueries({
+      queryKey: charactersQueryOptions({ name: query, page }).queryKey,
+    });
+  };
+
   return {
     query,
     page,
@@ -42,5 +54,6 @@ export function useCharactersPageData(): UseCharactersPageDataReturn {
     handleQueryChange,
     handleNext,
     handlePrev,
+    handleRefresh,
   };
 }

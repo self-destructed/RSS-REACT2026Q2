@@ -26,6 +26,7 @@ export function CharactersPage(): React.JSX.Element {
     handleQueryChange,
     handleNext,
     handlePrev,
+    handleRefresh,
   } = useCharactersPageData();
 
   return (
@@ -55,6 +56,16 @@ export function CharactersPage(): React.JSX.Element {
                     selectedIds={selectedIds}
                     onToggleSelection={toggleSelection}
                   />
+                </div>
+                <div className="mb-4 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={handleRefresh}
+                    className="rounded p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white cursor-pointer"
+                    aria-label="Refresh"
+                  >
+                    ↻
+                  </button>
                 </div>
                 <div className="mt-4 flex justify-center">
                   <Pagination
