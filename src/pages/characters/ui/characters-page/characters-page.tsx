@@ -1,10 +1,5 @@
 import { useEffect, useRef } from "react";
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router";
+import { Outlet, useSearchParams } from "react-router";
 import {
   Search,
   Spinner,
@@ -13,21 +8,17 @@ import {
   ErrorDisplay,
   QueryMatch,
 } from "@shared/ui";
-import { useFocusRestore, useLocalStorage } from "@shared/lib";
+import { useLocalStorage } from "@shared/lib";
 import { useSelectedIds, useToggleCharacter } from "@features/characters";
 import { useCharactersQuery } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
-import { ROUTES } from "@shared/routes";
 import { updateSearchParams } from "@shared/lib";
-import { usePrefetchAdjacentPages } from "../../lib";
+import { useCharacterDetails, usePrefetchAdjacentPages } from "../../lib";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
 export function CharactersPage(): React.JSX.Element {
   const selectedIds = useSelectedIds();
-  const toggleSelection = useToggleCharacter();
-  const location = useLocation();
-  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage(
     CHARACTER_QUERY_STORAGE_KEY,
@@ -42,7 +33,8 @@ export function CharactersPage(): React.JSX.Element {
     name,
     totalPages: charactersQuery.data?.info?.pages ?? 1,
   });
-  const setFocusId = useFocusRestore(location.pathname === ROUTES.CHARACTERS);
+  const toggleSelection = useToggleCharacter();
+  const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
 
   useEffect(() => {
     if (hasRestored.current || !searchQuery || params.get("name")) return;
@@ -80,17 +72,6 @@ export function CharactersPage(): React.JSX.Element {
     setSearchQuery(query);
   };
 
-  const handleCharacterSelect = (characterId: number) => {
-    setFocusId(`details-btn-${String(characterId)}`);
-    void navigate(
-      `${ROUTES.CHARACTERS_DETAILS(String(characterId))}${location.search}`,
-    );
-  };
-
-  const handleSidebarClose = () => {
-    void navigate(`${ROUTES.CHARACTERS}${location.search}`);
-  };
-
   return (
     <>
       <Main>
@@ -114,7 +95,7 @@ export function CharactersPage(): React.JSX.Element {
                 <div className="p-4 sm:p-5 lg:p-6">
                   <CharacterList
                     data={data.results ?? []}
-                    onViewDetails={handleCharacterSelect}
+                    onViewDetails={handleViewDetails}
                     selectedIds={selectedIds}
                     onToggleSelection={toggleSelection}
                   />
