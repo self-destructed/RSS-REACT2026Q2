@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useSearchParams } from "react-router";
 import { usePrefetchAdjacentPages } from "..";
 
-interface NavigationOptions {
-  page: number;
+interface Props {
   totalPages: number;
   name: string;
+  initialPage?: number;
 }
 
 interface UseCharacterNavigationReturn {
@@ -13,11 +14,22 @@ interface UseCharacterNavigationReturn {
 }
 
 export function useCharacterNavigation({
-  page,
   totalPages,
   name,
-}: NavigationOptions): UseCharacterNavigationReturn {
-  const [, setParams] = useSearchParams();
+  initialPage,
+}: Props): UseCharacterNavigationReturn {
+  const [params, setParams] = useSearchParams();
+
+  const page = initialPage ?? (Number(params.get("page")) || 1);
+
+  useEffect(() => {
+    if (params.has("page")) return;
+
+    setParams((prev) => {
+      prev.set("page", String(initialPage ?? 1));
+      return prev;
+    });
+  }, [params, setParams, initialPage]);
 
   usePrefetchAdjacentPages({
     page,
@@ -25,22 +37,21 @@ export function useCharacterNavigation({
     totalPages,
   });
 
-  const handlePrev = () => {
-    if (page <= 1) return;
-
+  const setPage = (pageNumber: number) => {
     setParams((prev) => {
-      prev.set("page", String(page - 1));
+      prev.set("page", String(pageNumber));
       return prev;
     });
   };
 
+  const handlePrev = () => {
+    if (page <= 1) return;
+    setPage(page - 1);
+  };
+
   const handleNext = () => {
     if (page >= totalPages) return;
-
-    setParams((prev) => {
-      prev.set("page", String(page + 1));
-      return prev;
-    });
+    setPage(page + 1);
   };
 
   return {

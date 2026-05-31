@@ -22,11 +22,10 @@ export function CharactersPage(): React.JSX.Element {
     lsKey: CHARACTER_QUERY_STORAGE_KEY,
   });
   const page = Number(params.get("page")) || 1;
-  const charactersQuery = useCharactersQuery({ name: query, page });
   const toggleSelection = useToggleCharacter();
   const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
+  const charactersQuery = useCharactersQuery({ name: query, page });
   const { handleNext, handlePrev } = useCharacterNavigation({
-    page,
     totalPages: charactersQuery.data?.info?.pages ?? 1,
     name: query,
   });
