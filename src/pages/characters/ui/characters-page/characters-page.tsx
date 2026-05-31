@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { Outlet, useSearchParams } from "react-router";
 import {
   Search,
@@ -12,8 +11,7 @@ import { useLocalStorage } from "@shared/lib";
 import { useSelectedIds, useToggleCharacter } from "@features/characters";
 import { useCharactersQuery } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
-import { updateSearchParams } from "@shared/lib";
-import { useCharacterDetails, usePrefetchAdjacentPages } from "../../lib";
+import { useCharacterDetails, useCharacterNavigation } from "../../lib";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
@@ -27,49 +25,24 @@ export function CharactersPage(): React.JSX.Element {
   const name = params.get("name") ?? searchQuery;
   const page = Number(params.get("page")) || 1;
   const charactersQuery = useCharactersQuery({ name, page });
-  const hasRestored = useRef(false);
-  usePrefetchAdjacentPages({
-    page,
-    name,
-    totalPages: charactersQuery.data?.info?.pages ?? 1,
-  });
   const toggleSelection = useToggleCharacter();
   const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
-
-  useEffect(() => {
-    if (hasRestored.current || !searchQuery || params.get("name")) return;
-    hasRestored.current = true;
-    setParams((prev) =>
-      updateSearchParams(prev, {
-        name: searchQuery,
-        page: "1",
-      }),
-    );
-  }, [searchQuery, params, setParams]);
-
-  const handlePrev = () => {
-    if (page <= 1) return;
-    setParams((prev) => {
-      prev.set("page", String(page - 1));
-      return prev;
-    });
-  };
-
-  const handleNext = () => {
-    const totalPages = charactersQuery.data?.info?.pages ?? 1;
-    if (page >= totalPages) return;
-    setParams((prev) => {
-      prev.set("page", String(page + 1));
-      return prev;
-    });
-  };
+  const { handleNext, handlePrev } = useCharacterNavigation({
+    page,
+    totalPages: charactersQuery.data?.info?.pages ?? 1,
+    name,
+  });
 
   const handleSearch = (query: string) => {
     if (query === name && !charactersQuery.isError && page === 1) {
       return;
     }
     setParams((prev) => {
-      prev.set("name", query || "");
+      if (query) {
+        prev.set("name", query);
+      } else {
+        prev.delete("name");
+      }
       prev.set("page", "1");
       setSearchQuery(query);
 
