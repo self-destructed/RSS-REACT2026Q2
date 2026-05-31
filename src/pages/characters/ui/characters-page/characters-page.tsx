@@ -7,55 +7,36 @@ import {
   ErrorDisplay,
   QueryMatch,
 } from "@shared/ui";
-import { useLocalStorage } from "@shared/lib";
 import { useSelectedIds, useToggleCharacter } from "@features/characters";
 import { useCharactersQuery } from "@entities/character";
 import { CharacterList, Flyout } from "@features/characters";
 import { useCharacterDetails, useCharacterNavigation } from "../../lib";
+import { useCharacterSearch } from "@pages/characters/lib/use-character-search";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
 export function CharactersPage(): React.JSX.Element {
   const selectedIds = useSelectedIds();
-  const [params, setParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useLocalStorage(
-    CHARACTER_QUERY_STORAGE_KEY,
-    "",
-  );
-  const name = params.get("name") ?? searchQuery;
+  const [params] = useSearchParams();
+  const { query, handleQueryChange } = useCharacterSearch({
+    lsKey: CHARACTER_QUERY_STORAGE_KEY,
+  });
   const page = Number(params.get("page")) || 1;
-  const charactersQuery = useCharactersQuery({ name, page });
+  const charactersQuery = useCharactersQuery({ name: query, page });
   const toggleSelection = useToggleCharacter();
   const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
   const { handleNext, handlePrev } = useCharacterNavigation({
     page,
     totalPages: charactersQuery.data?.info?.pages ?? 1,
-    name,
+    name: query,
   });
-
-  const handleSearch = (query: string) => {
-    if (query === name && !charactersQuery.isError && page === 1) {
-      return;
-    }
-    setParams((prev) => {
-      if (query) {
-        prev.set("name", query);
-      } else {
-        prev.delete("name");
-      }
-      prev.set("page", "1");
-      setSearchQuery(query);
-
-      return prev;
-    });
-  };
 
   return (
     <>
       <Main>
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
-            <Search key={name} onSubmit={handleSearch} query={name} />
+            <Search key={query} onSubmit={handleQueryChange} query={query} />
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">
