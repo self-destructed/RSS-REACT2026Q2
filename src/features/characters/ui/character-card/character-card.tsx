@@ -41,8 +41,8 @@ export function CharacterCard({
       }`}
     >
       <div className="flex h-full flex-col justify-between p-4">
-        <div className="mb-2 flex items-start justify-between z-50">
-          <div className="flex items-center gap-2">
+        <div className="mb-2 flex items-start justify-between">
+          <div className="relative flex items-center gap-2 z-50">
             <Checkbox
               checked={isSelected}
               id={`checkbox-${String(data.id)}`}
@@ -106,7 +106,7 @@ export function CharacterCard({
             id={`details-btn-${String(data.id)}`}
             onClick={onViewDetails}
             aria-label={`View ${data.name} details`}
-            className="cursor-pointer inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-blue-300 before:absolute before:-inset-4 before:left-[calc(-100%-1rem)] before:top-[calc(-100%-1rem)] before:h-[calc(100%+200%)] before:w-[calc(100%+200%)] before:content-['']"
+            className="cursor-pointer inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-blue-300 before:absolute before:inset-0 before:w-full before:h-full before:content-['']"
           >
             View details
             <svg
