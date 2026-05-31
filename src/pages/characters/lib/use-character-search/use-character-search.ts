@@ -45,12 +45,8 @@ export function useCharacterSearch({ lsKey }: Props): UseCharacterSearchReturn {
       } else {
         prev.delete("name");
       }
-
-      prev.set("page", "1");
-
       return prev;
     });
-
     setSavedQuery(newQuery);
   };
 

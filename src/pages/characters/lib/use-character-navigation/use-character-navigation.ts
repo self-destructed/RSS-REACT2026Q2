@@ -9,8 +9,10 @@ interface Props {
 }
 
 interface UseCharacterNavigationReturn {
+  page: number;
   handleNext: () => void;
   handlePrev: () => void;
+  setPage: (pageNumber: number) => void;
 }
 
 export function useCharacterNavigation({
@@ -38,8 +40,10 @@ export function useCharacterNavigation({
   });
 
   const setPage = (pageNumber: number) => {
+    const clampedPage = Math.max(1, Math.min(pageNumber, totalPages));
+
     setParams((prev) => {
-      prev.set("page", String(pageNumber));
+      prev.set("page", String(clampedPage));
       return prev;
     });
   };
@@ -55,7 +59,9 @@ export function useCharacterNavigation({
   };
 
   return {
+    page,
     handleNext,
     handlePrev,
+    setPage,
   };
 }

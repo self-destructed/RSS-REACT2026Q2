@@ -14,20 +14,26 @@ interface UseCharactersPageDataReturn {
 }
 
 export function useCharactersPageData(): UseCharactersPageDataReturn {
-  const { query, handleQueryChange } = useCharacterSearch({
-    lsKey: CHARACTER_QUERY_STORAGE_KEY,
-  });
+  const { query, handleQueryChange: searchHandleQueryChange } =
+    useCharacterSearch({
+      lsKey: CHARACTER_QUERY_STORAGE_KEY,
+    });
   const [params] = useSearchParams();
   const page = Number(params.get("page")) || 1;
 
   const charactersQuery = useCharactersQuery({ name: query, page });
   const totalPages = charactersQuery.data?.info?.pages ?? 1;
 
-  const { handleNext, handlePrev } = useCharacterNavigation({
+  const { handleNext, handlePrev, setPage } = useCharacterNavigation({
     totalPages,
     initialPage: page,
     name: query,
   });
+
+  const handleQueryChange = (newQuery: string) => {
+    searchHandleQueryChange(newQuery);
+    setPage(1);
+  };
 
   return {
     query,
