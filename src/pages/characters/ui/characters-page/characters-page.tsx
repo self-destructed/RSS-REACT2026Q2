@@ -49,27 +49,32 @@ export function CharactersPage(): React.JSX.Element {
 
   const handlePrev = () => {
     if (page <= 1) return;
-    setParams((prev) => updateSearchParams(prev, { page: String(page - 1) }));
+    setParams((prev) => {
+      prev.set("page", String(page - 1));
+      return prev;
+    });
   };
 
   const handleNext = () => {
     const totalPages = charactersQuery.data?.info?.pages ?? 1;
     if (page >= totalPages) return;
-    const newPage = page + 1;
-    setParams((prev) => updateSearchParams(prev, { page: String(newPage) }));
+    setParams((prev) => {
+      prev.set("page", String(page + 1));
+      return prev;
+    });
   };
 
   const handleSearch = (query: string) => {
     if (query === name && !charactersQuery.isError && page === 1) {
       return;
     }
-    setParams((prev) =>
-      updateSearchParams(prev, {
-        name: query || null,
-        page: "1",
-      }),
-    );
-    setSearchQuery(query);
+    setParams((prev) => {
+      prev.set("name", query || "");
+      prev.set("page", "1");
+      setSearchQuery(query);
+
+      return prev;
+    });
   };
 
   return (
