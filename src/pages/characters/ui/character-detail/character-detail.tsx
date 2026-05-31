@@ -1,6 +1,6 @@
 import { CharacterDetail } from "@entities/character";
 import { useOutletContext } from "react-router";
-import { Sidebar, Spinner, QueryMatch } from "@shared/ui";
+import { ErrorDisplay, Sidebar, Spinner, QueryMatch } from "@shared/ui";
 import { useCharacterDetailData } from "../../lib";
 
 interface Context {
@@ -21,7 +21,7 @@ export function CharacterDetailPage(): React.JSX.Element {
             <Spinner />
           </div>
         }
-        error={(e) => <p>Error: {e.message}</p>}
+        error={(e) => <ErrorDisplay message={e.message} />}
       >
         {(data) => (
           <>
