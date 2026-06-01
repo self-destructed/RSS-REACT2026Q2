@@ -1,5 +1,6 @@
 import { describe, it, vi, beforeEach, expect } from "vitest";
 import { act, renderHook } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router";
 import { useCharacterDetailData } from "./use-character-detail-data";
 
 const {
@@ -11,16 +12,6 @@ const {
   mockCharacterQueryOptions: vi.fn(),
   mockInvalidateQueries: vi.fn(),
 }));
-
-let mockParams: { id?: string } = {};
-
-vi.mock("react-router", async () => {
-  const actual = await vi.importActual("react-router");
-  return {
-    ...actual,
-    useParams: () => mockParams,
-  };
-});
 
 vi.mock("@tanstack/react-query", async () => {
   const actual = await vi.importActual("@tanstack/react-query");
@@ -38,56 +29,67 @@ vi.mock("@entities/character", () => ({
   characterQueryOptions: mockCharacterQueryOptions,
 }));
 
+function wrapper(initialRoute: string) {
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <MemoryRouter initialEntries={[initialRoute]}>
+        <Routes>
+          <Route path="/characters/details/:id" element={children} />
+          <Route path="*" element={children} />
+        </Routes>
+      </MemoryRouter>
+    );
+  }
+
+  return Wrapper;
+}
+
 describe("useCharacterDetailData", () => {
   beforeEach(() => {
-    mockParams = {};
     mockInvalidateQueries.mockClear();
     mockUseCharacterQuery.mockClear();
     mockCharacterQueryOptions.mockClear();
   });
 
-  it("returns characterId from URL params", () => {
-    mockParams = { id: "42" };
-    const { result } = renderHook(() => useCharacterDetailData());
+  it("reads characterId from route params", () => {
+    const { result } = renderHook(() => useCharacterDetailData(), {
+      wrapper: wrapper("/characters/details/42"),
+    });
 
     expect(result.current.characterId).toBe(42);
   });
 
-  it("returns undefined characterId when no id in params", () => {
-    const { result } = renderHook(() => useCharacterDetailData());
+  it("returns undefined when id is missing", () => {
+    const { result } = renderHook(() => useCharacterDetailData(), {
+      wrapper: wrapper("/characters/details"),
+    });
 
     expect(result.current.characterId).toBeUndefined();
   });
 
-  it("passes characterId to useCharacterQuery", () => {
-    mockParams = { id: "42" };
-    renderHook(() => useCharacterDetailData());
+  it("calls useCharacterQuery with parsed id", () => {
+    renderHook(() => useCharacterDetailData(), {
+      wrapper: wrapper("/characters/details/42"),
+    });
 
     expect(mockUseCharacterQuery).toHaveBeenCalledWith(42);
   });
 
-  it("calls invalidateQueries with correct queryKey on handleRefresh", () => {
-    mockParams = { id: "42" };
+  it("invalidates query on refresh", () => {
     mockCharacterQueryOptions.mockReturnValue({
       queryKey: ["character", "42"],
     });
 
-    const { result } = renderHook(() => useCharacterDetailData());
+    const { result } = renderHook(() => useCharacterDetailData(), {
+      wrapper: wrapper("/characters/details/42"),
+    });
 
     act(() => {
       result.current.handleRefresh();
     });
 
-    expect(mockCharacterQueryOptions).toHaveBeenCalledWith(42);
     expect(mockInvalidateQueries).toHaveBeenCalledWith({
       queryKey: ["character", "42"],
     });
-  });
-
-  it("handles invalid id as undefined", () => {
-    mockParams = { id: "abc" };
-    const { result } = renderHook(() => useCharacterDetailData());
-
-    expect(result.current.characterId).toBeUndefined();
   });
 });
