@@ -22,7 +22,10 @@ export function useCharacterNavigation({
 }: Props): UseCharacterNavigationReturn {
   const [params, setParams] = useSearchParams();
 
-  const page = initialPage ?? (Number(params.get("page")) || 1);
+  const page =
+    initialPage !== undefined
+      ? Math.max(1, Math.min(initialPage, totalPages))
+      : Number(params.get("page")) || 1;
 
   useEffect(() => {
     if (params.has("page")) return;
