@@ -11,7 +11,14 @@ import {
   useUnselectAllCharacters,
 } from "../../model/store";
 
-export function useCharacterSelection() {
+interface UseCharacterSelectionReturn {
+  selectedIds: number[];
+  toggleSelection: (id: number) => void;
+  unselectAll: () => void;
+  handleDownload: () => Promise<void>;
+}
+
+export function useCharacterSelection(): UseCharacterSelectionReturn {
   const selectedIds = useSelectedIds();
   const toggleSelection = useToggleCharacter();
   const unselectAll = useUnselectAllCharacters();
