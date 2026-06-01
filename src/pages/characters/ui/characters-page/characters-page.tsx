@@ -8,16 +8,15 @@ import {
   QueryMatch,
 } from "@shared/ui";
 import {
-  useSelectedIds,
-  useToggleCharacter,
+  useCharacterSelection,
   CharacterList,
   Flyout,
 } from "@features/characters";
 import { useCharacterDetails, useCharactersPageData } from "../../lib";
 
 export function CharactersPage(): React.JSX.Element {
-  const selectedIds = useSelectedIds();
-  const toggleSelection = useToggleCharacter();
+  const { selectedIds, toggleSelection, unselectAll, handleDownload } =
+    useCharacterSelection();
   const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
   const {
     query,
@@ -78,7 +77,13 @@ export function CharactersPage(): React.JSX.Element {
               </>
             )}
           </QueryMatch>
-          <Flyout />
+          <Flyout
+            count={selectedIds.length}
+            onUnselectAll={unselectAll}
+            onDownload={() => {
+              void handleDownload();
+            }}
+          />
         </section>
       </Main>
       <Outlet context={{ onClose: handleSidebarClose }} />
