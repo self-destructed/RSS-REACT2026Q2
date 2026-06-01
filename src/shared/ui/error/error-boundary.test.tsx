@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import { ErrorBoundary } from "./error-boundary";
 import userEvent from "@testing-library/user-event";
+import { ErrorBoundary } from "./error-boundary";
 
 afterEach(cleanup);
 

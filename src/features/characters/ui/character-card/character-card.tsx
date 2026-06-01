@@ -1,9 +1,11 @@
 import type { Character } from "@entities/character";
+import { Checkbox } from "@shared/ui";
 
 interface Props {
   data: Character;
   isSelected?: boolean;
-  onToggle?: () => void;
+  onToggleSelection?: () => void;
+  onViewDetails?: () => void;
 }
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string }> = {
@@ -21,13 +23,11 @@ const GENDER_ICONS: Record<string, string> = {
 };
 const DEFAULT_ICON = "⚲";
 
-const CHECKBOX_CLASSES =
-  "relative float-left -ms-[1.5rem] me-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-500 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:content-[''] checked:border-blue-600 checked:bg-blue-600 checked:after:absolute checked:after:-mt-px checked:after:ms-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:after:-mt-px checked:focus:after:ms-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-400 dark:checked:border-blue-600 dark:checked:bg-blue-600";
-
 export function CharacterCard({
   data,
   isSelected = false,
-  onToggle,
+  onToggleSelection,
+  onViewDetails,
 }: Props): React.JSX.Element {
   const { bg: bgClass, text: textClass } =
     STATUS_CONFIG[data.status] ?? DEFAULT_STATUS;
@@ -36,26 +36,23 @@ export function CharacterCard({
   return (
     <article
       id={data.id.toString()}
-      className={`group h-full overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 ${isSelected ? "ring-2 ring-blue-500" : ""}`}
+      className={`group relative h-full overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 ${
+        isSelected ? "ring-2 ring-blue-500" : ""
+      }`}
     >
       <div className="flex h-full flex-col justify-between p-4">
         <div className="mb-2 flex items-start justify-between">
-          <div className="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
-            <input
-              type="checkbox"
+          <div className="relative flex items-center gap-2 z-50">
+            <Checkbox
               checked={isSelected}
               id={`checkbox-${String(data.id)}`}
               onChange={() => {
-                onToggle?.();
+                onToggleSelection?.();
               }}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              className={CHECKBOX_CLASSES}
             />
             <label
               htmlFor={`checkbox-${String(data.id)}`}
-              className="inline-block ps-[0.15rem] hover:cursor-pointer"
+              className="hover:cursor-pointer"
             >
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                 {data.name}
@@ -101,6 +98,32 @@ export function CharacterCard({
               {data.location.name}
             </span>
           </div>
+        </div>
+
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            id={`details-btn-${String(data.id)}`}
+            onClick={onViewDetails}
+            aria-label={`View ${data.name} details`}
+            className="cursor-pointer inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-blue-300 before:absolute before:inset-0 before:w-full before:h-full before:content-['']"
+          >
+            View details
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </article>

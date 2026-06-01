@@ -1,103 +1,89 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CharacterDetailPage } from "./character-detail";
-import { useCharacter } from "@features/characters";
-import { useParams, useOutletContext } from "react-router";
-import type { Character } from "@entities/character";
 
-afterEach(cleanup);
+const {
+  mockCharacterData,
+  mockHandleRefresh,
+  mockOnClose,
+  mockUseCharacterDetailData,
+  mockCharacterDetail,
+} = vi.hoisted(() => {
+  const mockCharacterData = {
+    id: 1,
+    name: "Rick Sanchez",
+    status: "Alive" as const,
+    species: "Human" as const,
+    gender: "Male" as const,
+    type: "",
+    origin: { name: "Earth", url: "" },
+    location: { name: "Earth", url: "" },
+    image: "",
+    episode: [],
+    url: "",
+    created: "",
+  };
 
-const mockCharacter: Character = {
-  id: 1,
-  name: "Rick Sanchez",
-  status: "Alive",
-  species: "Human",
-  type: "",
-  gender: "Male",
-  origin: { name: "Earth", url: "" },
-  location: { name: "Earth", url: "" },
-  image: "",
-  episode: [],
-  url: "",
-  created: "",
-};
+  return {
+    mockCharacterData,
+    mockHandleRefresh: vi.fn(),
+    mockOnClose: vi.fn(),
+    mockUseCharacterDetailData: vi.fn(),
+    mockCharacterDetail: vi.fn(
+      ({ character }: { character?: { name?: string } }): React.JSX.Element => {
+        if (!character) return <span hidden />;
+        return (
+          <div data-testid="character-detail" data-name={character.name} />
+        );
+      },
+    ),
+  };
+});
 
-afterEach(cleanup);
-
-vi.mock("react-router", () => ({
-  useParams: vi.fn<() => { id?: string }>(),
-  useOutletContext: vi.fn<() => { onClose: () => void }>(),
-}));
-
-vi.mock("@features/characters", () => ({
-  useCharacter: vi.fn<() => { status: string }>(),
+vi.mock("../../lib", () => ({
+  useCharacterDetailData: mockUseCharacterDetailData,
 }));
 
 vi.mock("@entities/character", () => ({
-  CharacterDetail: ({ character }: { character: { name: string } }) => (
-    <div data-testid="character-detail">{character.name}</div>
-  ),
+  CharacterDetail: mockCharacterDetail,
 }));
 
-vi.mock("@shared/ui", () => ({
-  MatchState: ({
-    state,
-    loading,
-    error,
-    children,
-  }: {
-    state: { status: string; data?: unknown; error?: Error };
-    loading?: React.ReactNode;
-    error?: (e: Error) => React.ReactNode;
-    children: (data: unknown) => React.ReactNode;
-  }) => {
-    if (state.status === "loading") return loading ?? null;
-    if (state.status === "error") return error?.(state.error!) ?? null;
-    if (state.status === "success") return children(state.data);
-    return null;
-  },
-  Spinner: () => <div data-testid="spinner" />,
-  Sidebar: ({
-    onClose,
-    children,
-  }: {
-    onClose: () => void;
-    children: React.ReactNode;
-  }) => (
-    <div data-testid="sidebar">
-      <button type="button" onClick={onClose} aria-label="Close">
-        ✕
-      </button>
-      <div data-testid="sidebar-content">{children}</div>
-    </div>
-  ),
+vi.mock("react-router", () => ({
+  useOutletContext: () => ({ onClose: mockOnClose }),
 }));
 
-const mockOnClose = vi.fn();
+function setDefaultState(): void {
+  mockUseCharacterDetailData.mockReturnValue({
+    query: undefined,
+    handleRefresh: mockHandleRefresh,
+    characterId: 1,
+  });
+}
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  setDefaultState();
+});
 
 describe("CharacterDetailPage", () => {
-  beforeEach(() => {
-    vi.mocked(useParams).mockReturnValue({ id: "1" });
-    vi.mocked(useOutletContext).mockReturnValue({ onClose: mockOnClose });
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("should render spinner on loading", () => {
-    vi.mocked(useCharacter).mockReturnValue({ status: "loading" });
+  it("shows Spinner on loading", () => {
+    mockUseCharacterDetailData.mockReturnValue({
+      query: { status: "pending", isPending: true },
+      handleRefresh: mockHandleRefresh,
+      characterId: 1,
+    });
 
     render(<CharacterDetailPage />);
 
-    expect(screen.getByTestId("spinner")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
-  it("should render error message on error", () => {
-    vi.mocked(useCharacter).mockReturnValue({
-      status: "error",
-      error: new Error("Not found"),
+  it("shows ErrorDisplay on error", () => {
+    mockUseCharacterDetailData.mockReturnValue({
+      query: { status: "error", isError: true, error: new Error("Not found") },
+      handleRefresh: mockHandleRefresh,
+      characterId: 1,
     });
 
     render(<CharacterDetailPage />);
@@ -105,35 +91,63 @@ describe("CharacterDetailPage", () => {
     expect(screen.getByText("Error: Not found")).toBeInTheDocument();
   });
 
-  it("should render CharacterDetail on success", () => {
-    vi.mocked(useCharacter).mockReturnValue({
-      status: "success",
-      data: mockCharacter,
+  it("renders CharacterDetail on success", () => {
+    mockUseCharacterDetailData.mockReturnValue({
+      query: { status: "success", isSuccess: true, data: mockCharacterData },
+      handleRefresh: mockHandleRefresh,
+      characterId: 1,
     });
 
     render(<CharacterDetailPage />);
 
     expect(screen.getByTestId("character-detail")).toBeInTheDocument();
-    expect(screen.getByText("Rick Sanchez")).toBeInTheDocument();
+    expect(screen.getByTestId("character-detail")).toHaveAttribute(
+      "data-name",
+      "Rick Sanchez",
+    );
   });
 
-  it("should render nothing in idle state", () => {
-    vi.mocked(useParams).mockReturnValue({});
-    vi.mocked(useCharacter).mockReturnValue({ status: "idle" });
+  it("renders nothing in idle state", () => {
+    mockUseCharacterDetailData.mockReturnValue({
+      query: {},
+      handleRefresh: mockHandleRefresh,
+      characterId: 1,
+    });
 
     render(<CharacterDetailPage />);
 
-    expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
+    expect(screen.getByText("Character Details")).toBeInTheDocument();
     expect(screen.queryByTestId("character-detail")).not.toBeInTheDocument();
   });
 
-  it("should call onClose when close button clicked", async () => {
-    vi.mocked(useCharacter).mockReturnValue({ status: "loading" });
+  it("Refresh button calls handleRefresh", async () => {
+    const user = userEvent.setup();
+
+    mockUseCharacterDetailData.mockReturnValue({
+      query: { status: "success", isSuccess: true, data: mockCharacterData },
+      handleRefresh: mockHandleRefresh,
+      characterId: 1,
+    });
 
     render(<CharacterDetailPage />);
 
+    await user.click(screen.getByRole("button", { name: "Refresh" }));
+
+    expect(mockHandleRefresh).toHaveBeenCalled();
+  });
+
+  it("calls onClose when Close button clicked", async () => {
     const user = userEvent.setup();
-    await user.click(screen.getByLabelText("Close"));
+
+    mockUseCharacterDetailData.mockReturnValue({
+      query: { status: "success", isSuccess: true, data: mockCharacterData },
+      handleRefresh: mockHandleRefresh,
+      characterId: 1,
+    });
+
+    render(<CharacterDetailPage />);
+
+    await user.click(screen.getByRole("button", { name: "Close" }));
 
     expect(mockOnClose).toHaveBeenCalled();
   });

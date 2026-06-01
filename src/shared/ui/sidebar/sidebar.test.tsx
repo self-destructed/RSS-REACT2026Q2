@@ -38,4 +38,46 @@ describe("Sidebar", () => {
 
     expect(onClose).toHaveBeenCalled();
   });
+
+  it("should call onClose when Escape pressed", async () => {
+    const onClose = vi.fn();
+    render(<Sidebar onClose={onClose}>content</Sidebar>);
+
+    const user = userEvent.setup();
+    await user.keyboard("{Escape}");
+
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it("should trap Tab focus cycling from last to first element", async () => {
+    render(
+      <Sidebar onClose={vi.fn()}>
+        <a href="https://example.com">Link 1</a>
+        <a href="https://example.com">Link 2</a>
+      </Sidebar>,
+    );
+
+    const user = userEvent.setup();
+
+    await user.tab();
+    await user.tab();
+    await user.tab();
+
+    expect(screen.getByLabelText("Close")).toHaveFocus();
+  });
+
+  it("should trap Shift+Tab focus cycling from first to last element", async () => {
+    render(
+      <Sidebar onClose={vi.fn()}>
+        <a href="https://example.com">Link 1</a>
+        <a href="https://example.com">Link 2</a>
+      </Sidebar>,
+    );
+
+    const user = userEvent.setup();
+
+    await user.tab({ shift: true });
+
+    expect(screen.getByText("Link 2")).toHaveFocus();
+  });
 });

@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ThemeProvider } from "./theme-provider";
 import { useContext } from "react";
-import { ThemeContext } from "./theme-context";
 
 vi.mock("@shared/lib", () => ({
   useLocalStorage: vi.fn(),
 }));
 
 import { useLocalStorage } from "@shared/lib";
+import { ThemeContext } from "./theme-context";
+import { ThemeProvider } from "./theme-provider";
 
 afterEach(() => {
   cleanup();

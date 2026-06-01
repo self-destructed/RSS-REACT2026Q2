@@ -8,6 +8,7 @@ import eslintPluginPrettier from "eslint-plugin-prettier/recommended";
 import prettierConfig from "eslint-config-prettier";
 import reactCompiler from "eslint-plugin-react-compiler";
 import jsxA11y from "eslint-plugin-jsx-a11y";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default tseslint.config(
   {
@@ -23,6 +24,7 @@ export default tseslint.config(
 
   {
     extends: [
+      ...pluginQuery.configs["flat/recommended-strict"],
       js.configs.recommended,
       ...tseslint.configs.strictTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,

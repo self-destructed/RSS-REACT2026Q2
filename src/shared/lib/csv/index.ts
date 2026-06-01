@@ -1,3 +1,4 @@
 export { downloadFile } from "./download-file";
-export { escapeCsvValue } from "./escape-csv-value";
-export { toCsv } from "./to-csv";
+export { escapeCSVValue } from "./escape-csv-value";
+export { toCSV } from "./to-csv";
+export { downloadCSV } from "./download-csv";

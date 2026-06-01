@@ -1,10 +1,8 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CharacterList } from "./character-list";
 import type { Character } from "@entities/character";
-
-afterEach(cleanup);
+import { CharacterList } from "./character-list";
 
 const mockCharacters: Character[] = [
   {
@@ -44,7 +42,7 @@ describe("CharacterList", () => {
         <CharacterList
           data={mockCharacters}
           selectedIds={[]}
-          onToggle={vi.fn()}
+          onToggleSelection={vi.fn()}
         />,
       );
 
@@ -58,7 +56,7 @@ describe("CharacterList", () => {
         <CharacterList
           data={mockCharacters}
           selectedIds={[]}
-          onToggle={vi.fn()}
+          onToggleSelection={vi.fn()}
         />,
       );
 
@@ -67,113 +65,68 @@ describe("CharacterList", () => {
     });
 
     it("should render nothing when data is empty", () => {
-      render(<CharacterList data={[]} selectedIds={[]} onToggle={vi.fn()} />);
+      render(
+        <CharacterList
+          data={[]}
+          selectedIds={[]}
+          onToggleSelection={vi.fn()}
+        />,
+      );
 
       expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
     });
-
-    it("renders items with button role for accessibility", () => {
-      render(
-        <CharacterList
-          data={mockCharacters}
-          selectedIds={[]}
-          onToggle={vi.fn()}
-        />,
-      );
-
-      const items = screen.getAllByRole("button");
-      expect(items).toHaveLength(2);
-    });
   });
 
-  describe("onSelect", () => {
-    it("calls onSelect with character id on click", async () => {
-      const onSelectMock = vi.fn();
+  describe("onViewDetails", () => {
+    it("calls onViewDetails with character id on details button click", async () => {
+      const onViewDetailsMock = vi.fn();
       const user = userEvent.setup();
       render(
         <CharacterList
           data={mockCharacters}
           selectedIds={[]}
-          onToggle={vi.fn()}
-          onSelect={onSelectMock}
+          onToggleSelection={vi.fn()}
+          onViewDetails={onViewDetailsMock}
         />,
       );
 
-      const firstItem = screen.getAllByRole("button")[0];
-      await user.click(firstItem);
+      const buttons = screen.getAllByRole("button", { name: /details/i });
+      await user.click(buttons[0]);
 
-      expect(onSelectMock).toHaveBeenCalledWith(0);
+      expect(onViewDetailsMock).toHaveBeenCalledWith(0);
     });
 
-    it("calls onSelect on Enter key press", async () => {
-      const onSelectMock = vi.fn();
+    it("does not call onViewDetails when clicking checkbox", async () => {
+      const onViewDetailsMock = vi.fn();
       const user = userEvent.setup();
       render(
         <CharacterList
           data={mockCharacters}
           selectedIds={[]}
-          onToggle={vi.fn()}
-          onSelect={onSelectMock}
+          onToggleSelection={vi.fn()}
+          onViewDetails={onViewDetailsMock}
         />,
       );
 
-      const firstItem = screen.getAllByRole("button")[0];
-      firstItem.focus();
-      await user.keyboard("{Enter}");
+      const checkbox = screen.getAllByRole("checkbox")[0];
+      await user.click(checkbox);
 
-      expect(onSelectMock).toHaveBeenCalledWith(0);
+      expect(onViewDetailsMock).not.toHaveBeenCalled();
     });
 
-    it("calls onSelect on Space key press", async () => {
-      const onSelectMock = vi.fn();
+    it("does not throw when onViewDetails is not provided", async () => {
       const user = userEvent.setup();
       render(
         <CharacterList
           data={mockCharacters}
           selectedIds={[]}
-          onToggle={vi.fn()}
-          onSelect={onSelectMock}
+          onToggleSelection={vi.fn()}
         />,
       );
 
-      const firstItem = screen.getAllByRole("button")[0];
-      firstItem.focus();
-      await user.keyboard(" ");
+      const buttons = screen.getAllByRole("button", { name: /details/i });
 
-      expect(onSelectMock).toHaveBeenCalledWith(0);
-    });
-
-    it("does not call onSelect on other key press", async () => {
-      const onSelectMock = vi.fn();
-      const user = userEvent.setup();
-      render(
-        <CharacterList
-          data={mockCharacters}
-          selectedIds={[]}
-          onToggle={vi.fn()}
-          onSelect={onSelectMock}
-        />,
-      );
-
-      await user.tab();
-      await user.keyboard("a");
-
-      expect(onSelectMock).not.toHaveBeenCalled();
-    });
-
-    it("does not throw when onSelect is not provided", async () => {
-      const user = userEvent.setup();
-      render(
-        <CharacterList
-          data={mockCharacters}
-          selectedIds={[]}
-          onToggle={vi.fn()}
-        />,
-      );
-
-      const firstItem = screen.getAllByRole("button")[0];
-
-      await expect(user.click(firstItem)).resolves.not.toThrow();
+      await expect(user.click(buttons[0])).resolves.not.toThrow();
     });
   });
 });

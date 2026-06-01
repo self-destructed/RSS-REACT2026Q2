@@ -2,5 +2,5 @@ export {
   useSelectedIds,
   useToggleCharacter,
   useUnselectAllCharacters,
+  useSelectedCharactersStore,
 } from "./store";
-export { useCharacters, useCharacter } from "./use-character";

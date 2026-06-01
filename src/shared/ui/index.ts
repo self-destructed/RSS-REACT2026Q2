@@ -11,4 +11,6 @@ export { Search } from "./search";
 export { Spinner } from "./spinner";
 export { ThemeToggle } from "./theme-toggle";
 export { Sidebar } from "./sidebar";
-export { MatchState } from "./match-state";
+export { QueryMatch } from "./query-match";
+export { Checkbox } from "./checkbox";
+export { Flyout } from "./flyout";
