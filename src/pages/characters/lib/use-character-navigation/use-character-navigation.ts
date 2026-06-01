@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
-import { usePrefetchAdjacentPages } from "..";
 
 interface Props {
   totalPages: number;
-  name: string;
   initialPage?: number;
 }
 
@@ -17,7 +15,6 @@ interface UseCharacterNavigationReturn {
 
 export function useCharacterNavigation({
   totalPages,
-  name,
   initialPage,
 }: Props): UseCharacterNavigationReturn {
   const [params, setParams] = useSearchParams();
@@ -35,12 +32,6 @@ export function useCharacterNavigation({
       return prev;
     });
   }, [params, setParams, initialPage]);
-
-  usePrefetchAdjacentPages({
-    page,
-    name,
-    totalPages,
-  });
 
   const setPage = (pageNumber: number) => {
     const clampedPage = Math.max(1, Math.min(pageNumber, totalPages));

@@ -1,15 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { act, renderHook, screen } from "@testing-library/react";
 import { MemoryRouter, useLocation } from "react-router";
 import { useCharacterNavigation } from "./use-character-navigation";
-
-const { mockUsePrefetchAdjacentPages } = vi.hoisted(() => ({
-  mockUsePrefetchAdjacentPages: vi.fn(),
-}));
-
-vi.mock("../use-prefetch-adjacent-pages", () => ({
-  usePrefetchAdjacentPages: mockUsePrefetchAdjacentPages,
-}));
 
 function LocationSpy() {
   const location = useLocation();
@@ -35,13 +27,9 @@ function createWrapper(initialEntry = "/") {
   return Wrapper;
 }
 
-beforeEach(() => {
-  mockUsePrefetchAdjacentPages.mockClear();
-});
-
 describe("useCharacterNavigation", () => {
   it("returns page 1 when no page param and no initialPage", () => {
-    renderHook(() => useCharacterNavigation({ totalPages: 10, name: "" }), {
+    renderHook(() => useCharacterNavigation({ totalPages: 10 }), {
       wrapper: createWrapper("/"),
     });
 
@@ -49,7 +37,7 @@ describe("useCharacterNavigation", () => {
   });
 
   it("writes page=1 to URL when page param is missing", () => {
-    renderHook(() => useCharacterNavigation({ totalPages: 10, name: "" }), {
+    renderHook(() => useCharacterNavigation({ totalPages: 10 }), {
       wrapper: createWrapper("/"),
     });
 
@@ -58,8 +46,7 @@ describe("useCharacterNavigation", () => {
 
   it("returns initialPage when provided without page param", () => {
     renderHook(
-      () =>
-        useCharacterNavigation({ totalPages: 10, name: "", initialPage: 3 }),
+      () => useCharacterNavigation({ totalPages: 10, initialPage: 3 }),
       { wrapper: createWrapper("/") },
     );
 
@@ -67,7 +54,7 @@ describe("useCharacterNavigation", () => {
   });
 
   it("reads page from URL params", () => {
-    renderHook(() => useCharacterNavigation({ totalPages: 10, name: "" }), {
+    renderHook(() => useCharacterNavigation({ totalPages: 10 }), {
       wrapper: createWrapper("/?page=5"),
     });
 
@@ -76,7 +63,7 @@ describe("useCharacterNavigation", () => {
 
   it("handlePrev decrements page", () => {
     const { result } = renderHook(
-      () => useCharacterNavigation({ totalPages: 10, name: "" }),
+      () => useCharacterNavigation({ totalPages: 10 }),
       { wrapper: createWrapper("/?page=5") },
     );
 
@@ -89,7 +76,7 @@ describe("useCharacterNavigation", () => {
 
   it("handlePrev does not go below 1", () => {
     const { result } = renderHook(
-      () => useCharacterNavigation({ totalPages: 10, name: "" }),
+      () => useCharacterNavigation({ totalPages: 10 }),
       { wrapper: createWrapper("/?page=1") },
     );
 
@@ -102,7 +89,7 @@ describe("useCharacterNavigation", () => {
 
   it("handleNext increments page", () => {
     const { result } = renderHook(
-      () => useCharacterNavigation({ totalPages: 10, name: "" }),
+      () => useCharacterNavigation({ totalPages: 10 }),
       { wrapper: createWrapper("/?page=1") },
     );
 
@@ -115,7 +102,7 @@ describe("useCharacterNavigation", () => {
 
   it("handleNext does not exceed totalPages", () => {
     const { result } = renderHook(
-      () => useCharacterNavigation({ totalPages: 10, name: "" }),
+      () => useCharacterNavigation({ totalPages: 10 }),
       { wrapper: createWrapper("/?page=10") },
     );
 
@@ -128,7 +115,7 @@ describe("useCharacterNavigation", () => {
 
   it("setPage clamps to valid range", () => {
     const { result } = renderHook(
-      () => useCharacterNavigation({ totalPages: 10, name: "" }),
+      () => useCharacterNavigation({ totalPages: 10 }),
       { wrapper: createWrapper("/?page=10") },
     );
 
@@ -143,17 +130,5 @@ describe("useCharacterNavigation", () => {
     });
 
     expect(getSearchParams().get("page")).toBe("1");
-  });
-
-  it("calls usePrefetchAdjacentPages with correct params", () => {
-    renderHook(() => useCharacterNavigation({ totalPages: 10, name: "" }), {
-      wrapper: createWrapper("/?page=10"),
-    });
-
-    expect(mockUsePrefetchAdjacentPages).toHaveBeenCalledWith({
-      page: 10,
-      name: "",
-      totalPages: 10,
-    });
   });
 });

@@ -4,7 +4,11 @@ import {
   useCharactersQuery,
   charactersQueryOptions,
 } from "@entities/character";
-import { useCharacterSearch, useCharacterNavigation } from "..";
+import {
+  useCharacterSearch,
+  useCharacterNavigation,
+  usePrefetchAdjacentPages,
+} from "..";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
@@ -33,8 +37,9 @@ export function useCharactersPageData(): UseCharactersPageDataReturn {
   const { handleNext, handlePrev, setPage } = useCharacterNavigation({
     totalPages,
     initialPage: page,
-    name: query,
   });
+
+  usePrefetchAdjacentPages({ page, name: query, totalPages });
 
   const handleQueryChange = (newQuery: string) => {
     searchHandleQueryChange(newQuery);
