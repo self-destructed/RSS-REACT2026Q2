@@ -7,6 +7,7 @@ describe("Checkbox", () => {
   describe("render", () => {
     it("with id", () => {
       render(<Checkbox checked={false} id="1" onChange={vi.fn()} />);
+
       const input = screen.getByRole("checkbox");
 
       expect(input).toBeInTheDocument();

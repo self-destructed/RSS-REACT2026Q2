@@ -35,6 +35,7 @@ describe("Search", () => {
   describe("state", () => {
     it("should update state on input change", async () => {
       render(<Search />);
+
       const input = screen.getByLabelText("Search", { selector: "input" });
 
       await userEvent.type(input, "rick");

@@ -1,20 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Flyout } from "./flyout";
 
-afterEach(cleanup);
 afterEach(() => {
   vi.clearAllMocks();
 });
 
 describe("Flyout", () => {
-  let onUnselectAll: ReturnType<typeof vi.fn>;
-  let onDownload: ReturnType<typeof vi.fn>;
+  let onUnselectAll: () => void;
+  let onDownload: () => void;
 
   beforeEach(() => {
-    onUnselectAll = vi.fn();
-    onDownload = vi.fn();
+    onUnselectAll = vi.fn() as () => void;
+    onDownload = vi.fn() as () => void;
   });
 
   it("returns null when count is 0", () => {

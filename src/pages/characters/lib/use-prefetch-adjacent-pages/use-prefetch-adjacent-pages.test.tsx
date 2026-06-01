@@ -1,9 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { usePrefetchAdjacentPages } from "./use-prefetch-adjacent-pages";
-
 const mockPrefetchQuery = vi.fn();
-
 vi.mock("@tanstack/react-query", () => ({
   useQueryClient: () => ({
     prefetchQuery: mockPrefetchQuery,

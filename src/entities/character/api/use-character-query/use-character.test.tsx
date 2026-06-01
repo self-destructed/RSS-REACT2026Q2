@@ -1,13 +1,12 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { renderHook, waitFor } from "@testing-library/react";
-import type { PropsWithChildren } from "react";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import { useCharacterQuery } from "./use-character-query";
+import { renderHook, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { PropsWithChildren } from "react";
 import { http } from "@shared/api";
 import type { Character } from "../../model";
+import { useCharacterQuery } from "./use-character-query";
 
 const getSpy = vi.spyOn(http, "get");
-
 const mockCharacter: Character = {
   id: 1,
   name: "Rick Sanchez",
@@ -22,7 +21,6 @@ const mockCharacter: Character = {
   created: "",
   type: "",
 };
-
 const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {

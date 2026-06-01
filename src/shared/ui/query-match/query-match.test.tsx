@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { QueryMatch } from "./query-match";
 import type { UseQueryResult } from "@tanstack/react-query";
+import { QueryMatch } from "./query-match";
 
 describe("QueryMatch", () => {
   it("renders loading when status is pending", () => {

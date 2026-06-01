@@ -7,6 +7,6 @@
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/__tests__/setupTests.ts",
-    "src/__tests__/**"
+    "src/__tests__"
   ]
 }

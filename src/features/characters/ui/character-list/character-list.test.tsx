@@ -1,10 +1,8 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CharacterList } from "./character-list";
 import type { Character } from "@entities/character";
-
-afterEach(cleanup);
+import { CharacterList } from "./character-list";
 
 const mockCharacters: Character[] = [
   {

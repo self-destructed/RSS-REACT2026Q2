@@ -1,8 +1,7 @@
-import { expect, afterEach, describe, test, beforeEach } from "vitest";
+import { expect, describe, test, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { cleanup } from "@testing-library/react";
-import { CharacterCard } from "./character-card";
 import type { Character } from "@entities/character";
+import { CharacterCard } from "./character-card";
 
 beforeEach(() => {
   const mockCharacter: Character = {
@@ -27,8 +26,6 @@ beforeEach(() => {
   };
   render(<CharacterCard data={mockCharacter} />);
 });
-
-afterEach(cleanup);
 
 describe("CharacterCard", () => {
   test("renders with name", () => {

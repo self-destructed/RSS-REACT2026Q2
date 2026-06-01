@@ -1,7 +1,7 @@
 import { describe, expect, it, afterEach } from "vitest";
 import { act, renderHook, screen } from "@testing-library/react";
-import { useFocusRestore } from "./use-focus-restore";
 import type { ReactNode } from "react";
+import { useFocusRestore } from "./use-focus-restore";
 
 afterEach(() => {});
 

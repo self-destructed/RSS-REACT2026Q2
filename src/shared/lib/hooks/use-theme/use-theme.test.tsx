@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
-import { useTheme } from "./use-theme";
 import { ThemeContext } from "@shared/context";
+import { useTheme } from "./use-theme";
 
 describe("useTheme", () => {
   it("returns theme context when used within provider", () => {

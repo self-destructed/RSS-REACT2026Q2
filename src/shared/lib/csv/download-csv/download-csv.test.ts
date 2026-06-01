@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { downloadCSV } from "./download-csv";
-import { toCSV } from "../to-csv";
 import { downloadFile } from "../download-file";
+import { toCSV } from "../to-csv";
+import { downloadCSV } from "./download-csv";
 
 vi.mock("../to-csv");
+
 vi.mock("../download-file");
 
 const mockToCSV = vi.mocked(toCSV);
