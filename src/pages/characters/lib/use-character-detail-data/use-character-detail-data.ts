@@ -15,7 +15,8 @@ interface UseCharacterDetailDataReturn {
 
 export function useCharacterDetailData(): UseCharacterDetailDataReturn {
   const { id } = useParams();
-  const characterId = id ? Number(id) : undefined;
+  const parsedId = Number(id);
+  const characterId = id && Number.isFinite(parsedId) ? parsedId : undefined;
   const queryClient = useQueryClient();
   const query = useCharacterQuery(characterId);
 
