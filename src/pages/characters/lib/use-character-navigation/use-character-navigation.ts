@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
+import { clamp } from "@shared/lib";
 
 interface Props {
   totalPages: number;
@@ -21,7 +22,7 @@ export function useCharacterNavigation({
 
   const page =
     initialPage !== undefined
-      ? Math.max(1, Math.min(initialPage, totalPages))
+      ? clamp(initialPage, 1, totalPages)
       : Number(params.get("page")) || 1;
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export function useCharacterNavigation({
   }, [params, setParams, initialPage]);
 
   const setPage = (pageNumber: number) => {
-    const clampedPage = Math.max(1, Math.min(pageNumber, totalPages));
+    const clampedPage = clamp(pageNumber, 1, totalPages);
 
     setParams((prev) => {
       prev.set("page", String(clampedPage));
