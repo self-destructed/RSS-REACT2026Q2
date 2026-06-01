@@ -78,11 +78,7 @@ export function CharactersPage(): React.JSX.Element {
               </>
             )}
           </QueryMatch>
-          <div className="sticky bottom-0 mt-2 left-0 right-0 z-50 flex w-full justify-center">
-            <div className="w-full lg:max-w-4xl rounded-t-xl">
-              <Flyout />
-            </div>
-          </div>
+          <Flyout />
         </section>
       </Main>
       <Outlet context={{ onClose: handleSidebarClose }} />
