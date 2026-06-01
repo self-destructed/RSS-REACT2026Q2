@@ -1,5 +1,5 @@
 export { useCharacterSelection } from "./lib";
-export { CharacterList, Flyout } from "./ui";
+export { CharacterList } from "./ui";
 export {
   useSelectedIds,
   useToggleCharacter,

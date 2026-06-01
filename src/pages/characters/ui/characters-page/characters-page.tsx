@@ -7,11 +7,8 @@ import {
   ErrorDisplay,
   QueryMatch,
 } from "@shared/ui";
-import {
-  useCharacterSelection,
-  CharacterList,
-  Flyout,
-} from "@features/characters";
+import { useCharacterSelection, CharacterList } from "@features/characters";
+import { Flyout } from "@shared/ui";
 import { useCharacterDetails, useCharactersPageData } from "../../lib";
 
 export function CharactersPage(): React.JSX.Element {
