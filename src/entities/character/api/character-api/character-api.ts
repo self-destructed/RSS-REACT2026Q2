@@ -1,4 +1,4 @@
-import type { CharacterId } from "../model";
+import type { CharacterId } from "../../model";
 import { API_BASE_URL } from "@shared/api";
 
 export const CHARACTER_API = {
