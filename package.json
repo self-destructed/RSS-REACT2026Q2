@@ -19,9 +19,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui",
-    "fsd": "npx steiger ./src",
-    "fsd:watch": "npx steiger --watch ./src"
+    "test:ui": "vitest --ui"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -44,8 +42,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@feature-sliced/cli": "^1.0.0",
-    "@feature-sliced/steiger-plugin": "^0.5.8",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -71,7 +67,6 @@
     "lint-staged": "^17.0.5",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.0.0-insiders.f7d2598",
-    "steiger": "^0.5.12",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.59.3",
     "vite": "^7.3.1",
