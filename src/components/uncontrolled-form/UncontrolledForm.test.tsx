@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import UncontrolledForm from "./UncontrolledForm";
+import { createValidFormData } from "../../lib/createValidFormData";
 
 describe("UncontrolledForm", () => {
   describe("render", () => {
@@ -10,11 +11,13 @@ describe("UncontrolledForm", () => {
       { name: "Age" },
       { name: "Email" },
       { name: "Gender" },
-      { name: "Terms" },
+      { name: "I agree to the Terms & Conditions" },
+      { name: "Password" },
+      { name: "Confirm Password" },
     ])("$name field", ({ name }) => {
       render(<UncontrolledForm />);
 
-      const field = screen.getByLabelText(new RegExp(name, "i"));
+      const field = screen.getByLabelText(new RegExp(`^${name}$`, "i"));
 
       expect(field).toBeInTheDocument();
     });
@@ -41,16 +44,14 @@ describe("UncontrolledForm", () => {
       await user.click(
         screen.getByLabelText("I agree to the Terms & Conditions"),
       );
+      await user.type(screen.getByLabelText("Password"), "Test1@abc");
+      await user.type(screen.getByLabelText("Confirm Password"), "Test1@abc");
       await user.click(screen.getByRole("button", { name: /submit/i }));
 
       expect(handleSubmit).toHaveBeenCalledTimes(1);
-      expect(handleSubmit).toHaveBeenCalledWith({
-        name: "Rick",
-        age: 35,
-        email: "rick@example.com",
-        gender: "male",
-        terms: true,
-      });
+      const expectedData = createValidFormData();
+
+      expect(handleSubmit).toHaveBeenCalledWith(expectedData);
     });
 
     it("show validation errors when form is invalid", async () => {

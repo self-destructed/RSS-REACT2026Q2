@@ -32,6 +32,8 @@ export default function UncontrolledForm({
       email: formData.get("email") as string,
       gender: formData.get("gender") as string,
       terms: formData.get("terms") === "on",
+      password: formData.get("password") as string,
+      confirmPassword: formData.get("confirmPassword") as string,
     };
 
     try {
@@ -94,6 +96,20 @@ export default function UncontrolledForm({
           id="terms"
           name="terms"
           error={errors.terms}
+        />
+        <Input
+          label="Password"
+          id="password"
+          name="password"
+          type="password"
+          error={errors.password}
+        />
+        <Input
+          label="Confirm Password"
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          error={errors.confirmPassword}
         />
         <button
           type="submit"

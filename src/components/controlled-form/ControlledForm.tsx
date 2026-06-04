@@ -72,6 +72,20 @@ export default function ControlledForm({
           error={errors.terms?.message}
           {...register("terms")}
         />
+        <Input
+          label="Password"
+          id="rhf-password"
+          type="password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+        <Input
+          label="Confirm Password"
+          id="rhf-confirmPassword"
+          type="password"
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
+        />
         <button
           type="submit"
           className="w-full rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none"

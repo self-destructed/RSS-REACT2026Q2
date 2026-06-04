@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { ref } from "yup";
 
 export interface FormValues {
   name: string;
@@ -6,6 +7,8 @@ export interface FormValues {
   email: string;
   gender: string;
   terms: boolean;
+  password: string;
+  confirmPassword: string;
 }
 
 export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
@@ -45,4 +48,9 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     .required("Gender is required")
     .oneOf(["male", "female", "other"], "Gender must be male, female or other"),
   terms: yup.boolean().required().isTrue("You must accept the terms"),
+  password: yup.string().required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .required("Please confirm your password")
+    .oneOf([ref("password")], "Passwords must match"),
 });
