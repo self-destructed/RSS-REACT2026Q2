@@ -4,7 +4,7 @@ import Checkbox from "./Checkbox";
 
 describe("Checkbox", () => {
   describe("render", () => {
-    it("renders with label", () => {
+    it("with label", () => {
       render(<Checkbox label="I agree" id="terms" />);
 
       const checkbox = screen.getByLabelText("I agree");
@@ -19,6 +19,18 @@ describe("Checkbox", () => {
       const checkbox = screen.getByLabelText("I agree");
 
       expect(checkbox).toHaveClass("extra-class");
+    });
+
+    it("shows error message when error prop is provided", () => {
+      render(
+        <Checkbox
+          label="I agree"
+          id="terms"
+          error="You must accept the terms"
+        />,
+      );
+
+      expect(screen.getByText("You must accept the terms")).toBeInTheDocument();
     });
   });
 });

@@ -11,7 +11,7 @@ const genderOptions = [
 
 describe("Select", () => {
   describe("render", () => {
-    it("renders with label", () => {
+    it("with label", () => {
       render(<Select label="Gender" id="gender" options={genderOptions} />);
 
       const select = screen.getByLabelText("Gender");
@@ -20,7 +20,7 @@ describe("Select", () => {
       expect(select).toBeInstanceOf(HTMLSelectElement);
     });
 
-    it("renders all options", () => {
+    it("all options", () => {
       render(<Select label="Gender" id="gender" options={genderOptions} />);
 
       const options = screen.getAllByRole("option");
@@ -41,6 +41,19 @@ describe("Select", () => {
       const select = screen.getByLabelText("Gender");
 
       expect(select).toHaveClass("extra-class");
+    });
+
+    it("shows error message when error prop is provided", () => {
+      render(
+        <Select
+          label="Gender"
+          id="gender"
+          options={[{ value: "male", label: "Male" }]}
+          error="Gender is required"
+        />,
+      );
+
+      expect(screen.getByText("Gender is required")).toBeInTheDocument();
     });
   });
 });

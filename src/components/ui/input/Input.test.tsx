@@ -8,7 +8,7 @@ describe("Input", () => {
       { label: "Name", id: "name" },
       { label: "Age", id: "age" },
       { label: "Email", id: "email" },
-    ])("renders $label field", ({ label, id }) => {
+    ])("$label field", ({ label, id }) => {
       render(<Input label={label} id={id} />);
 
       const input = screen.getByLabelText(label);
@@ -30,6 +30,12 @@ describe("Input", () => {
       const input = screen.getByLabelText("Name");
 
       expect(input).toHaveClass("extra-class");
+    });
+
+    it("shows error message when error prop is provided", () => {
+      render(<Input label="Name" id="name" error="Name is required" />);
+
+      expect(screen.getByText("Name is required")).toBeInTheDocument();
     });
   });
 });

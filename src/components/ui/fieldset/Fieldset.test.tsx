@@ -4,18 +4,14 @@ import Fieldset from "./Fieldset";
 
 describe("Fieldset", () => {
   describe("render", () => {
-    it.each([
-      { title: "User Info" },
-      { title: "Address" },
-      { title: "Payment" },
-    ])("$title legend", ({ title }) => {
+    it("legend", () => {
       render(
-        <Fieldset title={title}>
+        <Fieldset title="User Info">
           <input />
         </Fieldset>,
       );
 
-      const legend = screen.getByText(title);
+      const legend = screen.getByText(/user info/i);
 
       expect(legend).toBeInTheDocument();
     });
@@ -32,7 +28,7 @@ describe("Fieldset", () => {
       expect(legend).not.toBeInTheDocument();
     });
 
-    it("renders children inside fieldset", () => {
+    it("children inside fieldset", () => {
       render(
         <Fieldset title="Test">
           <input data-testid="child-input" />

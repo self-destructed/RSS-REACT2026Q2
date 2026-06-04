@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import FieldError from "../field-error/FieldError";
 
 interface SelectOption {
   value: string;
@@ -10,6 +11,7 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   id: string;
   options: SelectOption[];
+  error?: string;
 }
 
 export default function Select({
@@ -17,6 +19,7 @@ export default function Select({
   id,
   options,
   className,
+  error,
   ...props
 }: SelectProps): JSX.Element {
   return (
@@ -29,7 +32,7 @@ export default function Select({
       </label>
       <select
         id={id}
-        className={`block w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-600 ${className ?? ""}`}
+        className={`block w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-600 ${error ? "border-red-500" : ""} ${className ?? ""}`}
         {...props}
       >
         {options.map((option) => (
@@ -42,6 +45,7 @@ export default function Select({
           </option>
         ))}
       </select>
+      <FieldError message={error} />
     </div>
   );
 }
