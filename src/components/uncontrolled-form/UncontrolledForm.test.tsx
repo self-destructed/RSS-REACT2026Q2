@@ -29,15 +29,37 @@ describe("UncontrolledForm", () => {
   });
 
   describe("should", () => {
-    it("call onSubmit when form is submitted", async () => {
+    it("call onSubmit with form data when submitted", async () => {
       const user = userEvent.setup();
       const handleSubmit = vi.fn();
       render(<UncontrolledForm onSubmit={handleSubmit} />);
 
-      const submitButton = screen.getByRole("button", { name: /submit/i });
-      await user.click(submitButton);
+      await user.type(screen.getByLabelText("Name"), "Rick");
+      await user.type(screen.getByLabelText("Age"), "35");
+      await user.type(screen.getByLabelText("Email"), "rick@example.com");
+      await user.selectOptions(screen.getByLabelText("Gender"), "male");
+      await user.click(
+        screen.getByLabelText("I agree to the Terms & Conditions"),
+      );
+      await user.click(screen.getByRole("button", { name: /submit/i }));
 
       expect(handleSubmit).toHaveBeenCalledTimes(1);
+      expect(handleSubmit).toHaveBeenCalledWith({
+        name: "Rick",
+        age: 35,
+        email: "rick@example.com",
+        gender: "male",
+        terms: true,
+      });
+    });
+
+    it("show validation errors when form is invalid", async () => {
+      const user = userEvent.setup();
+      render(<UncontrolledForm />);
+
+      await user.click(screen.getByRole("button", { name: /submit/i }));
+
+      expect(screen.getByText("Name is required")).toBeInTheDocument();
     });
   });
 });
