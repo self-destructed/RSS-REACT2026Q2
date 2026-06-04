@@ -55,11 +55,17 @@ describe("UncontrolledForm", () => {
 
     it("show validation errors when form is invalid", async () => {
       const user = userEvent.setup();
-      render(<UncontrolledForm />);
+      render(<UncontrolledForm onSubmit={vi.fn()} />);
 
       await user.click(screen.getByRole("button", { name: /submit/i }));
 
-      expect(screen.getByText("Name is required")).toBeInTheDocument();
+      expect(await screen.findByText("Name is required")).toBeInTheDocument();
+      expect(await screen.findByText("Age is required")).toBeInTheDocument();
+      expect(await screen.findByText("Email is required")).toBeInTheDocument();
+      expect(await screen.findByText("Gender is required")).toBeInTheDocument();
+      expect(
+        await screen.findByText("You must accept the terms"),
+      ).toBeInTheDocument();
     });
   });
 });

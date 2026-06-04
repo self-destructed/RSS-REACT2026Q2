@@ -11,13 +11,7 @@ interface UncontrolledFormProps {
   onSubmit?: (data: FormValues) => void;
 }
 
-interface FieldErrors {
-  name?: string;
-  age?: string;
-  email?: string;
-  gender?: string;
-  terms?: string;
-}
+type FieldErrors = Partial<Record<keyof FormValues, string>>;
 
 export default function UncontrolledForm({
   onSubmit,
@@ -31,16 +25,17 @@ export default function UncontrolledForm({
 
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
-    const data = {
+    const ageValue = formData.get("age");
+    const rawData = {
       name: formData.get("name") as string,
-      age: Number(formData.get("age")),
+      age: ageValue === "" ? undefined : ageValue,
       email: formData.get("email") as string,
       gender: formData.get("gender") as string,
       terms: formData.get("terms") === "on",
     };
 
     try {
-      schema.validateSync(data, { abortEarly: false });
+      const data = schema.validateSync(rawData, { abortEarly: false });
       onSubmit?.(data);
     } catch (err) {
       if (err instanceof yup.ValidationError) {
