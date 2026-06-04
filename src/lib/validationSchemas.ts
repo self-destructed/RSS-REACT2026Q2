@@ -19,10 +19,16 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     ),
   age: yup
     .number()
+    .transform((value: number, originalValue: string) =>
+      originalValue === "" ? undefined : value,
+    )
     .required("Age is required")
     .min(0, "Age cannot be negative"),
   email: yup
     .string()
+    .transform((value: string, originalValue: string) =>
+      originalValue === "" ? undefined : value,
+    )
     .required("Email is required")
     .test("basic-email", "Invalid email format", (value) => {
       if (!value) return false;
@@ -33,10 +39,10 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     }),
   gender: yup
     .string()
+    .transform((value: string, originalValue: string) =>
+      originalValue === "" ? undefined : value,
+    )
     .required("Gender is required")
     .oneOf(["male", "female", "other"], "Gender must be male, female or other"),
-  terms: yup
-    .boolean()
-    .required("You must accept the terms")
-    .isTrue("You must accept the terms"),
+  terms: yup.boolean().required().isTrue("You must accept the terms"),
 });
