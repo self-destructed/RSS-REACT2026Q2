@@ -34,6 +34,7 @@ export default function UncontrolledForm({
       terms: formData.get("terms") === "on",
       password: formData.get("password") as string,
       confirmPassword: formData.get("confirmPassword") as string,
+      image: formData.get("image"),
     };
 
     try {
@@ -110,6 +111,13 @@ export default function UncontrolledForm({
           name="confirmPassword"
           type="password"
           error={errors.confirmPassword}
+        />
+        <Input
+          label="Image"
+          id="image"
+          name="image"
+          type="file"
+          error={errors.image}
         />
         <button
           type="submit"

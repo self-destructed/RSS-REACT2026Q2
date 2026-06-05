@@ -14,6 +14,7 @@ describe("UncontrolledForm", () => {
       { name: "I agree to the Terms & Conditions" },
       { name: "Password" },
       { name: "Confirm Password" },
+      { name: "Image" },
     ])("$name field", ({ name }) => {
       render(<UncontrolledForm />);
 
@@ -32,7 +33,7 @@ describe("UncontrolledForm", () => {
   });
 
   describe("should", () => {
-    it("call onSubmit with form data when submitted", async () => {
+    it("call onSubmit with form data when no file is selected", async () => {
       const user = userEvent.setup();
       const handleSubmit = vi.fn();
       render(<UncontrolledForm onSubmit={handleSubmit} />);
@@ -46,12 +47,11 @@ describe("UncontrolledForm", () => {
       );
       await user.type(screen.getByLabelText("Password"), "Test1@abc");
       await user.type(screen.getByLabelText("Confirm Password"), "Test1@abc");
+
       await user.click(screen.getByRole("button", { name: /submit/i }));
 
       expect(handleSubmit).toHaveBeenCalledTimes(1);
-      const expectedData = createValidFormData();
-
-      expect(handleSubmit).toHaveBeenCalledWith(expectedData);
+      expect(handleSubmit).toHaveBeenCalledWith(createValidFormData());
     });
 
     it("show validation errors when form is invalid", async () => {
