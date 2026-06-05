@@ -2,6 +2,7 @@ import type { JSX, BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema, type FormValues } from "../../lib/validationSchemas";
+import { COUNTRIES } from "../../shared/constants/countries";
 import Fieldset from "../ui/fieldset/Fieldset";
 import Input from "../ui/input/Input";
 import Select from "../ui/select/Select";
@@ -87,6 +88,14 @@ export default function ControlledForm({
           {...register("confirmPassword")}
         />
         <Input
+          label="Country"
+          id="rhf-country"
+          type="text"
+          list="countries"
+          error={errors.country?.message}
+          {...register("country")}
+        />
+        <Input
           label="Image"
           id="rhf-image"
           type="file"
@@ -99,6 +108,11 @@ export default function ControlledForm({
         >
           Submit
         </button>
+        <datalist id="countries">
+          {COUNTRIES.map((country) => (
+            <option key={country} value={country} />
+          ))}
+        </datalist>
       </Fieldset>
     </form>
   );

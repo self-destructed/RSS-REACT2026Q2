@@ -9,6 +9,7 @@ export interface FormValues {
   terms: boolean;
   password: string;
   confirmPassword: string;
+  country: string;
   image?: File | undefined;
 }
 
@@ -54,6 +55,7 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     .string()
     .required("Please confirm your password")
     .oneOf([ref("password")], "Passwords must match"),
+  country: yup.string().required("Country is required"),
   image: yup
     .mixed<File>()
     .transform((value) => {

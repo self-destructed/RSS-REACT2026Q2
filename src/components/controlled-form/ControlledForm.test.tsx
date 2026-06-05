@@ -15,6 +15,7 @@ describe("ControlledForm", () => {
       { name: "Password" },
       { name: "Image" },
       { name: "Confirm Password" },
+      { name: "Country" },
     ])("$name field", ({ name }) => {
       render(<ControlledForm />);
 
@@ -47,6 +48,7 @@ describe("ControlledForm", () => {
       );
       await user.type(screen.getByLabelText("Password"), "Test1@abc");
       await user.type(screen.getByLabelText("Confirm Password"), "Test1@abc");
+      await user.type(screen.getByLabelText("Country"), "Russia");
       await user.click(screen.getByRole("button", { name: /submit/i }));
 
       expect(handleSubmit).toHaveBeenCalledTimes(1);
@@ -70,6 +72,7 @@ describe("ControlledForm", () => {
       );
       await user.type(screen.getByLabelText("Password"), "Test1@abc");
       await user.type(screen.getByLabelText("Confirm Password"), "Test1@abc");
+      await user.type(screen.getByLabelText("Country"), "Russia");
       await user.upload(screen.getByLabelText("Image"), file);
       await user.click(screen.getByRole("button", { name: /submit/i }));
 

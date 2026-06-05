@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { useRef, useState } from "react";
+import { COUNTRIES } from "../../shared/constants/countries";
 import Fieldset from "../ui/fieldset/Fieldset";
 import Input from "../ui/input/Input";
 import Select from "../ui/select/Select";
@@ -34,6 +35,7 @@ export default function UncontrolledForm({
       terms: formData.get("terms") === "on",
       password: formData.get("password") as string,
       confirmPassword: formData.get("confirmPassword") as string,
+      country: formData.get("country") as string,
       image: formData.get("image"),
     };
 
@@ -113,6 +115,14 @@ export default function UncontrolledForm({
           error={errors.confirmPassword}
         />
         <Input
+          label="Country"
+          id="country"
+          name="country"
+          type="text"
+          list="countries"
+          error={errors.country}
+        />
+        <Input
           label="Image"
           id="image"
           name="image"
@@ -125,6 +135,11 @@ export default function UncontrolledForm({
         >
           Submit
         </button>
+        <datalist id="countries">
+          {COUNTRIES.map((country) => (
+            <option key={country} value={country} />
+          ))}
+        </datalist>
       </Fieldset>
     </form>
   );

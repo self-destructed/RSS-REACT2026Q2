@@ -14,6 +14,7 @@ describe("UncontrolledForm", () => {
       { name: "I agree to the Terms & Conditions" },
       { name: "Password" },
       { name: "Confirm Password" },
+      { name: "Country" },
       { name: "Image" },
     ])("$name field", ({ name }) => {
       render(<UncontrolledForm />);
@@ -47,6 +48,7 @@ describe("UncontrolledForm", () => {
       );
       await user.type(screen.getByLabelText("Password"), "Test1@abc");
       await user.type(screen.getByLabelText("Confirm Password"), "Test1@abc");
+      await user.type(screen.getByLabelText("Country"), "Russia");
 
       await user.click(screen.getByRole("button", { name: /submit/i }));
 

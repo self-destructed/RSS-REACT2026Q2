@@ -11,6 +11,7 @@ export function createValidFormData(
     terms: true,
     password: "Test1@abc",
     confirmPassword: "Test1@abc",
+    country: "Russia",
     image: undefined,
     ...overrides,
   };
