@@ -9,6 +9,7 @@ export interface FormValues {
   terms: boolean;
   password: string;
   confirmPassword: string;
+  image?: File | undefined;
 }
 
 export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
@@ -53,4 +54,18 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     .string()
     .required("Please confirm your password")
     .oneOf([ref("password")], "Passwords must match"),
+  image: yup
+    .mixed<File>()
+    .transform((value) =>
+      value instanceof File && value.size > 0 ? value : undefined,
+    )
+    .test("file-type", "Only PNG and JPEG files are allowed", (value) => {
+      if (!value) return true;
+      return ["image/png", "image/jpeg"].includes(value.type);
+    })
+    .test("file-size", "File must be less than 2MB", (value) => {
+      if (!value) return true;
+      return value.size <= 2 * 1024 * 1024;
+    })
+    .optional(),
 });

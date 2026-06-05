@@ -5,7 +5,8 @@ import { createValidFormData } from "./createValidFormData";
 describe("uncontrolledSchema", () => {
   describe("should", () => {
     it("accept valid form data", () => {
-      const validData = createValidFormData();
+      const validFile = new File(["x"], "test.png", { type: "image/png" });
+      const validData = createValidFormData({ image: validFile });
       const result = schema.validateSync(validData);
 
       expect(result).toEqual(validData);
@@ -51,6 +52,40 @@ describe("uncontrolledSchema", () => {
       const result = schema.validateSync(createValidFormData({ age: 0 }));
 
       expect(result.age).toBe(0);
+    });
+
+    it("accept missing image", () => {
+      const result = schema.validateSync(
+        createValidFormData({ image: undefined }),
+      );
+
+      expect(result.image).toBeUndefined();
+    });
+
+    it("reject non-image file", () => {
+      const txtFile = new File(["text"], "test.txt", { type: "text/plain" });
+
+      expect(() =>
+        schema.validateSync(createValidFormData({ image: txtFile })),
+      ).toThrow("Only PNG and JPEG files are allowed");
+    });
+
+    it("reject oversized file", () => {
+      const largeFile = new File(["x".repeat(3 * 1024 * 1024)], "test.png", {
+        type: "image/png",
+      });
+      expect(() =>
+        schema.validateSync(createValidFormData({ image: largeFile })),
+      ).toThrow("File must be less than 2MB");
+    });
+
+    it("accept valid image", () => {
+      const validFile = new File(["x"], "test.png", { type: "image/png" });
+      const result = schema.validateSync(
+        createValidFormData({ image: validFile }),
+      );
+
+      expect(result.image).toBeInstanceOf(File);
     });
   });
 });
