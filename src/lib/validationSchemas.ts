@@ -56,9 +56,14 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     .oneOf([ref("password")], "Passwords must match"),
   image: yup
     .mixed<File>()
-    .transform((value) =>
-      value instanceof File && value.size > 0 ? value : undefined,
-    )
+    .transform((value) => {
+      // RHF stores FileList for <input type="file"> via register()
+      // Extract the first file if present, otherwise return undefined
+      if (value instanceof FileList) {
+        return value.length > 0 ? value[0] : undefined;
+      }
+      return value instanceof File && value.size > 0 ? value : undefined;
+    })
     .test("file-type", "Only PNG and JPEG files are allowed", (value) => {
       if (!value) return true;
       return ["image/png", "image/jpeg"].includes(value.type);

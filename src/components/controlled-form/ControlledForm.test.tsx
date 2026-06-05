@@ -13,6 +13,7 @@ describe("ControlledForm", () => {
       { name: "Gender" },
       { name: "I agree to the Terms & Conditions" },
       { name: "Password" },
+      { name: "Image" },
       { name: "Confirm Password" },
     ])("$name field", ({ name }) => {
       render(<ControlledForm />);
@@ -51,6 +52,31 @@ describe("ControlledForm", () => {
       expect(handleSubmit).toHaveBeenCalledTimes(1);
       const expectedData = createValidFormData();
       expect(handleSubmit).toHaveBeenCalledWith(expectedData);
+    });
+
+    it("call onSubmit with form data when file is uploaded", async () => {
+      const user = userEvent.setup();
+      const handleSubmit = vi.fn();
+      render(<ControlledForm onSubmit={handleSubmit} />);
+
+      const file = new File(["test"], "image.png", { type: "image/png" });
+
+      await user.type(screen.getByLabelText("Name"), "Rick");
+      await user.type(screen.getByLabelText("Age"), "35");
+      await user.type(screen.getByLabelText("Email"), "rick@example.com");
+      await user.selectOptions(screen.getByLabelText("Gender"), "male");
+      await user.click(
+        screen.getByLabelText("I agree to the Terms & Conditions"),
+      );
+      await user.type(screen.getByLabelText("Password"), "Test1@abc");
+      await user.type(screen.getByLabelText("Confirm Password"), "Test1@abc");
+      await user.upload(screen.getByLabelText("Image"), file);
+      await user.click(screen.getByRole("button", { name: /submit/i }));
+
+      expect(handleSubmit).toHaveBeenCalledTimes(1);
+      expect(handleSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({ image: file }),
+      );
     });
 
     it("show validation errors when form is invalid", async () => {
