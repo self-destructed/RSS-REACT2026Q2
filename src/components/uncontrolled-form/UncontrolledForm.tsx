@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { useRef, useState } from "react";
-import { COUNTRIES } from "../../shared/constants/countries";
+import { useCountries } from "../../store/countriesStore";
 import Fieldset from "../ui/fieldset/Fieldset";
 import Input from "../ui/input/Input";
 import Select from "../ui/select/Select";
@@ -19,6 +19,7 @@ export default function UncontrolledForm({
 }: UncontrolledFormProps): JSX.Element {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
+  const countries = useCountries();
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -136,7 +137,7 @@ export default function UncontrolledForm({
           Submit
         </button>
         <datalist id="countries">
-          {COUNTRIES.map((country) => (
+          {countries.map((country) => (
             <option key={country} value={country} />
           ))}
         </datalist>

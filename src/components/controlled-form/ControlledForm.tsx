@@ -2,7 +2,7 @@ import type { JSX, BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema, type FormValues } from "../../lib/validationSchemas";
-import { COUNTRIES } from "../../shared/constants/countries";
+import { useCountries } from "../../store/countriesStore";
 import Fieldset from "../ui/fieldset/Fieldset";
 import Input from "../ui/input/Input";
 import Select from "../ui/select/Select";
@@ -30,6 +30,8 @@ export default function ControlledForm({
   const onSubmitForm = (e: BaseSyntheticEvent) => {
     void handleSubmit(onValid)(e);
   };
+
+  const countries = useCountries();
 
   return (
     <form name="rhf" noValidate onSubmit={onSubmitForm}>
@@ -109,7 +111,7 @@ export default function ControlledForm({
           Submit
         </button>
         <datalist id="countries">
-          {COUNTRIES.map((country) => (
+          {countries.map((country) => (
             <option key={country} value={country} />
           ))}
         </datalist>
