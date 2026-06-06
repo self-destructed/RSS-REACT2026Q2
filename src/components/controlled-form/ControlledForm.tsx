@@ -43,18 +43,18 @@ export default function ControlledForm({
           {...register("name")}
         />
         <Input
-          label="Age"
-          id="rhf-age"
-          type="number"
-          error={errors.age?.message}
-          {...register("age")}
-        />
-        <Input
           label="Email"
           id="rhf-email"
           type="email"
           error={errors.email?.message}
           {...register("email")}
+        />
+        <Input
+          label="Age"
+          id="rhf-age"
+          type="number"
+          error={errors.age?.message}
+          {...register("age")}
         />
         <Select
           label="Gender"
@@ -68,26 +68,6 @@ export default function ControlledForm({
           ]}
           error={errors.gender?.message}
           {...register("gender")}
-        />
-        <Checkbox
-          label="I agree to the Terms & Conditions"
-          id="rhf-terms"
-          error={errors.terms?.message}
-          {...register("terms")}
-        />
-        <Input
-          label="Password"
-          id="rhf-password"
-          type="password"
-          error={errors.password?.message}
-          {...register("password")}
-        />
-        <Input
-          label="Confirm Password"
-          id="rhf-confirmPassword"
-          type="password"
-          error={errors.confirmPassword?.message}
-          {...register("confirmPassword")}
         />
         <Input
           label="Country"
@@ -103,6 +83,26 @@ export default function ControlledForm({
           type="file"
           error={errors.image?.message}
           {...register("image")}
+        />
+        <Input
+          label="Password"
+          id="rhf-password"
+          type="password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+        <Input
+          label="Confirm Password"
+          id="rhf-confirmPassword"
+          type="password"
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
+        />
+        <Checkbox
+          label="I agree to the Terms & Conditions"
+          id="rhf-terms"
+          error={errors.terms?.message}
+          {...register("terms")}
         />
         <button
           type="submit"

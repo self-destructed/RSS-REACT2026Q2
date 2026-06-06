@@ -69,18 +69,18 @@ export default function UncontrolledForm({
           error={errors.name}
         />
         <Input
-          label="Age"
-          id="age"
-          name="age"
-          type="number"
-          error={errors.age}
-        />
-        <Input
           label="Email"
           id="email"
           name="email"
           type="email"
           error={errors.email}
+        />
+        <Input
+          label="Age"
+          id="age"
+          name="age"
+          type="number"
+          error={errors.age}
         />
         <Select
           label="Gender"
@@ -94,26 +94,6 @@ export default function UncontrolledForm({
             { value: "other", label: "Other" },
           ]}
           error={errors.gender}
-        />
-        <Checkbox
-          label="I agree to the Terms & Conditions"
-          id="terms"
-          name="terms"
-          error={errors.terms}
-        />
-        <Input
-          label="Password"
-          id="password"
-          name="password"
-          type="password"
-          error={errors.password}
-        />
-        <Input
-          label="Confirm Password"
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          error={errors.confirmPassword}
         />
         <Input
           label="Country"
@@ -129,6 +109,26 @@ export default function UncontrolledForm({
           name="image"
           type="file"
           error={errors.image}
+        />
+        <Input
+          label="Password"
+          id="password"
+          name="password"
+          type="password"
+          error={errors.password}
+        />
+        <Input
+          label="Confirm Password"
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          error={errors.confirmPassword}
+        />
+        <Checkbox
+          label="I agree to the Terms & Conditions"
+          id="terms"
+          name="terms"
+          error={errors.terms}
         />
         <button
           type="submit"
