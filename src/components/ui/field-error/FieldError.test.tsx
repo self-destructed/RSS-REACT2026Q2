@@ -7,19 +7,26 @@ describe("FieldError", () => {
     it("error message when provided", () => {
       render(<FieldError message="Name is required" />);
 
-      expect(screen.getByText("Name is required")).toBeInTheDocument();
+      const element = screen.getByText("Name is required");
+      expect(element).toBeInTheDocument();
+      expect(element.tagName).toBe("P");
+      expect(element.className).not.toContain("invisible");
     });
 
-    it("nothing when message is empty", () => {
-      const { container } = render(<FieldError message="" />);
+    it("renders invisibly when message is empty", () => {
+      render(<FieldError message="" />);
 
-      expect(container.querySelector("p")).toBeNull();
+      const element = screen.getByText("\u00A0");
+      expect(element.tagName).toBe("P");
+      expect(element.className).toContain("invisible");
     });
 
-    it("nothing when message is undefined", () => {
-      const { container } = render(<FieldError />);
+    it("renders invisibly when message is undefined", () => {
+      render(<FieldError />);
 
-      expect(container.querySelector("p")).toBeNull();
+      const element = screen.getByText("\u00A0");
+      expect(element.tagName).toBe("P");
+      expect(element.className).toContain("invisible");
     });
   });
 });
