@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { fileToBase64 } from "../lib/fileToBase64";
 
 export interface Submission {
   id: string;
-  createdAt: string;
   name: string;
   age: number;
   email: string;
@@ -14,12 +14,16 @@ export interface Submission {
   imageBase64?: string;
 }
 
+export type SubmissionInput = Omit<Submission, "id" | "imageBase64"> & {
+  image?: File;
+};
+
 interface UserState {
   submissions: Submission[];
 }
 
 interface UserActions {
-  addSubmission: (submission: Submission) => void;
+  addSubmission: (input: SubmissionInput) => Promise<void>;
 }
 
 type UserStore = UserState & UserActions;
@@ -29,10 +33,16 @@ export const useUserStore = create<UserStore>()(
     persist(
       (set) => ({
         submissions: [],
-        addSubmission: (submission) =>
-          set((state) => ({
-            submissions: [...state.submissions, submission],
-          })),
+        addSubmission: async (input) => {
+          const { image, ...data } = input;
+          const imageBase64 = image ? await fileToBase64(image) : undefined;
+          const submission: Submission = {
+            ...data,
+            id: crypto.randomUUID(),
+            imageBase64,
+          };
+          set((state) => ({ submissions: [...state.submissions, submission] }));
+        },
       }),
       { name: "user-storage" },
     ),

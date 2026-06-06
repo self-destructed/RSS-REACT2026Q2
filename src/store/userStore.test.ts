@@ -1,15 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { act, renderHook } from "@testing-library/react";
-import {
-  useUserStore,
-  useSubmissions,
-  useAddSubmission,
-  type Submission,
-} from "./userStore";
+import { useUserStore, useSubmissions, useAddSubmission } from "./userStore";
 
-const mockSubmission = (overrides?: Partial<Submission>): Submission => ({
-  id: "1",
-  createdAt: "2024-01-01T00:00:00.000Z",
+const mockSubmission = () => ({
   name: "Rick",
   age: 35,
   email: "rick@example.com",
@@ -17,13 +10,10 @@ const mockSubmission = (overrides?: Partial<Submission>): Submission => ({
   terms: true,
   password: "Test1@abc",
   country: "Russia",
-  ...overrides,
 });
 
 beforeEach(() => {
-  act(() => {
-    useUserStore.setState({ submissions: [] });
-  });
+  useUserStore.setState({ submissions: [] });
 });
 
 describe("UserStore", () => {
@@ -33,38 +23,35 @@ describe("UserStore", () => {
     expect(result.current).toEqual([]);
   });
 
-  it("addSubmission adds a submission to the list", () => {
+  it("addSubmission adds a submission to the list", async () => {
     const { result } = renderHook(() => useUserStore());
 
-    act(() => {
-      result.current.addSubmission(mockSubmission());
+    await act(async () => {
+      await result.current.addSubmission(mockSubmission());
     });
 
     expect(result.current.submissions).toHaveLength(1);
-    expect(result.current.submissions[0]).toEqual(mockSubmission());
   });
 
-  it("addSubmission appends to existing submissions", () => {
+  it("addSubmission appends to existing submissions", async () => {
     const { result } = renderHook(() => useUserStore());
 
-    act(() => {
-      result.current.addSubmission(mockSubmission({ id: "1" }));
+    await act(async () => {
+      await result.current.addSubmission(mockSubmission());
     });
 
-    act(() => {
-      result.current.addSubmission(mockSubmission({ id: "2" }));
+    await act(async () => {
+      await result.current.addSubmission(mockSubmission());
     });
 
     expect(result.current.submissions).toHaveLength(2);
-    expect(result.current.submissions[0].id).toBe("1");
-    expect(result.current.submissions[1].id).toBe("2");
   });
 
-  it("submissions persist across re-renders", () => {
+  it("submissions persist across re-renders", async () => {
     const submission = mockSubmission();
 
-    act(() => {
-      useUserStore.getState().addSubmission(submission);
+    await act(async () => {
+      await useUserStore.getState().addSubmission(submission);
     });
 
     const { result } = renderHook(() => useUserStore((s) => s.submissions));
@@ -74,23 +61,24 @@ describe("UserStore", () => {
 });
 
 describe("hooks", () => {
-  it("useSubmissions returns submissions from store", () => {
+  it("useSubmissions returns submissions from store", async () => {
     const submission = mockSubmission();
 
-    act(() => {
-      useUserStore.getState().addSubmission(submission);
+    await act(async () => {
+      await useUserStore.getState().addSubmission(submission);
     });
 
     const { result } = renderHook(() => useSubmissions());
 
-    expect(result.current).toEqual([submission]);
+    expect(result.current).toHaveLength(1);
+    expect(result.current[0].name).toBe("Rick");
   });
 
-  it("useAddSubmission returns addSubmission action", () => {
+  it("useAddSubmission returns addSubmission action", async () => {
     const { result } = renderHook(() => useAddSubmission());
 
-    act(() => {
-      result.current(mockSubmission());
+    await act(async () => {
+      await result.current(mockSubmission());
     });
 
     const submissions = useUserStore.getState().submissions;
