@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { ref } from "yup";
+import { COUNTRIES } from "../shared/countries";
 
 export interface FormValues {
   name: string;
@@ -55,7 +56,10 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
     .string()
     .required("Please confirm your password")
     .oneOf([ref("password")], "Passwords must match"),
-  country: yup.string().required("Country is required"),
+  country: yup
+    .string()
+    .required("Country is required")
+    .oneOf(COUNTRIES, "Please select a valid country"),
   image: yup
     .mixed<File>()
     .transform((value) => {

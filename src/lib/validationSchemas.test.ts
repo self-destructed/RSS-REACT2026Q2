@@ -3,58 +3,73 @@ import { schema } from "./validationSchemas";
 import { createValidFormData } from "./createValidFormData";
 
 describe("uncontrolledSchema", () => {
-  describe("should", () => {
+  describe("valid form data", () => {
     it("accept valid form data", () => {
       const validFile = new File(["x"], "test.png", { type: "image/png" });
-      const validData = createValidFormData({ image: validFile });
+      const validData = createValidFormData({
+        image: validFile,
+        country: "Russia",
+      });
       const result = schema.validateSync(validData);
 
       expect(result).toEqual(validData);
     });
+  });
 
-    it("reject name starting with lowercase", () => {
+  describe("name", () => {
+    it("reject lowercase start", () => {
       expect(() =>
         schema.validateSync(createValidFormData({ name: "rick" })),
       ).toThrow();
     });
+  });
 
-    it("reject negative age", () => {
+  describe("age", () => {
+    it("reject negative", () => {
       expect(() =>
         schema.validateSync(createValidFormData({ age: -1 })),
       ).toThrow();
     });
 
-    it("reject email without @", () => {
+    it("accept 0", () => {
+      const result = schema.validateSync(createValidFormData({ age: 0 }));
+
+      expect(result.age).toBe(0);
+    });
+  });
+
+  describe("email", () => {
+    it("reject without @", () => {
       expect(() =>
         schema.validateSync(createValidFormData({ email: "rickexample.com" })),
       ).toThrow();
     });
 
-    it("reject email without domain", () => {
+    it("reject without domain", () => {
       expect(() =>
         schema.validateSync(createValidFormData({ email: "rick@" })),
       ).toThrow();
     });
+  });
 
-    it("reject empty gender", () => {
+  describe("gender", () => {
+    it("reject empty", () => {
       expect(() =>
         schema.validateSync(createValidFormData({ gender: "" })),
       ).toThrow();
     });
+  });
 
-    it("reject unaccepted terms", () => {
+  describe("terms", () => {
+    it("reject not accepted", () => {
       expect(() =>
         schema.validateSync(createValidFormData({ terms: false })),
       ).toThrow();
     });
+  });
 
-    it("accept age 0", () => {
-      const result = schema.validateSync(createValidFormData({ age: 0 }));
-
-      expect(result.age).toBe(0);
-    });
-
-    it("accept missing image", () => {
+  describe("image", () => {
+    it("accept missing", () => {
       const result = schema.validateSync(
         createValidFormData({ image: undefined }),
       );
@@ -74,6 +89,7 @@ describe("uncontrolledSchema", () => {
       const largeFile = new File(["x".repeat(3 * 1024 * 1024)], "test.png", {
         type: "image/png",
       });
+
       expect(() =>
         schema.validateSync(createValidFormData({ image: largeFile })),
       ).toThrow("File must be less than 2MB");
@@ -86,6 +102,30 @@ describe("uncontrolledSchema", () => {
       );
 
       expect(result.image).toBeInstanceOf(File);
+    });
+  });
+
+  describe("country", () => {
+    it("reject empty", () => {
+      expect(() =>
+        schema.validateSync(createValidFormData({ country: "" })),
+      ).toThrow("Please select a valid country");
+    });
+
+    it("reject invalid country", () => {
+      expect(() =>
+        schema.validateSync(
+          createValidFormData({ country: "NonExistentLand" }),
+        ),
+      ).toThrow("Please select a valid country");
+    });
+
+    it("accept valid country", () => {
+      const result = schema.validateSync(
+        createValidFormData({ country: "Russia" }),
+      );
+
+      expect(result.country).toBe("Russia");
     });
   });
 });
