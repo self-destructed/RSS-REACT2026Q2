@@ -6,11 +6,8 @@ interface FieldErrorProps {
 
 export default function FieldError({ message }: FieldErrorProps): JSX.Element {
   return (
-    <p
-      className={`text-sm text-red-500 ${!message ? "invisible" : ""}`}
-      aria-live="polite"
-    >
-      {message ?? "\u00A0"}
-    </p>
+    <div className="min-h-5" aria-live="polite">
+      {message && <p className="text-sm text-red-500">{message}</p>}
+    </div>
   );
 }
