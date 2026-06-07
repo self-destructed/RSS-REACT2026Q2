@@ -12,6 +12,7 @@ function App(): JSX.Element {
   >(null);
   const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
   const addSubmission = useAddSubmission();
+  const [highlightedIds, setHighlightedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (modalKey === null && lastTriggerRef.current) {
@@ -27,10 +28,27 @@ function App(): JSX.Element {
     setModalKey(key);
   };
 
-  const handleModalSubmit = (data: FormValues) => {
-    void addSubmission(data);
-    setModalKey(null);
+  const handleSubmit = (data: FormValues) => {
+    const { confirmPassword: _confirmPassword, ...formData } = data;
+    void addSubmission(formData);
   };
+
+  const handleModalSubmit = (data: FormValues) => {
+    void addSubmission(data).then((id) => {
+      setModalKey(null);
+      setHighlightedIds((prev) => new Set(prev).add(id));
+    });
+  };
+
+  useEffect(() => {
+    if (highlightedIds.size === 0) return;
+    const timer = setTimeout(() => {
+      setHighlightedIds(new Set());
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [highlightedIds]);
 
   return (
     <div className="mx-auto max-w-6xl p-6">
@@ -55,8 +73,22 @@ function App(): JSX.Element {
           Open Uncontrolled Form
         </button>
       </div>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-gray-100">
+            Uncontrolled Form
+          </h2>
+          <UncontrolledForm onSubmit={handleSubmit} />
+        </div>
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-gray-100">
+            Controlled Form
+          </h2>
+          <ControlledForm onSubmit={handleSubmit} />
+        </div>
+      </div>
       <div className="mt-12">
-        <SubmissionsList />
+        <SubmissionsList highlightedIds={highlightedIds} />
       </div>
 
       <Modal

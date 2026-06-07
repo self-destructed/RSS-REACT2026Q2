@@ -23,7 +23,7 @@ interface UserState {
 }
 
 interface UserActions {
-  addSubmission: (input: SubmissionInput) => Promise<void>;
+  addSubmission: (input: SubmissionInput) => Promise<string>;
 }
 
 type UserStore = UserState & UserActions;
@@ -36,12 +36,14 @@ export const useUserStore = create<UserStore>()(
         addSubmission: async (input) => {
           const { image, ...data } = input;
           const imageBase64 = image ? await fileToBase64(image) : undefined;
+          const id = crypto.randomUUID();
           const submission: Submission = {
             ...data,
-            id: crypto.randomUUID(),
+            id,
             imageBase64,
           };
           set((state) => ({ submissions: [...state.submissions, submission] }));
+          return id;
         },
       }),
       { name: "user-storage" },

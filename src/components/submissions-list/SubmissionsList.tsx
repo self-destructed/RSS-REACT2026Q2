@@ -60,7 +60,11 @@ function SubmissionAvatar({
   );
 }
 
-export default function SubmissionsList(): JSX.Element {
+export default function SubmissionsList({
+  highlightedIds,
+}: {
+  highlightedIds?: Set<string>;
+}): JSX.Element {
   const submissions = useSubmissions();
 
   if (submissions.length === 0) {
@@ -75,25 +79,35 @@ export default function SubmissionsList(): JSX.Element {
     <div>
       <h2 className="text-lg font-semibold text-gray-100">Submissions</h2>
       <ul className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {submissions.map((submission) => (
-          <li key={submission.id}>
-            <article className="h-full rounded-lg border border-gray-700 bg-gray-900 p-4">
-              <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start">
-                <SubmissionAvatar
-                  image={submission.imageBase64}
-                  name={submission.name}
-                />
-                <InfoGrid
-                  name={submission.name}
-                  age={submission.age}
-                  email={submission.email}
-                  gender={submission.gender}
-                  country={submission.country}
-                />
-              </div>
-            </article>
-          </li>
-        ))}
+        {submissions.map((submission) => {
+          const isHighlighted = highlightedIds?.has(submission.id);
+          return (
+            <li key={submission.id}>
+              <article
+                className={
+                  "h-full rounded-lg border bg-gray-900 p-4 transition-all duration-500 " +
+                  (isHighlighted
+                    ? "border-green-500 shadow-[0_0_12px_2px_rgba(34,197,94,0.5)]"
+                    : "border-gray-700")
+                }
+              >
+                <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start">
+                  <SubmissionAvatar
+                    image={submission.imageBase64}
+                    name={submission.name}
+                  />
+                  <InfoGrid
+                    name={submission.name}
+                    age={submission.age}
+                    email={submission.email}
+                    gender={submission.gender}
+                    country={submission.country}
+                  />
+                </div>
+              </article>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
