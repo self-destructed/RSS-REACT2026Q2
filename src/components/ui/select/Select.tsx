@@ -26,7 +26,7 @@ export default function Select({
     <div>
       <label
         htmlFor={id}
-        className="mb-1 block text-sm font-medium text-gray-700"
+        className="mb-1 block text-sm font-medium text-gray-200"
       >
         {label}
       </label>

@@ -132,7 +132,7 @@ export default function UncontrolledForm({
         />
         <button
           type="submit"
-          className="w-full rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none"
+          className="w-full rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
         >
           Submit
         </button>
