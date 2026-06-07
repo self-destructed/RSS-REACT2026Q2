@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { COUNTRIES, type Country } from "../shared/countries";
+import { COUNTRIES, type Country } from "@shared/countries";
 
 interface CountriesStoreState {
   countries: readonly Country[];

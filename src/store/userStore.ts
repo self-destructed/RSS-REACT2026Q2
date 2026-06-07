@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { fileToBase64 } from "../lib/fileToBase64";
+import { fileToBase64 } from "@/lib/fileToBase64";
 
 export interface Submission {
   id: string;

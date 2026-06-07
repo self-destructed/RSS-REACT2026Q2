@@ -1,12 +1,9 @@
 import type { JSX, BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema, type FormValues } from "../../lib/validationSchemas";
-import { useCountries } from "../../store/countriesStore";
-import Fieldset from "../ui/fieldset/Fieldset";
-import Input from "../ui/input/Input";
-import Select from "../ui/select/Select";
-import Checkbox from "../ui/checkbox/Checkbox";
+import { schema, type FormValues } from "@/lib/validationSchemas";
+import { useCountries } from "@/store/countriesStore";
+import { Fieldset, Input, Select, Checkbox } from "@/components/ui";
 
 interface ControlledFormProps {
   onSubmit?: (data: FormValues) => void;

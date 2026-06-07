@@ -1,5 +1,5 @@
 import type { JSX, ReactNode } from "react";
-import { useSubmissions } from "../../store/userStore";
+import { useSubmissions } from "@/store/userStore";
 
 function InfoItem({
   label,
