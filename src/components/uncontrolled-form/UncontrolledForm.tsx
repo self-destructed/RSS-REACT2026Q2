@@ -80,6 +80,7 @@ export default function UncontrolledForm({
           id="age"
           name="age"
           type="number"
+          className="[-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           error={errors.age}
         />
         <Select

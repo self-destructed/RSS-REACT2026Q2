@@ -53,6 +53,7 @@ export default function ControlledForm({
           label="Age"
           id="rhf-age"
           type="number"
+          className="[-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           error={errors.age?.message}
           {...register("age")}
         />
