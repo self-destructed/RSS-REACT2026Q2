@@ -28,11 +28,6 @@ function App(): JSX.Element {
     setModalKey(key);
   };
 
-  const handleSubmit = (data: FormValues) => {
-    const { confirmPassword: _confirmPassword, ...formData } = data;
-    void addSubmission(formData);
-  };
-
   const handleModalSubmit = (data: FormValues) => {
     void addSubmission(data).then((id) => {
       setModalKey(null);
@@ -72,20 +67,6 @@ function App(): JSX.Element {
         >
           Open Uncontrolled Form
         </button>
-      </div>
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <div>
-          <h2 className="mb-4 text-lg font-semibold text-gray-100">
-            Uncontrolled Form
-          </h2>
-          <UncontrolledForm onSubmit={handleSubmit} />
-        </div>
-        <div>
-          <h2 className="mb-4 text-lg font-semibold text-gray-100">
-            Controlled Form
-          </h2>
-          <ControlledForm onSubmit={handleSubmit} />
-        </div>
       </div>
       <div className="mt-12">
         <SubmissionsList highlightedIds={highlightedIds} />
