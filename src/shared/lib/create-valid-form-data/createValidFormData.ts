@@ -1,4 +1,4 @@
-import type { FormValues } from "./validationSchemas";
+import type { FormValues } from "../validation-schemas";
 
 export function createValidFormData(
   overrides?: Partial<FormValues>,

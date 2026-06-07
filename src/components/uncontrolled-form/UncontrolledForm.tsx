@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { useRef, useState } from "react";
 import { useCountries } from "@/store/countriesStore";
 import { Fieldset, Input, Select, Checkbox } from "@/components/ui";
-import { schema, type FormValues } from "@/lib/validationSchemas";
+import { schema, type FormValues } from "@shared/lib/validation-schemas";
 import * as yup from "yup";
 
 interface UncontrolledFormProps {

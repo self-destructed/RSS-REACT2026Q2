@@ -1,7 +1,7 @@
 import type { JSX, BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema, type FormValues } from "@/lib/validationSchemas";
+import { schema, type FormValues } from "@shared/lib/validation-schemas";
 import { useCountries } from "@/store/countriesStore";
 import { Fieldset, Input, Select, Checkbox } from "@/components/ui";
 

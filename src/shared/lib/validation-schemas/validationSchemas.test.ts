@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { schema } from "./validationSchemas";
-import { createValidFormData } from "./createValidFormData";
+import { createValidFormData } from "../create-valid-form-data";
 
 describe("uncontrolledSchema", () => {
   describe("valid form data", () => {

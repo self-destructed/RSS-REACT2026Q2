@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { ref } from "yup";
-import { COUNTRIES } from "@shared/countries";
+import { COUNTRIES } from "../../countries";
 
 export interface FormValues {
   name: string;
