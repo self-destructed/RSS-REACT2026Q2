@@ -1,8 +1,8 @@
 import { type JSX, useEffect, useRef } from "react";
 import Portal from "../portal/Portal";
-import { useFocusTrap } from "@shared/lib/hooks/use-focus-trap";
-import { useKeydown } from "@shared/lib/hooks/use-keydown";
-import { useBodyScroll } from "@shared/lib/hooks/use-body-scroll";
+import { useFocusTrap } from "@shared/hooks/use-focus-trap";
+import { useKeydown } from "@shared/hooks/use-keydown";
+import { useBodyScroll } from "@shared/hooks/use-body-scroll";
 
 interface ModalProps {
   open: boolean;
