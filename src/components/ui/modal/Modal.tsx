@@ -25,7 +25,7 @@ export default function Modal({
   }, [open]);
 
   useBodyScroll(open);
-  useFocusTrap(containerRef);
+  useFocusTrap(containerRef, open);
   useKeydown("Escape", onClose, open);
 
   if (!open) return null;

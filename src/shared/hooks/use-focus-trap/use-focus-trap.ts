@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 
 const FOCUSABLE_SELECTOR =
-  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
 
 export function useFocusTrap(
   containerRef: React.RefObject<HTMLElement | null>,
+  isActive = true,
 ): void {
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const container = containerRef.current;
+    if (!isActive || !containerRef.current) return;
+    const container: HTMLElement = containerRef.current;
 
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (e.key !== "Tab") return;
@@ -35,5 +35,5 @@ export function useFocusTrap(
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [containerRef]);
+  }, [containerRef, isActive]);
 }
