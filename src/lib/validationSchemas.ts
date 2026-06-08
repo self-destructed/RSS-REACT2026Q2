@@ -18,11 +18,10 @@ export const schema: yup.ObjectSchema<FormValues> = yup.object().shape({
   name: yup
     .string()
     .required("Name is required")
-    .test(
-      "uppercase-start",
-      "Name must start with an uppercase letter",
-      (value) => value.at(0)?.toLocaleUpperCase() === value.at(0),
-    ),
+    .matches(/^\p{Lu}/u, {
+      message: "Name must start with an uppercase letter",
+      excludeEmptyString: true,
+    }),
   age: yup
     .number()
     .transform((value: number, originalValue: string) =>
