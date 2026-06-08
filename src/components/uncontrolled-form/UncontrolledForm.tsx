@@ -112,14 +112,14 @@ export default function UncontrolledForm({
           label="Password"
           id="password"
           name="password"
-          type="password"
+          type="text"
           error={errors.password}
         />
         <Input
           label="Confirm Password"
           id="confirmPassword"
           name="confirmPassword"
-          type="password"
+          type="text"
           error={errors.confirmPassword}
         />
         <Checkbox

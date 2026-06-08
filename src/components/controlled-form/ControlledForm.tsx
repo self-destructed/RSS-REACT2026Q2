@@ -83,14 +83,14 @@ export default function ControlledForm({
         <Input
           label="Password"
           id="rhf-password"
-          type="password"
+          type="text"
           error={errors.password?.message}
           {...register("password")}
         />
         <Input
           label="Confirm Password"
           id="rhf-confirmPassword"
-          type="password"
+          type="text"
           error={errors.confirmPassword?.message}
           {...register("confirmPassword")}
         />
