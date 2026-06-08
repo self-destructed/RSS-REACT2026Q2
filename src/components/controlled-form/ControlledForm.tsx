@@ -16,9 +16,7 @@ export default function ControlledForm({
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitted },
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema),
-  });
+  } = useForm<FormValues>({ mode: "onChange", resolver: yupResolver(schema) });
 
   const onValid = (data: FormValues) => {
     onSubmit?.(data);
