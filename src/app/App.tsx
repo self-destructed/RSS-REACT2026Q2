@@ -3,8 +3,8 @@ import UncontrolledForm from "@/components/uncontrolled-form/UncontrolledForm";
 import ControlledForm from "@/components/controlled-form/ControlledForm";
 import SubmissionsList from "@/components/submissions-list/SubmissionsList";
 import { useAddSubmission } from "@/store/userStore";
+import type { FormValues } from "@shared/lib/validation-schemas";
 import { Modal } from "@/components/ui/modal";
-import type { FormValues } from "@/lib/validationSchemas";
 
 function App(): JSX.Element {
   const [modalKey, setModalKey] = useState<

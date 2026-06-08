@@ -1,7 +1,7 @@
 import type { JSX, BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema, type FormValues } from "@/lib/validationSchemas";
+import { schema, type FormValues } from "@shared/lib/validation-schemas";
 import { useCountries } from "@/store/countriesStore";
 import { Fieldset, Input, Select, Checkbox } from "@/components/ui";
 
@@ -15,13 +15,13 @@ export default function ControlledForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isSubmitted },
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema),
-  });
+  } = useForm<FormValues>({ mode: "onChange", resolver: yupResolver(schema) });
 
   const onValid = (data: FormValues) => {
     onSubmit?.(data);
+    reset();
   };
 
   const onSubmitForm = (e: BaseSyntheticEvent) => {
@@ -85,14 +85,14 @@ export default function ControlledForm({
         <Input
           label="Password"
           id="rhf-password"
-          type="password"
+          type="text"
           error={errors.password?.message}
           {...register("password")}
         />
         <Input
           label="Confirm Password"
           id="rhf-confirmPassword"
-          type="password"
+          type="text"
           error={errors.confirmPassword?.message}
           {...register("confirmPassword")}
         />

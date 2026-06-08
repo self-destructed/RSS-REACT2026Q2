@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { useRef, useState } from "react";
 import { useCountries } from "@/store/countriesStore";
 import { Fieldset, Input, Select, Checkbox } from "@/components/ui";
-import { schema, type FormValues } from "@/lib/validationSchemas";
+import { schema, type FormValues } from "@shared/lib/validation-schemas";
 import * as yup from "yup";
 
 interface UncontrolledFormProps {
@@ -40,6 +40,8 @@ export default function UncontrolledForm({
     try {
       const data = schema.validateSync(rawData, { abortEarly: false });
       onSubmit?.(data);
+      formRef.current.reset();
+      setErrors({});
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         const fieldErrors: FieldErrors = {};
@@ -112,14 +114,14 @@ export default function UncontrolledForm({
           label="Password"
           id="password"
           name="password"
-          type="password"
+          type="text"
           error={errors.password}
         />
         <Input
           label="Confirm Password"
           id="confirmPassword"
           name="confirmPassword"
-          type="password"
+          type="text"
           error={errors.confirmPassword}
         />
         <Checkbox
