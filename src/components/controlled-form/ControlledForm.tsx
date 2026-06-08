@@ -15,11 +15,13 @@ export default function ControlledForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isSubmitted },
   } = useForm<FormValues>({ mode: "onChange", resolver: yupResolver(schema) });
 
   const onValid = (data: FormValues) => {
     onSubmit?.(data);
+    reset();
   };
 
   const onSubmitForm = (e: BaseSyntheticEvent) => {

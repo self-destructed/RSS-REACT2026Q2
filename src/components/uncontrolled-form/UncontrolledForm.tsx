@@ -40,6 +40,8 @@ export default function UncontrolledForm({
     try {
       const data = schema.validateSync(rawData, { abortEarly: false });
       onSubmit?.(data);
+      formRef.current.reset();
+      setErrors({});
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         const fieldErrors: FieldErrors = {};
