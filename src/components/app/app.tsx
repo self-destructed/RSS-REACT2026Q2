@@ -35,9 +35,12 @@ export const App = () => {
   const years = data ? getAvailableYears(data) : [];
   const availableColumns = getAvailableColumns();
 
-  const handleSearch = (value: string) => {
-    setState({ ...state, searchQuery: value });
-  };
+  const handleSearch = useCallback(
+    (value: string) => {
+      setState({ ...state, searchQuery: value });
+    },
+    [state.searchQuery]
+  );
 
   const handleYearChange = useCallback(
     (year: number) => {
