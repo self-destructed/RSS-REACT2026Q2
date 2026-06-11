@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useCo2Data } from '../../hooks/useCo2Data';
 import { LoadingSpinner } from '../loading-spinner/loading-spinner';
 import { SearchBar } from '../search-bar/search-bar';
@@ -39,9 +39,12 @@ export const App = () => {
     setState({ ...state, searchQuery: value });
   };
 
-  const handleYearChange = (year: number) => {
-    setState({ ...state, selectedYear: year });
-  };
+  const handleYearChange = useCallback(
+    (year: number) => {
+      setState({ ...state, selectedYear: year });
+    },
+    [state.selectedYear]
+  );
 
   const handleSortFieldChange = (field: 'name' | 'population') => {
     setState({ ...state, sortField: field });
