@@ -33,7 +33,7 @@ export const App = () => {
   });
 
   const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
-  const availableColumns = getAvailableColumns();
+  const availableColumns = useMemo(() => getAvailableColumns(), []);
 
   const handleSearch = useCallback(
     (value: string) => {
