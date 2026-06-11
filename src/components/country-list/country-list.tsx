@@ -26,24 +26,24 @@ export const CountryList = memo(
     sortField,
     sortOrder,
   }: CountryListProps) => {
-    
-
-    const filteredCountries = countries
-      .filter((c) => {
-        const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
-        return matchesSearch && matchesRegion;
-      })
-      .sort((a, b) => {
-        if (sortField === 'name') {
-          return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-        } else {
-          //TODO: should we optimize getPopulationForYear calls?
-          const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-          const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
-          return sortOrder === 'asc' ? popA - popB : popB - popA;
-        }
-      });
+    const filteredCountries = useMemo(() => {
+      return countries
+        .filter((c) => {
+          const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
+          return matchesSearch && matchesRegion;
+        })
+        .sort((a, b) => {
+          if (sortField === 'name') {
+            return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
+          } else {
+            //TODO: should we optimize getPopulationForYear calls?
+            const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
+            const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
+            return sortOrder === 'asc' ? popA - popB : popB - popA;
+          }
+        });
+    }, [countries, searchQuery, selectedRegion, sortField, selectedYear, sortOrder]);
 
     return (
       <div className={styles.countryList}>
