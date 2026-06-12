@@ -1,4 +1,4 @@
-import type { Country } from '../../types';
+import type { Country, YearData } from '../../types';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
 import { CountryCardRow } from '../country-card-row/country-card-row';
 
@@ -29,6 +29,13 @@ export const CountryList = memo(
     const rowHeight = useDynamicRowHeight({
       defaultRowHeight: 284,
     });
+    const countryMapsByYear = useMemo(() => {
+      const maps = new Map<string, Map<number, YearData>>();
+      countries.forEach((c) => {
+        maps.set(c.id, createYearDataMap(c.data));
+      });
+      return maps;
+    }, [countries]);
     const filteredCountries = useMemo(() => {
       return countries
         .filter((c) => {
@@ -40,12 +47,12 @@ export const CountryList = memo(
           if (sortField === 'name') {
             return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
           } else {
-            const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-            const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
+            const popA = getPopulationForYear(countryMapsByYear.get(a.id)!, selectedYear) || 0;
+            const popB = getPopulationForYear(countryMapsByYear.get(b.id)!, selectedYear) || 0;
             return sortOrder === 'asc' ? popA - popB : popB - popA;
           }
         });
-    }, [countries, searchQuery, selectedRegion, sortField, selectedYear, sortOrder]);
+    }, [countries, countryMapsByYear, searchQuery, selectedRegion, sortField, selectedYear, sortOrder]);
 
     return (
       <div className={styles.countryList}>
