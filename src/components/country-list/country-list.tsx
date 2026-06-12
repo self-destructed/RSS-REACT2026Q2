@@ -29,39 +29,43 @@ export const CountryList = memo(
     const rowHeight = useDynamicRowHeight({
       defaultRowHeight: 284,
     });
+    const filteredCountries = useMemo(() => {
+      const query = searchQuery.toLowerCase();
+      return countries.filter((c) => {
+        const matchesSearch = c.id.toLowerCase().includes(query);
+        const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
+        return matchesSearch && matchesRegion;
+      });
+    }, [countries, searchQuery, selectedRegion]);
+
     const countryMapsByYear = useMemo(() => {
       const maps = new Map<string, Map<number, YearData>>();
-      countries.forEach((c) => {
+      filteredCountries.forEach((c) => {
         maps.set(c.id, createYearDataMap(c.data));
       });
       return maps;
-    }, [countries]);
-    const filteredCountries = useMemo(() => {
-      return countries
-        .filter((c) => {
-          const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
-          const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
-          return matchesSearch && matchesRegion;
-        })
-        .sort((a, b) => {
-          if (sortField === 'name') {
-            return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-          } else {
-            const popA = getPopulationForYear(countryMapsByYear.get(a.id)!, selectedYear) || 0;
-            const popB = getPopulationForYear(countryMapsByYear.get(b.id)!, selectedYear) || 0;
-            return sortOrder === 'asc' ? popA - popB : popB - popA;
-          }
-        });
-    }, [countries, countryMapsByYear, searchQuery, selectedRegion, sortField, selectedYear, sortOrder]);
+    }, [filteredCountries]);
+
+    const sortedCountries = useMemo(() => {
+      return [...filteredCountries].sort((a, b) => {
+        if (sortField === 'name') {
+          return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
+        } else {
+          const popA = getPopulationForYear(countryMapsByYear.get(a.id)!, selectedYear) || 0;
+          const popB = getPopulationForYear(countryMapsByYear.get(b.id)!, selectedYear) || 0;
+          return sortOrder === 'asc' ? popA - popB : popB - popA;
+        }
+      });
+    }, [filteredCountries, countryMapsByYear, sortField, sortOrder, selectedYear]);
 
     return (
       <div className={styles.countryList}>
         <List
           rowComponent={CountryCardRow}
-          rowCount={filteredCountries.length}
+          rowCount={sortedCountries.length}
           rowHeight={rowHeight}
           rowProps={{
-            countries: filteredCountries,
+            countries: sortedCountries,
             selectedYear,
             selectedColumns,
           }}
