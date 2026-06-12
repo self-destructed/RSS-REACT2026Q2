@@ -6,15 +6,15 @@
 - **Environment:** Development mode (`npm run dev`), Vite, React 19
 - **Browser:** Google Chrome
 - **Mode:** Development build
-- **Baseline:** Unoptimized starter code
-- **Optimized:** After all optimizations applied (to be measured)
+- **Baseline:** Unoptimized starter code (commit `b8cb637`)
+- **Optimized:** Optimized code on `performance` branch
 - All measurements taken from the same machine under similar conditions
 
 ---
 
 ## Phase 1: Initial Profiling (Baseline)
 
-The baseline was measured using the built-in React `<Profiler>` component. Four standard interactions were recorded.
+The baseline was measured using the built-in React `<Profiler>` component. Four standard interactions were recorded on the unoptimized starter code.
 
 ### Baseline Metrics
 
@@ -22,29 +22,29 @@ The baseline was measured using the built-in React `<Profiler>` component. Four 
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Render duration | 692.00ms | |
-| Commit duration | 694.00ms | |
+| Render duration | 692.00ms | 107.10ms |
+| Commit duration | 694.00ms | 107.60ms |
 
 #### 2. Year Select (2020 → 2024)
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Render duration | 753.00ms | |
-| Commit duration | 754.50ms | |
+| Render duration | 753.00ms | 254.30ms |
+| Commit duration | 754.50ms | 255.80ms |
 
 #### 3. Sort By Population (asc)
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Render duration | 701.90ms | |
-| Commit duration | 704.90ms | |
+| Render duration | 701.90ms | 80.80ms |
+| Commit duration | 704.90ms | 81.40ms |
 
 #### 4. Column Toggle (add "coal_co2")
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Render duration | 795.90ms | |
-| Commit duration | 798.30ms | |
+| Render duration | 795.90ms | 116.50ms |
+| Commit duration | 798.30ms | 117.50ms |
 
 ### Baseline Screenshots
 
@@ -71,22 +71,87 @@ The starter code had several known performance issues:
 
 ## Phase 2: Applied Optimizations
 
-TBD — list of optimizations applied.
+The following optimizations were implemented on the `performance` branch:
+
+| # | Optimization | Files |
+|---|-------------|-------|
+| 1 | **`React.memo` on `CountryCard`** | `country-card.tsx` |
+| 2 | **`React.memo` on `CountryList`** | `country-list.tsx` |
+| 3 | **`React.memo` on `SearchBar`** | `search-bar.tsx` |
+| 4 | **`React.memo` on `YearSelector`** | `year-selector.tsx` |
+| 5 | **`useMemo` for `filteredCountries`** | `country-list.tsx` |
+| 6 | **`useMemo` for `yearDataMap`** | `country-card.tsx` |
+| 7 | **`useMemo` for `years`** | `app.tsx` |
+| 8 | **`useMemo` for `availableColumns`** | `app.tsx` |
+| 9 | **Split filter/sort into separate `useMemo`** | `country-list.tsx` |
+| 10 | **Pre-computed `countryMapsByYear` after filter** | `country-list.tsx` |
+| 11 | **Hoisted `searchQuery.toLowerCase()` out of filter** | `country-list.tsx` |
+| 12 | **`useCallback` for `handleSearch`** | `app.tsx` |
+| 13 | **`useCallback` for `handleYearChange`** | `app.tsx` |
+| 14 | **Functional updaters (`setState(prev => ...)`)** | `app.tsx` |
+| 15 | **Proper key props (`key={column}` in DataTable)** | `data-table.tsx` |
+| 16 | **Virtualization via `react-window`** | `country-list.tsx` |
+| 17 | **300ms debounce on search input** | `search-bar.tsx` |
+| 18 | **Unused `onYearChange` prop removed** | `country-list.tsx`, `app.tsx` |
 
 ---
 
 ## Phase 3: Final Profiling (Comparison)
 
-TBD — after optimization measurements.
+### Optimized Metrics
+
+#### 1. Country Search (typing "a")
+
+| Metric | Value |
+|--------|-------|
+| Render duration | 107.10ms |
+| Commit duration | 107.60ms |
+
+**Screenshot (after):** `performance/after/country_search.png`
+
+#### 2. Year Select (2020 → 2024)
+
+| Metric | Value |
+|--------|-------|
+| Render duration | 254.30ms |
+| Commit duration | 255.80ms |
+
+**Screenshot (after):** `performance/after/year_select.png`
+
+#### 3. Sort By Population (asc)
+
+| Metric | Value |
+|--------|-------|
+| Render duration | 80.80ms |
+| Commit duration | 81.40ms |
+
+**Screenshot (after):** `performance/after/sort_by_population_asc.png`
+
+#### 4. Column Toggle (add "coal_co2")
+
+| Metric | Value |
+|--------|-------|
+| Render duration | 116.50ms |
+| Commit duration | 117.50ms |
+
+**Screenshot (after):** `performance/after/column_toggle.png`
 
 ### Comparison Summary
 
-| Interaction | Before (render) | Before (commit) | After (render) | After (commit) | Improvement |
-|-------------|----------------|-----------------|----------------|----------------|-------------|
-| Country Search | 692.00ms | 694.00ms | | | |
-| Year Select | 753.00ms | 754.50ms | | | |
-| Sort By Population | 701.90ms | 704.90ms | | | |
-| Column Toggle | 795.90ms | 798.30ms | | | |
+| Interaction | Before (render) | After (render) | Before (commit) | After (commit) | Improvement |
+|-------------|----------------|----------------|-----------------|----------------|-------------|
+| Country Search | 692.00ms | 107.10ms | 694.00ms | 107.60ms | **~6.5×** |
+| Year Select | 753.00ms | 254.30ms | 754.50ms | 255.80ms | **~3.0×** |
+| Sort By Population | 701.90ms | 80.80ms | 704.90ms | 81.40ms | **~8.7×** |
+| Column Toggle | 795.90ms | 116.50ms | 798.30ms | 117.50ms | **~6.8×** |
+
+### Key Achievements
+
+1. **Search debounce (300ms)** — reduced render cascades from ~10 per keystroke to 1 per pause
+2. **Virtualization + memo** — only visible rows render, flat comparators prevent unnecessary updates
+3. **Split filter/sort pipeline** — year changes no longer re-run the filter, only the sort
+4. **Cached year data maps** — `createYearDataMap()` runs once per country per filter pass, not O(n²) in sort
+5. **Functional state updaters** — eliminated stale closure bugs and reduced re-render chains
 
 ---
 
@@ -97,7 +162,15 @@ TBD — after optimization measurements.
 | Screenshot | Path |
 |------------|------|
 | Country Search | `performance/before/country_search.png` |
+| Sort By Population | `performance/before/sort_by_population_asc.png` |
+| Year Select | `performance/before/year_select.png` |
+| Column Toggle | `performance/before/modal_add_coal_co2.png` |
 
 ### After (Optimized)
 
-TBD
+| Screenshot | Path |
+|------------|------|
+| Country Search | `performance/after/country_search.png` |
+| Sort By Population | `performance/after/sort_by_population_asc.png` |
+| Year Select | `performance/after/year_select.png` |
+| Column Toggle | `performance/after/column_toggle.png` |
