@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useDeferredValue, useMemo, useState } from 'react';
 import { useCo2Data } from '../../hooks/useCo2Data';
 import { LoadingSpinner } from '../loading-spinner/loading-spinner';
 import { SearchBar } from '../search-bar/search-bar';
@@ -32,6 +32,7 @@ export const App = () => {
   });
   const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
   const availableColumns = useMemo(() => getAvailableColumns(), []);
+  const deferredSearchQuery = useDeferredValue(state.searchQuery);
 
   const handleSearch = useCallback((value: string) => {
     setState((prev) => ({ ...prev, searchQuery: value }));
@@ -107,7 +108,7 @@ export const App = () => {
       {/* Country List */}
       <CountryList
         countries={data}
-        searchQuery={state.searchQuery}
+        searchQuery={deferredSearchQuery}
         selectedColumns={state.selectedColumns}
         selectedRegion={state.selectedRegion}
         selectedYear={state.selectedYear}
