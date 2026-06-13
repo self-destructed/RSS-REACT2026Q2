@@ -21,7 +21,6 @@ type AppState = {
 
 export const App = () => {
   const { data, isLoading, error } = useCo2Data();
-
   const [state, setState] = useState<AppState>({
     searchQuery: '',
     selectedRegion: '',
@@ -31,7 +30,6 @@ export const App = () => {
     selectedColumns: ['year', 'population', 'co2', 'co2_per_capita'],
     isColumnModalOpen: false,
   });
-
   const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
   const availableColumns = useMemo(() => getAvailableColumns(), []);
 
@@ -54,18 +52,13 @@ export const App = () => {
     }));
   };
 
-  const handleColumnToggle = (column: string) => {
-    setState((prev) => ({
-      ...prev,
-      selectedColumns: prev.selectedColumns.includes(column)
-        ? prev.selectedColumns.filter((c) => c !== column)
-        : [...prev.selectedColumns, column],
-    }));
+  const handleModalOpen = () => {
+    setState((prev) => ({ ...prev, isColumnModalOpen: true }));
   };
 
-  const handleModalToggle = () => {
-    setState((prev) => ({ ...prev, isColumnModalOpen: !prev.isColumnModalOpen }));
-  };
+  const handleConfirmColumns = useCallback((columns: string[]) => {
+    setState((prev) => ({ ...prev, selectedColumns: columns, isColumnModalOpen: false }));
+  }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -105,7 +98,7 @@ export const App = () => {
         </div>
 
         <div className={styles.columnButtonContainer}>
-          <button onClick={handleModalToggle} className={styles.columnButton}>
+          <button onClick={handleModalOpen} className={styles.columnButton}>
             Select columns ({state.selectedColumns.length} selected)
           </button>
         </div>
@@ -123,13 +116,13 @@ export const App = () => {
       />
 
       {/* Column Modal */}
-      <ColumnModal
-        isOpen={state.isColumnModalOpen}
-        availableColumns={availableColumns}
-        selectedColumns={state.selectedColumns}
-        onToggle={handleColumnToggle}
-        onClose={handleModalToggle}
-      />
+      {state.isColumnModalOpen && (
+        <ColumnModal
+          availableColumns={availableColumns}
+          initialSelectedColumns={state.selectedColumns}
+          onConfirm={handleConfirmColumns}
+        />
+      )}
     </div>
   );
 };

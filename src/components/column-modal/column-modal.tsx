@@ -1,23 +1,24 @@
+import { useState } from 'react';
 import styles from './column-modal.module.css';
 
 type ColumnModalProps = {
-  isOpen: boolean;
   availableColumns: string[];
-  selectedColumns: string[];
-  onToggle: (column: string) => void;
-  onClose: () => void;
+  initialSelectedColumns: string[];
+  onConfirm: (columns: string[]) => void;
 };
 
 export const ColumnModal = ({
-  isOpen,
   availableColumns,
-  selectedColumns,
-  onToggle,
-  onClose,
+  initialSelectedColumns,
+  onConfirm,
 }: ColumnModalProps) => {
-  if (!isOpen) {
-    return null;
-  }
+  const [draft, setDraft] = useState(initialSelectedColumns);
+
+  const handleToggle = (column: string) => {
+    setDraft((prev) =>
+      prev.includes(column) ? prev.filter((c) => c !== column) : [...prev, column]
+    );
+  };
 
   return (
     <div className={styles.overlay}>
@@ -29,8 +30,8 @@ export const ColumnModal = ({
               <label>
                 <input
                   type="checkbox"
-                  checked={selectedColumns.includes(column)}
-                  onChange={() => onToggle(column)}
+                  checked={draft.includes(column)}
+                  onChange={() => handleToggle(column)}
                   className={styles.checkbox}
                 />
                 {column}
@@ -39,7 +40,7 @@ export const ColumnModal = ({
           ))}
         </div>
         <div className={styles.buttonContainer}>
-          <button onClick={onClose} className={styles.closeButton}>
+          <button onClick={() => onConfirm(draft)} className={styles.closeButton}>
             Close
           </button>
         </div>
