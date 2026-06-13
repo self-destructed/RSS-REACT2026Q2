@@ -1,4 +1,4 @@
-import type { Country, YearData } from '../../types';
+import type { Country } from '../../types';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
 import { CountryCardRow } from '../country-card-row/country-card-row';
 
@@ -38,25 +38,26 @@ export const CountryList = memo(
       });
     }, [countries, searchQuery, selectedRegion]);
 
-    const countryMapsByYear = useMemo(() => {
-      const maps = new Map<string, Map<number, YearData>>();
+    const populationByCountry = useMemo(() => {
+      const map = new Map<string, number>();
       filteredCountries.forEach((c) => {
-        maps.set(c.id, createYearDataMap(c.data));
+        const yearMap = createYearDataMap(c.data);
+        map.set(c.id, getPopulationForYear(yearMap, selectedYear) ?? 0);
       });
-      return maps;
-    }, [filteredCountries]);
+      return map;
+    }, [filteredCountries, selectedYear]);
 
     const sortedCountries = useMemo(() => {
       return [...filteredCountries].sort((a, b) => {
         if (sortField === 'name') {
           return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
         } else {
-          const popA = getPopulationForYear(countryMapsByYear.get(a.id)!, selectedYear) || 0;
-          const popB = getPopulationForYear(countryMapsByYear.get(b.id)!, selectedYear) || 0;
+          const popA = populationByCountry.get(a.id)!;
+          const popB = populationByCountry.get(b.id)!;
           return sortOrder === 'asc' ? popA - popB : popB - popA;
         }
       });
-    }, [filteredCountries, countryMapsByYear, sortField, sortOrder, selectedYear]);
+    }, [filteredCountries, populationByCountry, sortField, sortOrder]);
 
     return (
       <div className={styles.countryList}>
