@@ -65,7 +65,7 @@ The starter code had several known performance issues:
 4. **Stale closures** — `setState({ ...state, ... })` captures an outdated `state` reference
 5. **Single monolithic state** — one `useState<AppState>` with manual spreads
 6. **No list virtualization** — all ~200 country cards are rendered at once
-7. **No debounce on search** — `onChange` fires on every keystroke, triggering full re-render
+7. **Debounce (500ms) on search** — added then later replaced by `useDeferredValue` for instant input responsiveness
 
 ---
 
@@ -93,6 +93,10 @@ The following optimizations were implemented on the `performance` branch:
 | 16 | **Virtualization via `react-window`** | `country-list.tsx` |
 | 17 | **300ms debounce on search input** | `search-bar.tsx` |
 | 18 | **Unused `onYearChange` prop removed** | `country-list.tsx`, `app.tsx` |
+| 19 | **`useDeferredValue` for search** | `app.tsx` |
+| 20 | **Local draft state in `ColumnModal`** (replaced `onToggle` with internal `useState`) | `column-modal.tsx`, `app.tsx` |
+| 21 | **Removed `useDebounce` from `SearchBar`** (replaced by `useDeferredValue`) | `search-bar.tsx` |
+| 22 | **Conditional render + draft for column modal** (no `isOpen` prop, unmount approach) | `column-modal.tsx`, `app.tsx` |
 
 ---
 
@@ -147,11 +151,12 @@ The following optimizations were implemented on the `performance` branch:
 
 ### Key Achievements
 
-1. **Search debounce (300ms)** — reduced render cascades from ~10 per keystroke to 1 per pause
+1. **`useDeferredValue` for search** — replaced debounce, input stays responsive, filtering runs in background with interruptible rendering
 2. **Virtualization + memo** — only visible rows render, flat comparators prevent unnecessary updates
 3. **Split filter/sort pipeline** — year changes no longer re-run the filter, only the sort
 4. **Cached year data maps** — `createYearDataMap()` runs once per country per filter pass, not O(n²) in sort
 5. **Functional state updaters** — eliminated stale closure bugs and reduced re-render chains
+6. **Column modal local draft** — column changes apply only on modal close, eliminating re-renders of CountryList while editing
 
 ---
 
