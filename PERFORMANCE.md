@@ -22,29 +22,29 @@ The baseline was measured using the built-in React `<Profiler>` component. Four 
 
 | Metric          | Before   | After    |
 | --------------- | -------- | -------- |
-| Render duration | 692.00ms | 107.10ms |
-| Commit duration | 694.00ms | 107.60ms |
+| Render duration | 692.00ms | 152.00ms |
+| Commit duration | 694.00ms | 160.80ms |
 
 #### 2. Year Select (2020 → 2024)
 
 | Metric          | Before   | After    |
 | --------------- | -------- | -------- |
-| Render duration | 753.00ms | 254.30ms |
-| Commit duration | 754.50ms | 255.80ms |
+| Render duration | 753.00ms | 280.90ms |
+| Commit duration | 754.50ms | 281.50ms |
 
 #### 3. Sort By Population (asc)
 
 | Metric          | Before   | After   |
 | --------------- | -------- | ------- |
-| Render duration | 701.90ms | 80.80ms |
-| Commit duration | 704.90ms | 81.40ms |
+| Render duration | 701.90ms | 95.80ms |
+| Commit duration | 704.90ms | 96.60ms |
 
 #### 4. Column Toggle (add "coal_co2")
 
 | Metric          | Before   | After    |
 | --------------- | -------- | -------- |
-| Render duration | 795.90ms | 116.50ms |
-| Commit duration | 798.30ms | 117.50ms |
+| Render duration | 795.90ms | 106.60ms |
+| Commit duration | 798.30ms | 107.40ms |
 
 ### Baseline Screenshots
 
@@ -108,8 +108,8 @@ The following optimizations were implemented on the `performance` branch:
 
 | Metric          | Value    |
 | --------------- | -------- |
-| Render duration | 107.10ms |
-| Commit duration | 107.60ms |
+| Render duration | 152.00ms |
+| Commit duration | 160.80ms |
 
 **Screenshot (after):** `performance/after/country_search.png`
 
@@ -117,8 +117,8 @@ The following optimizations were implemented on the `performance` branch:
 
 | Metric          | Value    |
 | --------------- | -------- |
-| Render duration | 254.30ms |
-| Commit duration | 255.80ms |
+| Render duration | 280.90ms |
+| Commit duration | 281.50ms |
 
 **Screenshot (after):** `performance/after/year_select.png`
 
@@ -126,8 +126,8 @@ The following optimizations were implemented on the `performance` branch:
 
 | Metric          | Value   |
 | --------------- | ------- |
-| Render duration | 80.80ms |
-| Commit duration | 81.40ms |
+| Render duration | 95.80ms |
+| Commit duration | 96.60ms |
 
 **Screenshot (after):** `performance/after/sort_by_population_asc.png`
 
@@ -135,19 +135,19 @@ The following optimizations were implemented on the `performance` branch:
 
 | Metric          | Value    |
 | --------------- | -------- |
-| Render duration | 116.50ms |
-| Commit duration | 117.50ms |
+| Render duration | 106.60ms |
+| Commit duration | 107.40ms |
 
 **Screenshot (after):** `performance/after/column_toggle.png`
 
 ### Comparison Summary
 
-| Interaction        | Before (render) | After (render) | Before (commit) | After (commit) | Improvement |
+| Interaction        | Render (before) | Render (after) | Commit (before) | Commit (after) | Improvement |
 | ------------------ | --------------- | -------------- | --------------- | -------------- | ----------- |
-| Country Search     | 692.00ms        | 107.10ms       | 694.00ms        | 107.60ms       | **~6.5×**   |
-| Year Select        | 753.00ms        | 254.30ms       | 754.50ms        | 255.80ms       | **~3.0×**   |
-| Sort By Population | 701.90ms        | 80.80ms        | 704.90ms        | 81.40ms        | **~8.7×**   |
-| Column Toggle      | 795.90ms        | 116.50ms       | 798.30ms        | 117.50ms       | **~6.8×**   |
+| Country Search     | 692.00ms        | 152.00ms       | 694.00ms        | 160.80ms       | **~78%**    |
+| Year Select        | 753.00ms        | 280.90ms       | 754.50ms        | 281.50ms       | **~63%**    |
+| Sort By Population | 701.90ms        | 95.80ms        | 704.90ms        | 96.60ms        | **~86%**    |
+| Column Toggle      | 795.90ms        | 106.60ms       | 798.30ms        | 107.40ms       | **~87%**    |
 
 ### Key Achievements
 
