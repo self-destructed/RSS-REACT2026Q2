@@ -7,7 +7,7 @@ import {
 import type { CharacterFilter, Character } from "../../model";
 import { CHARACTER_API } from "../character-api";
 import { http, type Info } from "@shared/api";
-import { buildQueryString } from "@shared/lib";
+import { buildQueryString } from "@shared/lib/url-params/url-params";
 
 export function charactersQueryOptions(
   filters?: CharacterFilter,
@@ -28,6 +28,10 @@ export function charactersQueryOptions(
 
 export function useCharactersQuery(
   filters?: CharacterFilter,
+  initialData?: Info<Character[]>,
 ): UseQueryResult<Info<Character[]>> {
-  return useQuery(charactersQueryOptions(filters));
+  return useQuery({
+    ...charactersQueryOptions(filters),
+    initialData,
+  });
 }
