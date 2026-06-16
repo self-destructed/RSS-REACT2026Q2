@@ -1,4 +1,4 @@
-import { Main } from "@shared/ui";
+import { Main } from "@shared/ui/main";
 
 const ATTEMPT_NUMBER = Math.floor(Math.random() * 100) + 1;
 
