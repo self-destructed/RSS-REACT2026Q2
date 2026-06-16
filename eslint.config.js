@@ -13,6 +13,7 @@ import pluginQuery from "@tanstack/eslint-plugin-query";
 export default tseslint.config(
   {
     ignores: [
+      ".next",
       "dist",
       "build",
       "coverage",
@@ -40,7 +41,7 @@ export default tseslint.config(
         ...globals.es2021,
       },
       parserOptions: {
-        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
+        project: ["./tsconfig.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },
