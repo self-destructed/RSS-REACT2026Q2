@@ -1,6 +1,7 @@
 import type { JSX, ReactNode } from "react";
 import "../src/app/styles/index.css";
 import { Layout } from "@app/layout";
+import { QueryProvider } from "@app/providers";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,9 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body>
-        <Layout>{children}</Layout>
+        <QueryProvider>
+          <Layout>{children}</Layout>
+        </QueryProvider>
       </body>
     </html>
   );
