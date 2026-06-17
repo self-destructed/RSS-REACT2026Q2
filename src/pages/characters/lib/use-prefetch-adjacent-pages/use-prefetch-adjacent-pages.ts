@@ -1,3 +1,5 @@
+"use client";
+
 import { charactersQueryOptions } from "@entities/character";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -19,7 +21,6 @@ export function usePrefetchAdjacentPages({
     if (page < 1 || page > totalPages) {
       return;
     }
-
     if (page > 1) {
       void queryClient.prefetchQuery(
         charactersQueryOptions({ name, page: page - 1 }),
