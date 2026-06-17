@@ -9,6 +9,7 @@ import prettierConfig from "eslint-config-prettier";
 import reactCompiler from "eslint-plugin-react-compiler";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import pluginQuery from "@tanstack/eslint-plugin-query";
+import nextPlugin from "@next/eslint-plugin-next";
 
 export default tseslint.config(
   {
@@ -143,6 +144,17 @@ export default tseslint.config(
       "@typescript-eslint/no-empty-function": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "no-console": "off",
+    },
+  },
+
+  // ─── Next.js rules ───────────────────────────────────────────────────────────
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      "@next/next": nextPlugin,
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
     },
   },
 );
