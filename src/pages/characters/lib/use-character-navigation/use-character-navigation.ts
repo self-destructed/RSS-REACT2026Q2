@@ -1,6 +1,8 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { clamp } from "@shared/lib";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface Props {
   totalPages: number;
@@ -18,45 +20,55 @@ export function useCharacterNavigation({
   totalPages,
   initialPage,
 }: Props): UseCharacterNavigationReturn {
-  const [params, setParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const pathname = usePathname() ?? "";
 
-  const page =
-    initialPage !== undefined
-      ? clamp(initialPage, 1, totalPages)
-      : Number(params.get("page")) || 1;
+  const searchParamsRef = useRef(searchParams);
 
   useEffect(() => {
-    if (params.has("page")) return;
+    searchParamsRef.current = searchParams;
+  }, [searchParams]);
 
-    setParams((prev) => {
-      prev.set("page", String(initialPage ?? 1));
-      return prev;
-    });
-  }, [params, setParams, initialPage]);
+  const [page, setPage] = useState(() => {
+    return clamp(
+      (initialPage ?? Number(searchParams?.get("page"))) || 1,
+      1,
+      totalPages,
+    );
+  });
 
-  const setPage = (pageNumber: number) => {
+  const handleSetPage = (pageNumber: number) => {
     const clampedPage = clamp(pageNumber, 1, totalPages);
 
-    setParams((prev) => {
-      prev.set("page", String(clampedPage));
-      return prev;
-    });
+    setPage(clampedPage);
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(
+      searchParamsRef.current?.toString() ?? "",
+    );
+
+    params.set("page", String(page));
+
+    history.replaceState(null, "", `${pathname}?${params.toString()}`);
+  }, [page, pathname]);
 
   const handlePrev = () => {
     if (page <= 1) return;
-    setPage(page - 1);
+
+    handleSetPage(page - 1);
   };
 
   const handleNext = () => {
     if (page >= totalPages) return;
-    setPage(page + 1);
+
+    handleSetPage(page + 1);
   };
 
   return {
     page,
     handleNext,
     handlePrev,
-    setPage,
+    setPage: handleSetPage,
   };
 }
