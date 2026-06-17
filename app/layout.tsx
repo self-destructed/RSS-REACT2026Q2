@@ -3,13 +3,28 @@ import "../src/app/styles/index.css";
 import { Layout } from "@app/layout";
 import { QueryProvider } from "@app/providers";
 
+const themeScript = `
+  (function() {
+    try {
+      var raw = localStorage.getItem("theme");
+      var theme = raw ? JSON.parse(raw) : "dark";
+      document.documentElement.dataset.theme = theme;
+    } catch (_) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* https://nextjs.org/docs/app/guides/preventing-flash-before-hydration#themes */}
+        {/* eslint-disable-next-line react/no-danger */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <QueryProvider>
           <Layout>{children}</Layout>
