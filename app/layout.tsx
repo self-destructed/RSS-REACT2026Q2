@@ -1,7 +1,7 @@
 import type { JSX, ReactNode } from "react";
 import "../src/app/styles/index.css";
 import { Layout } from "@app/layout";
-import { QueryProvider } from "@app/providers";
+import { Providers } from "@app/providers";
 
 const themeScript = `
   (function() {
@@ -26,9 +26,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <QueryProvider>
+        <Providers>
           <Layout>{children}</Layout>
-        </QueryProvider>
+        </Providers>
       </body>
     </html>
   );
