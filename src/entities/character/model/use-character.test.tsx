@@ -3,8 +3,8 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { PropsWithChildren } from "react";
 import { http } from "@shared/api";
-import type { Character } from "../../model";
-import { useCharacterQuery } from "./use-character-query";
+import type { Character } from "./types";
+import { useCharacterQuery } from "./queries";
 
 const getSpy = vi.spyOn(http, "get");
 const mockCharacter: Character = {

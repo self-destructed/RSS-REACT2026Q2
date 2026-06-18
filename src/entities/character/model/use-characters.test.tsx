@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { PropsWithChildren } from "react";
 import { http } from "@shared/api";
 import type { Info } from "@shared/api";
-import type { Character } from "../../model";
-import { useCharactersQuery } from "./use-characters-query";
+import type { Character } from "./types";
+import { useCharactersQuery } from "./queries";
 
 const getSpy = vi.spyOn(http, "get");
 const mockInfoResponse: Info<Character[]> = {

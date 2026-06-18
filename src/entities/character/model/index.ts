@@ -6,3 +6,11 @@ export type {
   Species,
   Gender,
 } from "./types";
+
+export {
+  charactersQueryOptions,
+  characterQueryOptions,
+  charactersByIdQueryOptions,
+  useCharactersQuery,
+  useCharacterQuery,
+} from "./queries";
