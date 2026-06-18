@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import type { ChangeEvent, JSX, SubmitEvent } from "react";
 
