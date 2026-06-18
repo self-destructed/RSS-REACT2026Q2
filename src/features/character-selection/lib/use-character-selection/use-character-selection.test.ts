@@ -36,7 +36,7 @@ const {
   };
 });
 
-vi.mock("@features/characters/model/store", () => ({
+vi.mock("@features/character-selection/model/store", () => ({
   useSelectedIds: () => mockSelectedIds.current,
   useToggleCharacter: () => mockToggleCharacter,
   useUnselectAllCharacters: () => mockUnselectAllCharacters,

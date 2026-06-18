@@ -9,7 +9,7 @@ import {
   Flyout,
 } from "@shared/ui";
 import { CharacterList } from "@entities/character";
-import { useCharacterSelection } from "@features/characters";
+import { useCharacterSelection } from "@features/character-selection";
 import { useCharacterDetails } from "@widgets/character-details-panel/model";
 import { useCharacterCatalog } from "../model";
 
