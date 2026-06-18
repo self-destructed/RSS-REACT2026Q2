@@ -11,6 +11,6 @@ export {
   charactersQueryOptions,
   characterQueryOptions,
   charactersByIdQueryOptions,
-  useCharactersQuery,
-  useCharacterQuery,
-} from "./queries";
+} from "./query-options";
+
+export { useCharactersQuery, useCharacterQuery } from "./queries";
