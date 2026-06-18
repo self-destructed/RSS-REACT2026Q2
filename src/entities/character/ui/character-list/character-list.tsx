@@ -1,5 +1,5 @@
 import { CharacterCard } from "../character-card";
-import type { Character } from "@entities/character";
+import type { Character } from "../../model";
 
 interface Props {
   data: Character[];

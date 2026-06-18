@@ -1,6 +1,6 @@
 import { expect, describe, test, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import type { Character } from "@entities/character";
+import type { Character } from "../../model";
 import { CharacterCard } from "./character-card";
 
 beforeEach(() => {

@@ -1,4 +1,4 @@
-import type { Character } from "@entities/character";
+import type { Character } from "../../model";
 import { Checkbox } from "@shared/ui";
 
 interface Props {

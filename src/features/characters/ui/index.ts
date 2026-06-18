@@ -1,1 +1,1 @@
-export { CharacterList } from "./character-list";
+// UI components moved to @entities/character

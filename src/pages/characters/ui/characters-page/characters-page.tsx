@@ -7,7 +7,8 @@ import {
   ErrorDisplay,
   QueryMatch,
 } from "@shared/ui";
-import { useCharacterSelection, CharacterList } from "@features/characters";
+import { CharacterList } from "@entities/character";
+import { useCharacterSelection } from "@features/characters";
 import { Flyout } from "@shared/ui";
 import { useCharacterDetails, useCharactersPageData } from "../../lib";
 
