@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { act, renderHook } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { useCharactersPageData } from "./use-characters-page-data";
+import { useCharacterCatalog } from "./use-character-catalog";
 
 const {
   mockUseCharacterSearch,
@@ -19,9 +19,15 @@ const {
   mockInvalidateQueries: vi.fn(),
 }));
 
-vi.mock("..", () => ({
+vi.mock("./use-character-search", () => ({
   useCharacterSearch: mockUseCharacterSearch,
+}));
+
+vi.mock("./use-character-navigation", () => ({
   useCharacterNavigation: mockUseCharacterNavigation,
+}));
+
+vi.mock("./use-prefetch-adjacent-pages", () => ({
   usePrefetchAdjacentPages: mockPrefetchAdjacentPages,
 }));
 
@@ -59,7 +65,7 @@ function mockCharactersQueryData(totalPages: number) {
   };
 }
 
-describe("useCharactersPageData", () => {
+describe("useCharacterCatalog", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -83,7 +89,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("reads page from URL params", () => {
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/?page=5"),
     });
 
@@ -91,7 +97,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("defaults to page 1 when no page param in URL", () => {
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/"),
     });
 
@@ -99,7 +105,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("defaults to page 1 when page param is not a number", () => {
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/?page=abc"),
     });
 
@@ -112,7 +118,7 @@ describe("useCharactersPageData", () => {
       handleQueryChange: mockSearchHandleQueryChange,
     });
 
-    renderHook(() => useCharactersPageData(), {
+    renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/"),
     });
 
@@ -122,7 +128,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("passes page from URL to useCharactersQuery", () => {
-    renderHook(() => useCharactersPageData(), {
+    renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/?page=3"),
     });
 
@@ -132,7 +138,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("passes empty name and page 1 by default", () => {
-    renderHook(() => useCharactersPageData(), {
+    renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/"),
     });
 
@@ -157,7 +163,7 @@ describe("useCharactersPageData", () => {
       setPage: customSetPage,
     });
 
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/"),
     });
 
@@ -170,7 +176,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("handleNext delegates to navigation handleNext", () => {
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/"),
     });
 
@@ -182,7 +188,7 @@ describe("useCharactersPageData", () => {
   });
 
   it("handlePrev delegates to navigation handlePrev", () => {
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/"),
     });
 
@@ -199,7 +205,7 @@ describe("useCharactersPageData", () => {
       handleQueryChange: mockSearchHandleQueryChange,
     });
 
-    const { result } = renderHook(() => useCharactersPageData(), {
+    const { result } = renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/?page=3"),
     });
 
@@ -223,7 +229,7 @@ describe("useCharactersPageData", () => {
     });
     mockUseCharactersQuery.mockReturnValueOnce(mockCharactersQueryData(20));
 
-    renderHook(() => useCharactersPageData(), {
+    renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/?page=5"),
     });
 
@@ -237,7 +243,7 @@ describe("useCharactersPageData", () => {
   it("passes totalPages and initialPage to useCharacterNavigation", () => {
     mockUseCharactersQuery.mockReturnValueOnce(mockCharactersQueryData(15));
 
-    renderHook(() => useCharactersPageData(), {
+    renderHook(() => useCharacterCatalog(), {
       wrapper: createWrapper("/?page=2"),
     });
 

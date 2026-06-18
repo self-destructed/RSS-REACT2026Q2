@@ -10,7 +10,8 @@ import {
 import { CharacterList } from "@entities/character";
 import { useCharacterSelection } from "@features/characters";
 import { Flyout } from "@shared/ui";
-import { useCharacterDetails, useCharactersPageData } from "../../lib";
+import { useCharacterDetails } from "../../lib";
+import { useCharacterCatalog } from "@widgets/character-catalog";
 
 export function CharactersPage(): React.JSX.Element {
   const { selectedIds, toggleSelection, unselectAll, handleDownload } =
@@ -24,7 +25,7 @@ export function CharactersPage(): React.JSX.Element {
     handleNext,
     handlePrev,
     handleRefresh,
-  } = useCharactersPageData();
+  } = useCharacterCatalog();
 
   return (
     <>

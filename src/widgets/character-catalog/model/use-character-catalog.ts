@@ -4,15 +4,13 @@ import {
   useCharactersQuery,
   charactersQueryOptions,
 } from "@entities/character";
-import {
-  useCharacterSearch,
-  useCharacterNavigation,
-  usePrefetchAdjacentPages,
-} from "..";
+import { useCharacterSearch } from "./use-character-search";
+import { useCharacterNavigation } from "./use-character-navigation";
+import { usePrefetchAdjacentPages } from "./use-prefetch-adjacent-pages";
 
 const CHARACTER_QUERY_STORAGE_KEY = "characterQuery";
 
-interface UseCharactersPageDataReturn {
+interface UseCharacterCatalogReturn {
   query: string;
   page: number;
   handleQueryChange: (newQuery: string) => void;
@@ -22,7 +20,7 @@ interface UseCharactersPageDataReturn {
   charactersQuery: ReturnType<typeof useCharactersQuery>;
 }
 
-export function useCharactersPageData(): UseCharactersPageDataReturn {
+export function useCharacterCatalog(): UseCharacterCatalogReturn {
   const queryClient = useQueryClient();
   const { query, handleQueryChange: searchHandleQueryChange } =
     useCharacterSearch({
