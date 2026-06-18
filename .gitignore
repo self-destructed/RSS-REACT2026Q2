@@ -32,6 +32,3 @@ docs
 
 # opencode configuration (local)
 .opencode/
-
-# Project dumps (local artifacts)
-projectdump.txt
