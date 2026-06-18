@@ -1,44 +1,35 @@
-import { CharacterDetail } from "@entities/character";
-import { useOutletContext } from "react-router";
-import { ErrorDisplay, Sidebar, Spinner, QueryMatch } from "@shared/ui";
-import { useCharacterDetailData } from "../model";
+import { useRouter } from "next/navigation";
+import { CharacterDetail, type Character } from "@entities/character";
+import { Sidebar } from "@shared/ui";
 
-interface Context {
-  onClose: () => void;
+interface Props {
+  character?: Character;
 }
 
-export function CharacterDetailsPanel(): React.JSX.Element {
-  const { onClose } = useOutletContext<Context>();
-  const { query, handleRefresh, characterId } = useCharacterDetailData();
+export function CharacterDetailsPanel({ character }: Props): React.JSX.Element {
+  const router = useRouter();
+
+  if (!character) {
+    return (
+      <Sidebar
+        onClose={() => {
+          router.back();
+        }}
+        title="Character Details"
+      >
+        <p className="p-4 text-neutral-500">Character not found</p>
+      </Sidebar>
+    );
+  }
 
   return (
-    <Sidebar onClose={onClose} title="Character Details">
-      <QueryMatch
-        key={characterId}
-        query={query}
-        loading={
-          <div>
-            <Spinner />
-          </div>
-        }
-        error={(e) => <ErrorDisplay message={e.message} />}
-      >
-        {(data) => (
-          <>
-            <CharacterDetail character={data} />
-            <div className="mt-2 flex justify-center">
-              <button
-                type="button"
-                onClick={handleRefresh}
-                className="rounded p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white cursor-pointer"
-                aria-label="Refresh"
-              >
-                ↻
-              </button>
-            </div>
-          </>
-        )}
-      </QueryMatch>
+    <Sidebar
+      onClose={() => {
+        router.back();
+      }}
+      title="Character Details"
+    >
+      <CharacterDetail character={character} />
     </Sidebar>
   );
 }

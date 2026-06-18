@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { QueryProvider } from "./query-provider";
 import { ThemeProvider } from "@shared/context/theme";
 
 interface Props {
@@ -9,9 +8,5 @@ interface Props {
 }
 
 export function Providers({ children }: Props): React.JSX.Element {
-  return (
-    <QueryProvider>
-      <ThemeProvider>{children}</ThemeProvider>
-    </QueryProvider>
-  );
+  return <ThemeProvider>{children}</ThemeProvider>;
 }

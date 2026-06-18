@@ -1,9 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
 import {
-  charactersByIdQueryOptions,
   mapCharacterToCSVObject,
   CHARACTER_CSV_COLUMNS,
+  type Character,
 } from "@entities/character";
+import { getCharactersByIds } from "@entities/character/api/get-characters";
 import { downloadCSV } from "@shared/lib/csv";
 import {
   useSelectedIds,
@@ -22,14 +22,12 @@ export function useCharacterSelection(): UseCharacterSelectionReturn {
   const selectedIds = useSelectedIds();
   const toggleSelection = useToggleCharacter();
   const unselectAll = useUnselectAllCharacters();
-  const queryClient = useQueryClient();
 
   const handleDownload = async () => {
     if (selectedIds.length === 0) return;
 
-    const selectedCharacters = await queryClient.fetchQuery(
-      charactersByIdQueryOptions(selectedIds),
-    );
+    const selectedCharacters: Character[] =
+      await getCharactersByIds(selectedIds);
     const rows = selectedCharacters.map(mapCharacterToCSVObject);
     downloadCSV(
       rows,

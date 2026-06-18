@@ -1,4 +1,1 @@
-export { useCharacterCatalog } from "./use-character-catalog";
-export { useCharacterSearch } from "./use-character-search";
-export { useCharacterNavigation } from "./use-character-navigation";
-export { usePrefetchAdjacentPages } from "./use-prefetch-adjacent-pages";
+// All model hooks were removed — CharacterCatalog now receives data via props.

@@ -5,7 +5,6 @@ import { BrowserRouter } from "react-router";
 import { ThemeProvider } from "@shared/context";
 import "../styles/index.css";
 import { Router } from "../routes";
-import { QueryProvider } from "../providers";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
@@ -14,17 +13,15 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <QueryProvider>
-      <ThemeProvider>
-        <ErrorBoundary fallback={(reset) => <ErrorFallback reset={reset} />}>
-          <BrowserRouter basename="/RSS-REACT2026Q2/">
-            <Router />
-          </BrowserRouter>
-          <div className="fixed left-0 top-1/2 z-50 origin-top-left -translate-y-1/2 -rotate-90">
-            <ErrorTrigger />
-          </div>
-        </ErrorBoundary>
-      </ThemeProvider>
-    </QueryProvider>
+    <ThemeProvider>
+      <ErrorBoundary fallback={(reset) => <ErrorFallback reset={reset} />}>
+        <BrowserRouter basename="/RSS-REACT2026Q2/">
+          <Router />
+        </BrowserRouter>
+        <div className="fixed left-0 top-1/2 z-50 origin-top-left -translate-y-1/2 -rotate-90">
+          <ErrorTrigger />
+        </div>
+      </ErrorBoundary>
+    </ThemeProvider>
   </StrictMode>,
 );

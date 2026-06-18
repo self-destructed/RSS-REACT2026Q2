@@ -1,31 +1,38 @@
-import { Outlet } from "react-router";
-import {
-  Search,
-  Spinner,
-  Pagination,
-  Main,
-  ErrorDisplay,
-  QueryMatch,
-  Flyout,
-} from "@shared/ui";
-import { CharacterList } from "@entities/character";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Search, Pagination, Main, Flyout } from "@shared/ui";
+import { CharacterList, type Character } from "@entities/character";
 import { useCharacterSelection } from "@features/character-selection";
 import { useCharacterDetails } from "@widgets/character-details-panel/model";
-import { useCharacterCatalog } from "../model";
+import { usePaginationParam } from "@shared/lib/hooks/universal";
 
-export function CharacterCatalog(): React.JSX.Element {
+interface Props {
+  characters?: Character[];
+  totalPages?: number;
+  page?: number;
+  query?: string;
+}
+
+export function CharacterCatalog({
+  characters = [],
+  totalPages = 1,
+  page = 1,
+  query = "",
+}: Props): React.JSX.Element {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { selectedIds, toggleSelection, unselectAll, handleDownload } =
     useCharacterSelection();
-  const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
-  const {
-    query,
-    page,
-    charactersQuery,
-    handleQueryChange,
-    handleNext,
-    handlePrev,
-    handleRefresh,
-  } = useCharacterCatalog();
+  const { handleViewDetails } = useCharacterDetails();
+  const { prevHref, nextHref } = usePaginationParam({
+    totalPages,
+  });
+
+  const handleQueryChange = (newQuery: string) => {
+    const next = new URLSearchParams(searchParams?.toString() ?? "");
+    next.set("name", newQuery);
+    next.set("page", "1");
+    router.push(`/characters?${next.toString()}`);
+  };
 
   return (
     <>
@@ -36,46 +43,22 @@ export function CharacterCatalog(): React.JSX.Element {
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">
-          <QueryMatch
-            query={charactersQuery}
-            loading={
-              <div className="flex justify-center py-6">
-                <Spinner />
-              </div>
-            }
-            error={(e) => <ErrorDisplay message={e.message} />}
-          >
-            {(data) => (
-              <>
-                <div className="p-4 sm:p-5 lg:p-6">
-                  <CharacterList
-                    data={data.results ?? []}
-                    onViewDetails={handleViewDetails}
-                    selectedIds={selectedIds}
-                    onToggleSelection={toggleSelection}
-                  />
-                </div>
-                <div className="mb-4 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={handleRefresh}
-                    className="rounded p-2 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white cursor-pointer"
-                    aria-label="Refresh"
-                  >
-                    ↻
-                  </button>
-                </div>
-                <div className="mt-4 flex justify-center">
-                  <Pagination
-                    currentPage={page}
-                    totalPages={data.info?.pages ?? 1}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
-                  />
-                </div>
-              </>
-            )}
-          </QueryMatch>
+          <div className="p-4 sm:p-5 lg:p-6">
+            <CharacterList
+              data={characters}
+              onViewDetails={handleViewDetails}
+              selectedIds={selectedIds}
+              onToggleSelection={toggleSelection}
+            />
+          </div>
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              prevHref={prevHref}
+              nextHref={nextHref}
+            />
+          </div>
           <Flyout
             count={selectedIds.length}
             onUnselectAll={unselectAll}
@@ -85,7 +68,6 @@ export function CharacterCatalog(): React.JSX.Element {
           />
         </section>
       </Main>
-      <Outlet context={{ onClose: handleSidebarClose }} />
     </>
   );
 }

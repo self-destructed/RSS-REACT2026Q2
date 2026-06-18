@@ -1,6 +1,4 @@
-import { useFocusRestore } from "@shared/lib/hooks/client";
-import { ROUTES } from "@shared/routes";
-import { useLocation, useNavigate } from "react-router";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface UseCharacterDetailsReturn {
   handleViewDetails: (characterId: number) => void;
@@ -8,19 +6,18 @@ interface UseCharacterDetailsReturn {
 }
 
 export function useCharacterDetails(): UseCharacterDetailsReturn {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const setFocusId = useFocusRestore(location.pathname === ROUTES.CHARACTERS);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const search = searchParams?.toString() ?? "";
 
   const handleViewDetails = (characterId: number) => {
-    setFocusId(`details-btn-${String(characterId)}`);
-    void navigate(
-      `${ROUTES.CHARACTERS_DETAILS(String(characterId))}${location.search}`,
-    );
+    const qs = search ? `?${search}` : "";
+    router.push(`/characters/details/${String(characterId)}${qs}`);
   };
 
   const handleSidebarClose = () => {
-    void navigate(`${ROUTES.CHARACTERS}${location.search}`);
+    const qs = search ? `?${search}` : "";
+    router.push(`/characters${qs}`);
   };
 
   return {
