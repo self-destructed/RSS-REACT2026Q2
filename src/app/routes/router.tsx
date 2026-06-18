@@ -2,7 +2,8 @@ import { Navigate, Outlet, Route, Routes } from "react-router";
 import { ROUTES } from "@shared/routes";
 import { Layout } from "../layout";
 import { AboutPage } from "@pages/about";
-import { CharacterDetailPage, CharactersPage } from "@pages/characters";
+import { CharacterDetailPage } from "@pages/characters";
+import { CharacterCatalog } from "@widgets/character-catalog";
 import { ErrorPage } from "@pages/error";
 
 export function Router(): React.JSX.Element {
@@ -16,7 +17,7 @@ export function Router(): React.JSX.Element {
         }
       >
         <Route index element={<Navigate to={ROUTES.CHARACTERS} replace />} />
-        <Route path={ROUTES.CHARACTERS} element={<CharactersPage />}>
+        <Route path={ROUTES.CHARACTERS} element={<CharacterCatalog />}>
           <Route index element={null} />
           <Route
             path={ROUTES.CHARACTERS_DETAILS_ROUTE}

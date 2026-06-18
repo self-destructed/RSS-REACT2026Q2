@@ -1,3 +1,4 @@
+export { CharacterCatalog } from "./ui";
 export {
   useCharacterCatalog,
   useCharacterSearch,

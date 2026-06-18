@@ -1,0 +1,1 @@
+export { CharacterCatalog } from "./CharacterCatalog";

@@ -6,14 +6,14 @@ import {
   Main,
   ErrorDisplay,
   QueryMatch,
+  Flyout,
 } from "@shared/ui";
 import { CharacterList } from "@entities/character";
 import { useCharacterSelection } from "@features/characters";
-import { Flyout } from "@shared/ui";
-import { useCharacterDetails } from "../../lib";
-import { useCharacterCatalog } from "@widgets/character-catalog";
+import { useCharacterDetails } from "@pages/characters/lib";
+import { useCharacterCatalog } from "../model";
 
-export function CharactersPage(): React.JSX.Element {
+export function CharacterCatalog(): React.JSX.Element {
   const { selectedIds, toggleSelection, unselectAll, handleDownload } =
     useCharacterSelection();
   const { handleViewDetails, handleSidebarClose } = useCharacterDetails();
