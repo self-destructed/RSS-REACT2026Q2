@@ -22,7 +22,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* https://nextjs.org/docs/app/guides/preventing-flash-before-hydration#themes */}
-        {/* eslint-disable-next-line react/no-danger */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
