@@ -54,7 +54,7 @@ vi.mock("@entities/character", () => ({
   CHARACTER_CSV_COLUMNS: mockCHARACTER_CSV_COLUMNS,
 }));
 
-vi.mock("@shared/lib", () => ({
+vi.mock("@shared/lib/csv", () => ({
   downloadCSV: mockDownloadCSV,
 }));
 

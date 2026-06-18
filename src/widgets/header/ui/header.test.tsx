@@ -2,9 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Header } from "./header";
 
-vi.mock("@shared/lib", () => ({
-  useTheme: vi.fn(() => ({ theme: "light", toggleTheme: vi.fn() })),
+vi.mock("@shared/lib/hooks/client", () => ({
   useLocalStorage: vi.fn(),
+}));
+vi.mock("@shared/lib/hooks/use-theme", () => ({
+  useTheme: vi.fn(() => ({ theme: "light", toggleTheme: vi.fn() })),
 }));
 
 vi.mock("@shared/ui", () => ({

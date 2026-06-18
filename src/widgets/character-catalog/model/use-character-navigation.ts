@@ -1,6 +1,6 @@
 "use client";
 
-import { usePaginationParam } from "@shared/lib/hooks/use-pagination-param";
+import { usePaginationParam } from "@shared/lib/hooks/universal";
 
 interface UseCharacterNavigationProps {
   totalPages: number;

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { ThemeContext, type Theme } from "./theme-context";
-import { useLocalStorage } from "@shared/lib/hooks/use-local-storage";
+import { useLocalStorage } from "@shared/lib/hooks/client";
 import { DEFAULT_THEME } from "@shared/config/theme";
 
 export function ThemeProvider({

@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback } from "react";
-import { useUrlParam } from "@shared/lib/hooks/use-url-param";
-import { useLocalStorage } from "@shared/lib";
+import { useUrlParam } from "@shared/lib/hooks/universal";
+import { useLocalStorage } from "@shared/lib/hooks/client";
 
 interface Props {
   lsKey: string;

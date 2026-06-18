@@ -3,11 +3,11 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useContext } from "react";
 
-vi.mock("@shared/lib", () => ({
+vi.mock("@shared/lib/hooks/client", () => ({
   useLocalStorage: vi.fn(),
 }));
 
-import { useLocalStorage } from "@shared/lib";
+import { useLocalStorage } from "@shared/lib/hooks/client";
 import { ThemeContext } from "./theme-context";
 import { ThemeProvider } from "./theme-provider";
 

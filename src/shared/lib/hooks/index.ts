@@ -1,3 +1,2 @@
-export { useLocalStorage } from "./use-local-storage";
-export { useTheme } from "./use-theme";
-export { useFocusRestore } from "./use-focus-restore";
+export { useLocalStorage, useFocusRestore } from "./client";
+export { useUrlParam, usePaginationParam } from "./universal";

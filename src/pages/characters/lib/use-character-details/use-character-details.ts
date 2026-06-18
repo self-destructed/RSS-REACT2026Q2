@@ -1,4 +1,4 @@
-import { useFocusRestore } from "@shared/lib";
+import { useFocusRestore } from "@shared/lib/hooks/client";
 import { ROUTES } from "@shared/routes";
 import { useLocation, useNavigate } from "react-router";
 

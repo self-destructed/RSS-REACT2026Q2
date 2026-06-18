@@ -4,7 +4,7 @@ import {
   mapCharacterToCSVObject,
   CHARACTER_CSV_COLUMNS,
 } from "@entities/character";
-import { downloadCSV } from "@shared/lib";
+import { downloadCSV } from "@shared/lib/csv";
 import {
   useSelectedIds,
   useToggleCharacter,
