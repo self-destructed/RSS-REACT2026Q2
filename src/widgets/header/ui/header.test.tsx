@@ -5,7 +5,7 @@ import { Header } from "./header";
 vi.mock("@shared/lib/hooks/client", () => ({
   useLocalStorage: vi.fn(),
 }));
-vi.mock("@shared/lib/hooks/use-theme", () => ({
+vi.mock("@shared/context/theme", () => ({
   useTheme: vi.fn(() => ({ theme: "light", toggleTheme: vi.fn() })),
 }));
 
