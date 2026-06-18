@@ -10,7 +10,7 @@ import {
 } from "@shared/ui";
 import { CharacterList } from "@entities/character";
 import { useCharacterSelection } from "@features/characters";
-import { useCharacterDetails } from "@pages/characters/lib";
+import { useCharacterDetails } from "@widgets/character-details-panel/model";
 import { useCharacterCatalog } from "../model";
 
 export function CharacterCatalog(): React.JSX.Element {

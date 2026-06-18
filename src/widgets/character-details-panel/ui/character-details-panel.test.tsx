@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CharacterDetailPage } from "./character-detail";
+import { CharacterDetailsPanel } from "./CharacterDetailsPanel";
 
 const {
   mockCharacterData,
@@ -41,7 +41,7 @@ const {
   };
 });
 
-vi.mock("../../lib", () => ({
+vi.mock("../model", () => ({
   useCharacterDetailData: mockUseCharacterDetailData,
 }));
 
@@ -66,7 +66,7 @@ beforeEach(() => {
   setDefaultState();
 });
 
-describe("CharacterDetailPage", () => {
+describe("CharacterDetailsPanel", () => {
   it("shows Spinner on loading", () => {
     mockUseCharacterDetailData.mockReturnValue({
       query: { status: "pending", isPending: true },
@@ -74,7 +74,7 @@ describe("CharacterDetailPage", () => {
       characterId: 1,
     });
 
-    render(<CharacterDetailPage />);
+    render(<CharacterDetailsPanel />);
 
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
@@ -86,7 +86,7 @@ describe("CharacterDetailPage", () => {
       characterId: 1,
     });
 
-    render(<CharacterDetailPage />);
+    render(<CharacterDetailsPanel />);
 
     expect(screen.getByText("Error: Not found")).toBeInTheDocument();
   });
@@ -98,7 +98,7 @@ describe("CharacterDetailPage", () => {
       characterId: 1,
     });
 
-    render(<CharacterDetailPage />);
+    render(<CharacterDetailsPanel />);
 
     expect(screen.getByTestId("character-detail")).toBeInTheDocument();
     expect(screen.getByTestId("character-detail")).toHaveAttribute(
@@ -114,7 +114,7 @@ describe("CharacterDetailPage", () => {
       characterId: 1,
     });
 
-    render(<CharacterDetailPage />);
+    render(<CharacterDetailsPanel />);
 
     expect(screen.getByText("Character Details")).toBeInTheDocument();
     expect(screen.queryByTestId("character-detail")).not.toBeInTheDocument();
@@ -129,7 +129,7 @@ describe("CharacterDetailPage", () => {
       characterId: 1,
     });
 
-    render(<CharacterDetailPage />);
+    render(<CharacterDetailsPanel />);
 
     await user.click(screen.getByRole("button", { name: "Refresh" }));
 
@@ -145,7 +145,7 @@ describe("CharacterDetailPage", () => {
       characterId: 1,
     });
 
-    render(<CharacterDetailPage />);
+    render(<CharacterDetailsPanel />);
 
     await user.click(screen.getByRole("button", { name: "Close" }));
 

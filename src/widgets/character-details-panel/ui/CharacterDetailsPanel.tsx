@@ -1,13 +1,13 @@
 import { CharacterDetail } from "@entities/character";
 import { useOutletContext } from "react-router";
 import { ErrorDisplay, Sidebar, Spinner, QueryMatch } from "@shared/ui";
-import { useCharacterDetailData } from "../../lib";
+import { useCharacterDetailData } from "../model";
 
 interface Context {
   onClose: () => void;
 }
 
-export function CharacterDetailPage(): React.JSX.Element {
+export function CharacterDetailsPanel(): React.JSX.Element {
   const { onClose } = useOutletContext<Context>();
   const { query, handleRefresh, characterId } = useCharacterDetailData();
 

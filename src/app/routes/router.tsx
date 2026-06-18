@@ -2,7 +2,7 @@ import { Navigate, Outlet, Route, Routes } from "react-router";
 import { ROUTES } from "@shared/routes";
 import { Layout } from "../layout";
 import { AboutPage } from "@pages/about";
-import { CharacterDetailPage } from "@pages/characters";
+import { CharacterDetailsPanel } from "@widgets/character-details-panel";
 import { CharacterCatalog } from "@widgets/character-catalog";
 import { ErrorPage } from "@pages/error";
 
@@ -21,7 +21,7 @@ export function Router(): React.JSX.Element {
           <Route index element={null} />
           <Route
             path={ROUTES.CHARACTERS_DETAILS_ROUTE}
-            element={<CharacterDetailPage />}
+            element={<CharacterDetailsPanel />}
           />
         </Route>
         <Route path={ROUTES.ABOUT} element={<AboutPage />} />

@@ -1,0 +1,1 @@
+export { CharacterDetailsPanel } from "./CharacterDetailsPanel";
