@@ -1,5 +1,5 @@
 import type { JSX, ReactNode } from "react";
-import "../src/app/styles/index.css";
+import "./styles/index.css";
 import { Providers } from "@app/providers";
 import { Header } from "@widgets/header";
 
