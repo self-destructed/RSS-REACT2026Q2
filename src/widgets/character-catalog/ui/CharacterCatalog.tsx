@@ -1,4 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Search, Pagination, Main, Flyout } from "@shared/ui";
 import { CharacterList, type Character } from "@entities/character";
 import { useCharacterSelection } from "@features/character-selection";
@@ -20,12 +21,25 @@ export function CharacterCatalog({
 }: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const { selectedIds, toggleSelection, unselectAll, handleDownload } =
     useCharacterSelection();
   const { handleViewDetails } = useCharacterDetails();
   const { prevHref, nextHref } = usePaginationParam({
     totalPages,
   });
+
+  useEffect(() => {
+    const restoreId = sessionStorage.getItem("focusRestoreId");
+    if (restoreId && !pathname?.includes("/details/")) {
+      sessionStorage.removeItem("focusRestoreId");
+
+      requestAnimationFrame(() => {
+        const btn = document.getElementById(`details-btn-${restoreId}`);
+        btn?.focus();
+      });
+    }
+  }, [pathname]);
 
   const handleQueryChange = (newQuery: string) => {
     const next = new URLSearchParams(searchParams?.toString() ?? "");

@@ -11,13 +11,16 @@ export function useCharacterDetails(): UseCharacterDetailsReturn {
   const search = searchParams?.toString() ?? "";
 
   const handleViewDetails = (characterId: number) => {
+    sessionStorage.setItem("focusRestoreId", String(characterId));
     const qs = search ? `?${search}` : "";
-    router.push(`/characters/details/${String(characterId)}${qs}`);
+    router.push(`/characters/details/${String(characterId)}${qs}`, {
+      scroll: false,
+    });
   };
 
   const handleSidebarClose = () => {
     const qs = search ? `?${search}` : "";
-    router.push(`/characters${qs}`);
+    router.push(`/characters${qs}`, { scroll: false });
   };
 
   return {
