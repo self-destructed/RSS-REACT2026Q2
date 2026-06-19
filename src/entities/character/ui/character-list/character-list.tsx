@@ -18,7 +18,7 @@ export function CharacterList({
       {data.map((item) => (
         <li key={item.id}>
           <CharacterCard
-            data={item}
+            character={item}
             isSelected={selectedIds.includes(item.id)}
             onToggleSelection={() => {
               onToggleSelection?.(item.id);

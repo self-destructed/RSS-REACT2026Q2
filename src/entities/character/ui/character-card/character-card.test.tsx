@@ -24,7 +24,7 @@ beforeEach(() => {
     url: "",
     created: "",
   };
-  render(<CharacterCard data={mockCharacter} />);
+  render(<CharacterCard character={mockCharacter} />);
 });
 
 describe("CharacterCard", () => {
@@ -59,7 +59,7 @@ describe("CharacterCard", () => {
       created: "",
     };
 
-    render(<CharacterCard data={mockCharacter} />);
+    render(<CharacterCard character={mockCharacter} />);
 
     expect(
       screen.getByRole("heading", { name: /Unknown Person/ }),
@@ -82,7 +82,7 @@ describe("CharacterCard", () => {
       created: "",
     };
 
-    render(<CharacterCard data={mockCharacter} />);
+    render(<CharacterCard character={mockCharacter} />);
 
     expect(screen.getByText("Dead")).toBeInTheDocument();
     expect(screen.getByText(/Female/)).toBeInTheDocument();

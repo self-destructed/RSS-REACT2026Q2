@@ -1,8 +1,8 @@
 import type { Character } from "../../model";
 import { Checkbox } from "@shared/ui";
 
-interface Props {
-  data: Character;
+interface CharacterCardProps {
+  character: Character;
   isSelected?: boolean;
   onToggleSelection?: () => void;
   onViewDetails?: () => void;
@@ -24,18 +24,18 @@ const GENDER_ICONS: Record<string, string> = {
 const DEFAULT_ICON = "⚲";
 
 export function CharacterCard({
-  data,
+  character,
   isSelected = false,
   onToggleSelection,
   onViewDetails,
-}: Props): React.JSX.Element {
+}: CharacterCardProps): React.JSX.Element {
   const { bg: bgClass, text: textClass } =
-    STATUS_CONFIG[data.status] ?? DEFAULT_STATUS;
-  const icon = GENDER_ICONS[data.gender] ?? DEFAULT_ICON;
+    STATUS_CONFIG[character.status] ?? DEFAULT_STATUS;
+  const icon = GENDER_ICONS[character.gender] ?? DEFAULT_ICON;
 
   return (
     <article
-      id={data.id.toString()}
+      id={character.id.toString()}
       className={`group relative h-full overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 ${
         isSelected ? "ring-2 ring-blue-500" : ""
       }`}
@@ -45,24 +45,24 @@ export function CharacterCard({
           <div className="relative flex items-center gap-2 z-50">
             <Checkbox
               checked={isSelected}
-              id={`checkbox-${String(data.id)}`}
+              id={`checkbox-${String(character.id)}`}
               onChange={() => {
                 onToggleSelection?.();
               }}
             />
             <label
-              htmlFor={`checkbox-${String(data.id)}`}
+              htmlFor={`checkbox-${String(character.id)}`}
               className="hover:cursor-pointer"
             >
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                {data.name}
+                {character.name}
               </h3>
             </label>
           </div>
           <div className="ml-2 flex flex-shrink-0 items-center gap-1.5">
             <span className={`h-2 w-2 rounded-full ${bgClass} animate-pulse`} />
             <span className={`text-xs font-medium ${textClass}`}>
-              {data.status}
+              {character.status}
             </span>
           </div>
         </div>
@@ -70,7 +70,7 @@ export function CharacterCard({
         <div className="mt-2 space-y-1.5">
           <div className="flex items-center gap-2 text-sm">
             <span className="text-slate-700 dark:text-slate-300">
-              {icon} {data.gender}
+              {icon} {character.gender}
             </span>
           </div>
 
@@ -95,7 +95,7 @@ export function CharacterCard({
               />
             </svg>
             <span className="line-clamp-1 text-slate-600 dark:text-slate-400">
-              {data.location.name}
+              {character.location.name}
             </span>
           </div>
         </div>
@@ -103,9 +103,9 @@ export function CharacterCard({
         <div className="mt-3 flex justify-end">
           <button
             type="button"
-            id={`details-btn-${String(data.id)}`}
+            id={`details-btn-${String(character.id)}`}
             onClick={onViewDetails}
-            aria-label={`View ${data.name} details`}
+            aria-label={`View ${character.name} details`}
             className="cursor-pointer inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-blue-300 before:absolute before:inset-0 before:w-full before:h-full before:content-['']"
           >
             View details
