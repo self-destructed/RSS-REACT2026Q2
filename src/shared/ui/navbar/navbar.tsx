@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ROUTES } from "@shared/routes";
 
 const NAV_LINK_STYLES = {
   base: "lg:px-2 text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80",
@@ -15,10 +14,9 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: ROUTES.HOME, label: "Home" },
-  { to: ROUTES.CHARACTERS, label: "Characters" },
-  { to: ROUTES.ABOUT, label: "About" },
-  { to: ROUTES.ERROR, label: "Error" },
+  { to: "/", label: "Home" },
+  { to: "/characters", label: "Characters" },
+  { to: "/about", label: "About" },
 ];
 
 export function Navbar(): React.JSX.Element {

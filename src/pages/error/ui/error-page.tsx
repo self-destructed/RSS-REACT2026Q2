@@ -1,6 +1,5 @@
 import type { JSX } from "react";
 import Link from "next/link";
-import { ROUTES } from "@shared/routes";
 import { Main } from "@shared/ui/main";
 
 export function ErrorPage(): JSX.Element {
@@ -12,7 +11,7 @@ export function ErrorPage(): JSX.Element {
         </h1>
         <p className="mb-8 text-xl text-gray-600 dark:text-gray-400">Oops!</p>
         <Link
-          href={ROUTES.HOME}
+          href="/"
           className="rounded-md bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
         >
           Go to Home
