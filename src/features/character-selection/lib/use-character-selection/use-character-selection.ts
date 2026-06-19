@@ -1,11 +1,4 @@
-import {
-  mapCharacterToCSVObject,
-  CHARACTER_CSV_COLUMNS,
-  type Character,
-  type CharacterId,
-} from "@entities/character";
-import { getCharactersByIds } from "@entities/character/api/get-characters";
-import { downloadCSV } from "@shared/lib/csv";
+import { type CharacterId } from "@entities/character";
 import {
   useSelectedIds,
   useToggleCharacter,
@@ -16,7 +9,7 @@ interface UseCharacterSelectionReturn {
   selectedIds: CharacterId[];
   toggleSelection: (id: CharacterId) => void;
   unselectAll: () => void;
-  handleDownload: () => Promise<void>;
+  handleDownload: () => void;
 }
 
 export function useCharacterSelection(): UseCharacterSelectionReturn {
@@ -24,17 +17,9 @@ export function useCharacterSelection(): UseCharacterSelectionReturn {
   const toggleSelection = useToggleCharacter();
   const unselectAll = useUnselectAllCharacters();
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
     if (selectedIds.length === 0) return;
-
-    const selectedCharacters: Character[] =
-      await getCharactersByIds(selectedIds);
-    const rows = selectedCharacters.map(mapCharacterToCSVObject);
-    downloadCSV(
-      rows,
-      CHARACTER_CSV_COLUMNS,
-      `${String(selectedCharacters.length)}_items.csv`,
-    );
+    window.open(`/api/csv/characters?ids=${selectedIds.join(",")}`, "_self");
   };
 
   return { selectedIds, toggleSelection, unselectAll, handleDownload };
