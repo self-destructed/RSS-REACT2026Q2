@@ -1,12 +1,13 @@
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { create } from "zustand";
+import type { CharacterId } from "@entities/character";
 
 interface SelectedCharactersState {
-  selectedIds: number[];
+  selectedIds: CharacterId[];
 }
 
 interface SelectedCharactersActions {
-  toggle: (id: number) => void;
+  toggle: (id: CharacterId) => void;
   unselectAll: () => void;
 }
 
@@ -42,11 +43,11 @@ export const useSelectedCharactersStore = create<SelectedCharactersStore>()(
   ),
 );
 
-export function useSelectedIds(): number[] {
+export function useSelectedIds(): CharacterId[] {
   return useSelectedCharactersStore((s) => s.selectedIds);
 }
 
-export function useToggleCharacter(): (id: number) => void {
+export function useToggleCharacter(): (id: CharacterId) => void {
   return useSelectedCharactersStore((s) => s.toggle);
 }
 

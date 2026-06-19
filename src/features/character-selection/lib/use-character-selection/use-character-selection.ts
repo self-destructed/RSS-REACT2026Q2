@@ -2,6 +2,7 @@ import {
   mapCharacterToCSVObject,
   CHARACTER_CSV_COLUMNS,
   type Character,
+  type CharacterId,
 } from "@entities/character";
 import { getCharactersByIds } from "@entities/character/api/get-characters";
 import { downloadCSV } from "@shared/lib/csv";
@@ -12,8 +13,8 @@ import {
 } from "../../model/store";
 
 interface UseCharacterSelectionReturn {
-  selectedIds: number[];
-  toggleSelection: (id: number) => void;
+  selectedIds: CharacterId[];
+  toggleSelection: (id: CharacterId) => void;
   unselectAll: () => void;
   handleDownload: () => Promise<void>;
 }

@@ -1,11 +1,11 @@
 import { CharacterCard } from "../character-card";
-import type { Character } from "../../model";
+import type { Character, CharacterId } from "../../model";
 
 interface Props {
   data: Character[];
-  selectedIds: number[];
-  onToggleSelection?: (id: number) => void;
-  onViewDetails?: (id: number) => void;
+  selectedIds: CharacterId[];
+  onToggleSelection?: (id: CharacterId) => void;
+  onViewDetails?: (id: CharacterId) => void;
 }
 export function CharacterList({
   data,
