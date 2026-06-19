@@ -1,8 +1,11 @@
+"use client";
+
 import { useEffect } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Search, Pagination, Main, Flyout } from "@shared/ui";
+import { usePathname } from "next/navigation";
+import { Pagination, Main, Flyout } from "@shared/ui";
 import { CharacterList, type Character } from "@entities/character";
 import { useCharacterSelection } from "@features/character-selection";
+import { SearchForm } from "@features/search-character";
 import { useCharacterDetails } from "@widgets/character-details-panel/model";
 import { usePaginationParam } from "@shared/lib/hooks/universal";
 
@@ -19,8 +22,6 @@ export function CharacterCatalog({
   page = 1,
   query = "",
 }: Props): React.JSX.Element {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
   const { selectedIds, toggleSelection, unselectAll, handleDownload } =
     useCharacterSelection();
@@ -31,7 +32,7 @@ export function CharacterCatalog({
 
   useEffect(() => {
     const restoreId = sessionStorage.getItem("focusRestoreId");
-    if (restoreId && !pathname?.includes("/details/")) {
+    if (restoreId && !pathname.includes("/details/")) {
       sessionStorage.removeItem("focusRestoreId");
 
       requestAnimationFrame(() => {
@@ -41,19 +42,12 @@ export function CharacterCatalog({
     }
   }, [pathname]);
 
-  const handleQueryChange = (newQuery: string) => {
-    const next = new URLSearchParams(searchParams?.toString() ?? "");
-    next.set("name", newQuery);
-    next.set("page", "1");
-    router.push(`/characters?${next.toString()}`);
-  };
-
   return (
     <>
       <Main>
         <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
           <div className="p-4 sm:p-5 lg:p-6">
-            <Search onSubmit={handleQueryChange} query={query} />
+            <SearchForm query={query} />
           </div>
         </section>
         <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">

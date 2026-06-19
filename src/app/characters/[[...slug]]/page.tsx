@@ -1,5 +1,5 @@
 import { getCharacters } from "@entities/character/api/get-characters";
-import CharactersPageClient from "./characters-page-client";
+import { CharacterCatalog } from "@widgets/character-catalog";
 
 export default async function CharactersPage({
   searchParams,
@@ -11,7 +11,7 @@ export default async function CharactersPage({
   const data = await getCharacters(filters);
 
   return (
-    <CharactersPageClient
+    <CharacterCatalog
       characters={data.results ?? []}
       totalPages={data.info?.pages ?? 1}
       page={Number(page)}

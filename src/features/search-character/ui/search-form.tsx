@@ -1,30 +1,14 @@
-"use client";
-
-import { useState } from "react";
-import type { ChangeEvent, JSX, SubmitEvent } from "react";
+import { searchCharacters } from "../api/search-action";
+import type { JSX } from "react";
 
 interface Props {
   query?: string;
-  onSubmit?: (searchTerm: string) => void;
 }
 
-export function Search({ query = "", onSubmit }: Props): JSX.Element {
-  const [searchTerm, setSearchTerm] = useState(query);
-
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const trimmed = searchTerm.trim();
-    setSearchTerm(trimmed);
-    onSubmit?.(trimmed);
-  };
-
+export function SearchForm({ query = "" }: Props): JSX.Element {
   return (
     <form
-      onSubmit={handleSubmit}
+      action={searchCharacters}
       className="mx-auto mt-4 max-w-xs"
       role="search"
       noValidate
@@ -36,11 +20,11 @@ export function Search({ query = "", onSubmit }: Props): JSX.Element {
         <input
           type="search"
           id="search"
-          onChange={handleInput}
+          name="name"
+          defaultValue={query}
           placeholder="Search..."
           required
           className="w-full pr-10 text-sm text-slate-900 outline-none dark:text-slate-50"
-          value={searchTerm}
         />
         <button
           type="submit"
