@@ -21,7 +21,6 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@pages/*": ["./src/pages/*"],
       "@widgets/*": ["./src/widgets/*"],
       "@features/*": ["./src/features/*"],
       "@entities/*": ["./src/entities/*"],
@@ -40,7 +39,6 @@
   "include": [
     "src",
     "app",
-    "pages",
     ".next/types/**/*.ts",
     "./next-env.d.ts",
     ".next/dev/types/**/*.ts"
