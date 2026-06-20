@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Main, Flyout } from "@shared/ui";
+import { ErrorDisplay } from "@shared/ui/error";
 import { CharacterList, type Character } from "@entities/character";
 import { CharacterDetailsPanel } from "@widgets/character-details-panel";
 import { useCharacterSelection } from "@features/character-selection";
@@ -16,6 +17,7 @@ interface Props {
   page?: number;
   query?: string;
   detailCharacter?: Character;
+  error?: string | null;
 }
 
 export function CharacterCatalog({
@@ -24,6 +26,7 @@ export function CharacterCatalog({
   page = 1,
   query = "",
   detailCharacter,
+  error,
 }: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -59,31 +62,39 @@ export function CharacterCatalog({
           <SearchForm query={query} />
         </div>
       </section>
-      <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">
-        <div className="p-4 sm:p-5 lg:p-6">
-          <CharacterList
-            data={characters}
-            onViewDetails={handleViewDetails}
-            selectedIds={selectedIds}
-            onToggleSelection={toggleSelection}
+      {error ? (
+        <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60">
+          <div className="flex items-center justify-center py-16">
+            <ErrorDisplay message={error} />
+          </div>
+        </section>
+      ) : (
+        <section className="rounded-lg bg-white/80 pb-2 dark:bg-neutral-800/60">
+          <div className="p-4 sm:p-5 lg:p-6">
+            <CharacterList
+              data={characters}
+              onViewDetails={handleViewDetails}
+              selectedIds={selectedIds}
+              onToggleSelection={toggleSelection}
+            />
+          </div>
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              prevHref={prevHref}
+              nextHref={nextHref}
+            />
+          </div>
+          <Flyout
+            count={selectedIds.length}
+            onUnselectAll={unselectAll}
+            onDownload={() => {
+              handleDownload();
+            }}
           />
-        </div>
-        <div className="mt-4 flex justify-center">
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            prevHref={prevHref}
-            nextHref={nextHref}
-          />
-        </div>
-        <Flyout
-          count={selectedIds.length}
-          onUnselectAll={unselectAll}
-          onDownload={() => {
-            handleDownload();
-          }}
-        />
-      </section>
+        </section>
+      )}
     </Main>
   );
 

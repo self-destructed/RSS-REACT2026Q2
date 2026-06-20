@@ -12,23 +12,26 @@ export default async function CharactersPage({
 }): Promise<React.JSX.Element> {
   const { page = "1", name = "", details } = await searchParams;
   const filters = { page: Number(page), name };
-  const data = await getCharacters(filters);
+  const data = await getCharacters(filters).catch(() => null);
+
+  const error = data ? null : "Failed to load characters. Please try again.";
 
   let detailCharacter: Character | undefined;
-  if (details) {
+  if (!error && details) {
     const id = Number(details);
     if (Number.isFinite(id)) {
-      detailCharacter = await getCharacter(id);
+      detailCharacter = await getCharacter(id).catch(() => undefined);
     }
   }
 
   return (
     <CharacterCatalog
-      characters={data.results ?? []}
-      totalPages={data.info?.pages ?? 1}
+      characters={data?.results ?? []}
+      totalPages={data?.info?.pages ?? 1}
       page={Number(page)}
       query={name}
       detailCharacter={detailCharacter}
+      error={error}
     />
   );
 }
