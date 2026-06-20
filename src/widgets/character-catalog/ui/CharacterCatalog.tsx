@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Main, Flyout } from "@shared/ui";
 import { CharacterList, type Character } from "@entities/character";
+import { CharacterDetailsPanel } from "@widgets/character-details-panel";
 import { useCharacterSelection } from "@features/character-selection";
 import { SearchForm } from "@features/search-character";
 import { useCharacterDetails } from "@widgets/character-details-panel/model";
@@ -14,6 +15,7 @@ interface Props {
   totalPages?: number;
   page?: number;
   query?: string;
+  detailCharacter?: Character;
 }
 
 export function CharacterCatalog({
@@ -21,8 +23,10 @@ export function CharacterCatalog({
   totalPages = 1,
   page = 1,
   query = "",
+  detailCharacter,
 }: Props): React.JSX.Element {
-  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { selectedIds, toggleSelection, unselectAll, handleDownload } =
     useCharacterSelection();
   const { handleViewDetails } = useCharacterDetails();
@@ -30,9 +34,15 @@ export function CharacterCatalog({
     totalPages,
   });
 
+  const handleCloseDetails = () => {
+    const next = new URLSearchParams(searchParams.toString());
+    next.delete("details");
+    router.push(`/characters?${next.toString()}`, { scroll: false });
+  };
+
   useEffect(() => {
     const restoreId = sessionStorage.getItem("focusRestoreId");
-    if (restoreId && !pathname.includes("/details/")) {
+    if (restoreId && searchParams.has("details")) {
       sessionStorage.removeItem("focusRestoreId");
 
       requestAnimationFrame(() => {
@@ -40,42 +50,52 @@ export function CharacterCatalog({
         btn?.focus();
       });
     }
-  }, [pathname]);
+  }, [searchParams]);
+
+  const master = (
+    <Main>
+      <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
+        <div className="p-4 sm:p-5 lg:p-6">
+          <SearchForm query={query} />
+        </div>
+      </section>
+      <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">
+        <div className="p-4 sm:p-5 lg:p-6">
+          <CharacterList
+            data={characters}
+            onViewDetails={handleViewDetails}
+            selectedIds={selectedIds}
+            onToggleSelection={toggleSelection}
+          />
+        </div>
+        <div className="mt-4 flex justify-center">
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            prevHref={prevHref}
+            nextHref={nextHref}
+          />
+        </div>
+        <Flyout
+          count={selectedIds.length}
+          onUnselectAll={unselectAll}
+          onDownload={() => {
+            handleDownload();
+          }}
+        />
+      </section>
+    </Main>
+  );
 
   return (
     <>
-      <Main>
-        <section className="mb-6 rounded-lg bg-white sm:mb-8 dark:bg-neutral-900">
-          <div className="p-4 sm:p-5 lg:p-6">
-            <SearchForm query={query} />
-          </div>
-        </section>
-        <section className="rounded-lg bg-white/80 dark:bg-neutral-800/60 pb-2">
-          <div className="p-4 sm:p-5 lg:p-6">
-            <CharacterList
-              data={characters}
-              onViewDetails={handleViewDetails}
-              selectedIds={selectedIds}
-              onToggleSelection={toggleSelection}
-            />
-          </div>
-          <div className="mt-4 flex justify-center">
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              prevHref={prevHref}
-              nextHref={nextHref}
-            />
-          </div>
-          <Flyout
-            count={selectedIds.length}
-            onUnselectAll={unselectAll}
-            onDownload={() => {
-              void handleDownload();
-            }}
-          />
-        </section>
-      </Main>
+      {master}
+      {detailCharacter && (
+        <CharacterDetailsPanel
+          character={detailCharacter}
+          onClose={handleCloseDetails}
+        />
+      )}
     </>
   );
 }

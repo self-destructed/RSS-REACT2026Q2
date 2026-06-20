@@ -1,19 +1,20 @@
-import { useRouter } from "next/navigation";
 import { CharacterDetail, type Character } from "@entities/character";
 import { Sidebar } from "@shared/ui";
 
 interface Props {
   character?: Character;
+  onClose?: () => void;
 }
 
-export function CharacterDetailsPanel({ character }: Props): React.JSX.Element {
-  const router = useRouter();
-
+export function CharacterDetailsPanel({
+  character,
+  onClose,
+}: Props): React.JSX.Element {
   if (!character) {
     return (
       <Sidebar
         onClose={() => {
-          router.back();
+          onClose?.();
         }}
         title="Character Details"
       >
@@ -25,7 +26,7 @@ export function CharacterDetailsPanel({ character }: Props): React.JSX.Element {
   return (
     <Sidebar
       onClose={() => {
-        router.back();
+        onClose?.();
       }}
       title="Character Details"
     >
