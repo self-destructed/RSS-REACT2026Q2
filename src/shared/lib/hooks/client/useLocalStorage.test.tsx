@@ -53,16 +53,21 @@ describe("useLocalStorage", () => {
     consoleSpy.mockRestore();
   });
 
-  it("handles window undefined gracefully (SSR)", () => {
-    const originalWindow = globalThis.window;
-    // @ts-expect-error — simulate SSR
-    delete global.window;
+  it("handles missing localStorage gracefully (SSR / privacy mode)", () => {
+    const originalStorage = globalThis.window.localStorage;
+    Object.defineProperty(globalThis.window, "localStorage", {
+      value: undefined,
+      configurable: true,
+    });
 
     const { result } = renderHook(() =>
       useLocalStorage("test-key", "ssr-default"),
     );
     expect(result.current[0]).toBe("ssr-default");
 
-    globalThis.window = originalWindow;
+    Object.defineProperty(globalThis.window, "localStorage", {
+      value: originalStorage,
+      configurable: true,
+    });
   });
 });
