@@ -3,7 +3,9 @@ import { act, renderHook } from "@testing-library/react";
 import { useLocalStorage } from "./useLocalStorage";
 
 beforeEach(() => {
-  localStorage.clear();
+  if (typeof localStorage !== "undefined") {
+    localStorage.clear();
+  }
 });
 
 describe("useLocalStorage", () => {
@@ -55,19 +57,21 @@ describe("useLocalStorage", () => {
 
   it("handles missing localStorage gracefully (SSR / privacy mode)", () => {
     const originalStorage = globalThis.window.localStorage;
-    Object.defineProperty(globalThis.window, "localStorage", {
-      value: undefined,
-      configurable: true,
-    });
+    try {
+      Object.defineProperty(globalThis.window, "localStorage", {
+        value: undefined,
+        configurable: true,
+      });
 
-    const { result } = renderHook(() =>
-      useLocalStorage("test-key", "ssr-default"),
-    );
-    expect(result.current[0]).toBe("ssr-default");
-
-    Object.defineProperty(globalThis.window, "localStorage", {
-      value: originalStorage,
-      configurable: true,
-    });
+      const { result } = renderHook(() =>
+        useLocalStorage("test-key", "ssr-default"),
+      );
+      expect(result.current[0]).toBe("ssr-default");
+    } finally {
+      Object.defineProperty(globalThis.window, "localStorage", {
+        value: originalStorage,
+        configurable: true,
+      });
+    }
   });
 });

@@ -101,7 +101,9 @@ describe("selectedCharactersStore", () => {
     it("useToggleCharacter returns toggle function", () => {
       const { result } = renderHook(() => useToggleCharacter());
 
-      result.current(42);
+      act(() => {
+        result.current(42);
+      });
 
       expect(useSelectedCharactersStore.getState().selectedIds).toContain(42);
     });
@@ -111,7 +113,9 @@ describe("selectedCharactersStore", () => {
 
       const { result } = renderHook(() => useUnselectAllCharacters());
 
-      result.current();
+      act(() => {
+        result.current();
+      });
 
       expect(useSelectedCharactersStore.getState().selectedIds).toEqual([]);
     });
