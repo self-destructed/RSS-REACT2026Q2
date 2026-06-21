@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Main, Flyout } from "@shared/ui";
 import { ErrorDisplay } from "@shared/ui/error";
@@ -43,15 +43,24 @@ export function CharacterCatalog({
     router.push(`/characters?${next.toString()}`, { scroll: false });
   };
 
-  useEffect(() => {
-    const restoreId = sessionStorage.getItem("focusRestoreId");
-    if (restoreId && searchParams.has("details")) {
-      sessionStorage.removeItem("focusRestoreId");
+  const prevDetailsRef = useRef(searchParams.has("details"));
 
-      requestAnimationFrame(() => {
-        const btn = document.getElementById(`details-btn-${restoreId}`);
-        btn?.focus();
-      });
+  useEffect(() => {
+    const hasDetails = searchParams.has("details");
+    const prevHadDetails = prevDetailsRef.current;
+    prevDetailsRef.current = hasDetails;
+
+    // Restore focus only when closing details (no details → had details before)
+    if (!hasDetails && prevHadDetails) {
+      const restoreId = sessionStorage.getItem("focusRestoreId");
+      if (restoreId) {
+        sessionStorage.removeItem("focusRestoreId");
+
+        requestAnimationFrame(() => {
+          const btn = document.getElementById(`details-btn-${restoreId}`);
+          btn?.focus();
+        });
+      }
     }
   }, [searchParams]);
 
