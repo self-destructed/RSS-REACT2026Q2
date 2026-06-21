@@ -1,2 +1,2 @@
-export { useLocalStorage, useFocusRestore } from "./client";
+export { useLocalStorage } from "./client";
 export { useUrlParam, usePaginationParam } from "./universal";
