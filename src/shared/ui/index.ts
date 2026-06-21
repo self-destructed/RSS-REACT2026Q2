@@ -1,9 +1,4 @@
-export {
-  ErrorDisplay,
-  ErrorBoundary,
-  ErrorTrigger,
-  ErrorFallback,
-} from "./error";
+export { ErrorDisplay, ErrorBoundary, ErrorTrigger } from "./error";
 export { Main } from "./main";
 export { Navbar } from "./navbar";
 export { Pagination } from "./pagination";

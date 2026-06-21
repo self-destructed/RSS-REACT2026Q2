@@ -19,14 +19,14 @@ export function usePaginationParam({
   totalPages,
   paramKey = "page",
 }: UsePaginationParamProps): UsePaginationParamReturn {
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const page = clamp(Number(searchParams?.get(paramKey)) || 1, 1, totalPages);
+  const page = clamp(Number(searchParams.get(paramKey)) || 1, 1, totalPages);
 
   function buildHref(pageNumber: number): string {
     const clampedPage = clamp(pageNumber, 1, totalPages);
-    const next = new URLSearchParams(searchParams?.toString() ?? "");
+    const next = new URLSearchParams(searchParams.toString());
 
     next.set(paramKey, String(clampedPage));
 

@@ -4,13 +4,13 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export function useUrlParam(key: string): [string, (value: string) => void] {
   const router = useRouter();
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const value = searchParams?.get(key) ?? "";
+  const value = searchParams.get(key) ?? "";
 
   function setValue(value: string) {
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    const params = new URLSearchParams(searchParams.toString());
 
     if (value) {
       params.set(key, value);
