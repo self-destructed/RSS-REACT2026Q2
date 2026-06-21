@@ -2,40 +2,32 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Header } from "./header";
 
-vi.mock("@shared/lib/hooks/client", () => ({
-  useLocalStorage: vi.fn(),
-}));
-vi.mock("@shared/context/theme", () => ({
-  useTheme: vi.fn(() => ({ theme: "light", toggleTheme: vi.fn() })),
+vi.mock("@shared/ui/navbar", () => ({
+  Navbar: () => <nav data-testid="navbar" />,
 }));
 
-vi.mock("@shared/ui", () => ({
-  Navbar: () => <nav data-testid="navbar" />,
-  ThemeToggle: ({
-    theme,
-    onToggle,
-  }: {
-    theme: string;
-    onToggle: () => void;
-  }) => (
-    <button type="button" onClick={onToggle} data-testid="theme-toggle">
-      {theme}
+vi.mock("@shared/ui/error", () => ({
+  ErrorTrigger: () => (
+    <button type="button" data-testid="error-trigger">
+      💣 Trigger Error
     </button>
   ),
 }));
 
-vi.mock("@shared/context", () => ({
-  ThemeContext: {
-    Provider: ({ children }: { children: React.ReactNode }) => children,
-  },
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+vi.mock("@shared/ui/theme-toggle", () => ({
+  ThemeToggle: () => <button type="button" data-testid="theme-toggle" />,
+}));
+
+vi.mock("@shared/context/theme", () => ({
+  useTheme: () => ({ theme: "light", toggleTheme: vi.fn() }),
 }));
 
 describe("Header", () => {
-  it("renders navbar and theme toggle", () => {
+  it("renders navbar, theme toggle, and error trigger", () => {
     render(<Header />);
 
     expect(screen.getByTestId("navbar")).toBeInTheDocument();
     expect(screen.getByTestId("theme-toggle")).toBeInTheDocument();
+    expect(screen.getByTestId("error-trigger")).toBeInTheDocument();
   });
 });
