@@ -10,8 +10,8 @@ lerna-debug.log*
 node_modules
 .next
 next-env.d.ts
-dist
-dist-ssr
+out
+*.tsbuildinfo
 *.local
 coverage
 
@@ -32,3 +32,4 @@ docs
 
 # opencode configuration (local)
 .opencode/
+.vercel
