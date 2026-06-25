@@ -1,21 +1,22 @@
+"use client";
+
 import { useEffect } from "react";
 import { ThemeContext, type Theme } from "./theme-context";
-import { useLocalStorage } from "@shared/lib";
-
-const initialTheme: Theme = window.matchMedia("(prefers-color-scheme: dark)")
-  .matches
-  ? "dark"
-  : "light";
+import { useLocalStorage } from "@shared/lib/hooks/client";
+import { DEFAULT_THEME } from "@shared/config/theme";
 
 export function ThemeProvider({
   children,
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  const [theme, setTheme] = useLocalStorage<Theme>("theme", initialTheme);
+  const [theme, setTheme] = useLocalStorage<Theme>("theme", DEFAULT_THEME);
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    if (document.documentElement.dataset.theme === theme) {
+      return;
+    }
+    document.documentElement.dataset.theme = theme;
   }, [theme]);
 
   const toggleTheme = () => {

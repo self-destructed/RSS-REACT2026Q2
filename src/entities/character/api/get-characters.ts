@@ -1,0 +1,26 @@
+import { http, API_BASE_URL, type Info } from "@shared/api";
+import { buildQueryString } from "@shared/lib/url-params";
+import type { Character, CharacterFilter, CharacterId } from "../model/types";
+
+export async function getCharacters(
+  filters?: CharacterFilter,
+): Promise<Info<Character[]>> {
+  const url = `${API_BASE_URL}/character?${buildQueryString(filters ?? null)}`;
+  return http.get<Info<Character[]>>(url);
+}
+
+export async function getCharacter(
+  id: CharacterId | undefined,
+): Promise<Character> {
+  if (id === undefined) throw new Error("id is required");
+  return http.get<Character>(`${API_BASE_URL}/character/${String(id)}`);
+}
+
+export async function getCharactersByIds(
+  ids: CharacterId[],
+): Promise<Character[]> {
+  const sortedIds = [...ids].sort((a, b) => a - b);
+  return http.get<Character[]>(
+    `${API_BASE_URL}/character/${sortedIds.join(",")},`,
+  );
+}

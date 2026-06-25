@@ -1,45 +1,80 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { Pagination } from "./pagination";
+
+// Mock next/link to render a plain <a> for testing
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+vi.mock("next/link", () => ({
+  default: ({
+    children,
+    href,
+    className,
+  }: {
+    children: React.ReactNode;
+    href: string;
+    className?: string;
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  ),
+}));
 
 afterEach(cleanup);
 
 describe("Pagination", () => {
   describe("rendering", () => {
-    beforeEach(() => {
+    it("renders prev and next links when hrefs are provided", () => {
       render(
         <Pagination
           currentPage={5}
           totalPages={20}
-          onPrev={vi.fn()}
-          onNext={vi.fn()}
+          prevHref="/characters?page=4"
+          nextHref="/characters?page=6"
         />,
       );
+
+      expect(screen.getByRole("link", { name: /prev/i })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /next/i })).toBeInTheDocument();
     });
 
-    it("renders prev button", () => {
-      expect(screen.getByRole("button", { name: /prev/i })).toBeInTheDocument();
-    });
-
-    it("renders next button", () => {
-      expect(screen.getByRole("button", { name: /next/i })).toBeInTheDocument();
-    });
-
-    it("renders counter with correct page info", () => {
-      expect(screen.getByText(/\d+\/\d+/)).toBeInTheDocument();
-    });
-
-    it("renders counter with 1/1", () => {
-      cleanup();
+    it("renders disabled buttons when hrefs are null", () => {
       render(
         <Pagination
           currentPage={1}
           totalPages={1}
-          onPrev={vi.fn()}
-          onNext={vi.fn()}
+          prevHref={null}
+          nextHref={null}
         />,
       );
+
+      expect(screen.getByRole("button", { name: /prev/i })).toBeDisabled();
+      expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
+    });
+
+    it("renders counter with correct page info", () => {
+      render(
+        <Pagination
+          currentPage={5}
+          totalPages={20}
+          prevHref="/characters?page=4"
+          nextHref="/characters?page=6"
+        />,
+      );
+
+      expect(screen.getByText("5/20")).toBeInTheDocument();
+    });
+
+    it("renders counter with 1/1 for single page", () => {
+      render(
+        <Pagination
+          currentPage={1}
+          totalPages={1}
+          prevHref={null}
+          nextHref={null}
+        />,
+      );
+
       expect(screen.getByText("1/1")).toBeInTheDocument();
     });
   });
@@ -50,10 +85,11 @@ describe("Pagination", () => {
         <Pagination
           currentPage={1}
           totalPages={20}
-          onPrev={vi.fn()}
-          onNext={vi.fn()}
+          prevHref={null}
+          nextHref="/characters?page=2"
         />,
       );
+
       expect(screen.getByRole("button", { name: /prev/i })).toBeDisabled();
     });
 
@@ -62,10 +98,11 @@ describe("Pagination", () => {
         <Pagination
           currentPage={20}
           totalPages={20}
-          onPrev={vi.fn()}
-          onNext={vi.fn()}
+          prevHref="/characters?page=19"
+          nextHref={null}
         />,
       );
+
       expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
     });
 
@@ -74,87 +111,57 @@ describe("Pagination", () => {
         <Pagination
           currentPage={1}
           totalPages={1}
-          onPrev={vi.fn()}
-          onNext={vi.fn()}
+          prevHref={null}
+          nextHref={null}
         />,
       );
+
       expect(screen.getByRole("button", { name: /prev/i })).toBeDisabled();
       expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
     });
 
-    it("enables both buttons in the middle of pages", () => {
+    it("renders links (not buttons) in the middle of pages", () => {
       render(
         <Pagination
           currentPage={5}
           totalPages={20}
-          onPrev={vi.fn()}
-          onNext={vi.fn()}
+          prevHref="/characters?page=4"
+          nextHref="/characters?page=6"
         />,
       );
-      expect(screen.getByRole("button", { name: /prev/i })).toBeEnabled();
-      expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
+
+      expect(screen.getByRole("link", { name: /prev/i })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /next/i })).toBeInTheDocument();
     });
   });
 
-  describe("callbacks", () => {
-    it("calls onPrev when prev button is clicked", async () => {
-      const user = userEvent.setup();
-      const onPrev = vi.fn();
+  describe("href correctness", () => {
+    it("sets correct href for prev link", () => {
       render(
         <Pagination
           currentPage={5}
           totalPages={20}
-          onPrev={onPrev}
-          onNext={vi.fn()}
+          prevHref="/characters?page=4"
+          nextHref="/characters?page=6"
         />,
       );
-      await user.click(screen.getByRole("button", { name: /prev/i }));
-      expect(onPrev).toHaveBeenCalledTimes(1);
+
+      const prevLink = screen.getByRole("link", { name: /prev/i });
+      expect(prevLink).toHaveAttribute("href", "/characters?page=4");
     });
 
-    it("calls onNext when next button is clicked", async () => {
-      const user = userEvent.setup();
-      const onNext = vi.fn();
+    it("sets correct href for next link", () => {
       render(
         <Pagination
           currentPage={5}
           totalPages={20}
-          onPrev={vi.fn()}
-          onNext={onNext}
+          prevHref="/characters?page=4"
+          nextHref="/characters?page=6"
         />,
       );
-      await user.click(screen.getByRole("button", { name: /next/i }));
-      expect(onNext).toHaveBeenCalledTimes(1);
-    });
 
-    it("does not call onPrev when prev button is disabled", async () => {
-      const user = userEvent.setup();
-      const onPrev = vi.fn();
-      render(
-        <Pagination
-          currentPage={1}
-          totalPages={20}
-          onPrev={onPrev}
-          onNext={vi.fn()}
-        />,
-      );
-      await user.click(screen.getByRole("button", { name: /prev/i }));
-      expect(onPrev).not.toHaveBeenCalled();
-    });
-
-    it("does not call onNext when next button is disabled", async () => {
-      const user = userEvent.setup();
-      const onNext = vi.fn();
-      render(
-        <Pagination
-          currentPage={20}
-          totalPages={20}
-          onPrev={vi.fn()}
-          onNext={onNext}
-        />,
-      );
-      await user.click(screen.getByRole("button", { name: /next/i }));
-      expect(onNext).not.toHaveBeenCalled();
+      const nextLink = screen.getByRole("link", { name: /next/i });
+      expect(nextLink).toHaveAttribute("href", "/characters?page=6");
     });
   });
 });

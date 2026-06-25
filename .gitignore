@@ -8,8 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
+.next
+next-env.d.ts
+out
+*.tsbuildinfo
 *.local
 coverage
 
@@ -30,3 +32,4 @@ docs
 
 # opencode configuration (local)
 .opencode/
+.vercel

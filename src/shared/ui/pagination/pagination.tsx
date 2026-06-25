@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  onPrev: () => void;
-  onNext: () => void;
+  prevHref: string | null;
+  nextHref: string | null;
 }
 
 const BTN_STYLES = {
@@ -11,44 +13,48 @@ const BTN_STYLES = {
   disabled:
     "text-surface/50 pointer-events-none cursor-default dark:text-neutral-400",
   counter: "text-surface text-sm font-medium dark:text-white select-none",
+  link: "no-underline",
 };
 
-function renderNavButton(
-  label: string,
-  disabled: boolean,
-  onClick: () => void,
-): React.JSX.Element {
+function renderNavLink(label: string, href: string | null): React.JSX.Element {
+  if (href === null) {
+    return (
+      <button
+        type="button"
+        disabled
+        className={`${BTN_STYLES.btn} ${BTN_STYLES.disabled}`}
+      >
+        {label}
+      </button>
+    );
+  }
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${disabled ? BTN_STYLES.disabled : ""}`}
+    <Link
+      href={href}
+      className={`${BTN_STYLES.btn} ${BTN_STYLES.base} ${BTN_STYLES.link}`}
     >
       {label}
-    </button>
+    </Link>
   );
 }
 
 export function Pagination({
   currentPage,
   totalPages,
-  onPrev,
-  onNext,
+  prevHref,
+  nextHref,
 }: PaginationProps): React.JSX.Element {
-  const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages;
-
   return (
     <nav aria-label="Pagination">
       <ul className="list-style-none flex items-center gap-4">
-        <li>{renderNavButton("Prev", isFirstPage, onPrev)}</li>
+        <li>{renderNavLink("Prev", prevHref)}</li>
         <li>
           <span className={BTN_STYLES.counter}>
             {currentPage}/{totalPages}
           </span>
         </li>
-        <li>{renderNavButton("Next", isLastPage, onNext)}</li>
+        <li>{renderNavLink("Next", nextHref)}</li>
       </ul>
     </nav>
   );

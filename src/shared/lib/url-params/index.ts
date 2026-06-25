@@ -1,1 +1,1 @@
-export { buildQueryString, updateSearchParams } from "./url-params";
+export { buildQueryString } from "./url-params";

@@ -1,5 +1,9 @@
-import { Navbar, ThemeToggle } from "@shared/ui";
-import { useTheme } from "@shared/lib";
+"use client";
+
+import { Navbar } from "@shared/ui/navbar";
+import { ErrorTrigger } from "@shared/ui/error";
+import { ThemeToggle } from "@shared/ui/theme-toggle";
+import { useTheme } from "@shared/context/theme";
 
 export function Header(): React.JSX.Element {
   const { theme, toggleTheme } = useTheme();
@@ -10,7 +14,10 @@ export function Header(): React.JSX.Element {
         <div className="basis-full md:basis-auto">
           <Navbar />
         </div>
-        <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        <div className="flex items-center gap-2">
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <ErrorTrigger />
+        </div>
       </div>
     </header>
   );

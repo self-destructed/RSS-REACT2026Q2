@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Character } from "../../model";
 
 interface CharacterDetailProps {
@@ -10,10 +11,13 @@ export function CharacterDetail({
   return (
     <div className="text-surface shadow-secondary-1 block max-w-md rounded-lg bg-white dark:bg-neutral-800 dark:text-white">
       <div>
-        <img
-          className="mx-auto h-32 rounded-t-lg sm:h-36 md:h-40 lg:h-48"
+        <Image
+          className="mx-auto h-32 rounded-t-lg sm:h-36 md:h-40 lg:h-48 object-cover"
           src={character.image}
           alt={character.name}
+          width={300}
+          height={300}
+          unoptimized
         />
       </div>
       <div className="p-6">
